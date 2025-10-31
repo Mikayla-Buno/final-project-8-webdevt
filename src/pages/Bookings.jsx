@@ -74,7 +74,6 @@ const Bookings = () => {
             ))
           ) : (
             <div className="card p-12 text-center">
-              <div className="text-6xl mb-4">📋</div>
               <h3 className="text-xl font-semibold text-gray-800 mb-2 font-elegant">
                 {filter === 'all' ? 'No bookings found' : `No ${filter} bookings`}
               </h3>

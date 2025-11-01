@@ -75,10 +75,10 @@ const FlightSearch = () => {
     <div className="container" style={{ paddingTop: '2rem', paddingBottom: '4rem' }}>
       {/* Page Header */}
       <div className="text-center mb-8">
-        <h1 style={{ fontSize: '2.5rem', fontWeight: '700', color: '#1E293B', marginBottom: '0.5rem' }}>
+        <h1 style={{ fontSize: '3.5rem', fontWeight: '700', color: '#ffff', marginBottom: '0.5rem' }}>
           Find Your Perfect Flight
         </h1>
-        <p style={{ fontSize: '1.125rem', color: '#64748B' }}>
+        <p style={{ fontSize: '1.5rem', color: '#ffff' }}>
           Search and book flights to your dream destination
         </p>
       </div>
@@ -175,7 +175,7 @@ const FlightSearch = () => {
 
       {/* Results Header */}
       <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1E293B' }}>
+        <h2 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#ffff' }}>
           Available Flights
         </h2>
         <span style={{ color: '#64748B', fontSize: '0.9375rem' }}>

@@ -8,7 +8,9 @@ const Home = () => {
   const navigate = useNavigate();
 
   const goToFlight = (origin, destination) => {
-    navigate(`/flights?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`);
+    navigate(
+      `/flights?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`
+    );
   };
 
   return (
@@ -30,23 +32,60 @@ const Home = () => {
           padding: "4rem 2rem",
         }}
       >
-        {/* Hero Text */}
+        {/* Dark Overlay */}
         <div
           style={{
-            padding: "3rem 2rem",
-            borderRadius: "1rem",
-            maxWidth: "700px",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0,0,0,0.75)",
+            zIndex: 1,
+          }}
+        ></div>
+
+        {/* Hero Content */}
+        <div
+          style={{
+            position: "relative",
+            zIndex: 2,
+            maxWidth: "900px",
             marginBottom: "3rem",
           }}
         >
-          <h1 style={{ fontSize: "3rem", fontWeight: 700, marginBottom: "1rem", letterSpacing: "1px" }}>
+          <h1
+            style={{
+              fontSize: "4rem",
+              fontWeight: 700,
+              letterSpacing: "1px",
+              whiteSpace: "nowrap", // Keep heading in one line
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
             Welcome to Ohana Airlines
           </h1>
-          <p style={{ fontSize: "1.2rem", lineHeight: 1.8, color: "#E5E7EB" }}>
-            Experience premium air travel with utmost safety, comfort, and professionalism. Our expert staff ensures that
-            every journey is seamless, secure, and memorable.
+          <p
+            style={{
+              fontSize: "1.5rem",
+              lineHeight: 1.9,
+              color: "#E5E7EB",
+              marginTop: "1rem",
+            }}
+          >
+            Experience premium air travel with utmost safety, comfort, and professionalism. Our expert staff ensures
+            that every journey is seamless, secure, and memorable.
           </p>
-          <div style={{ display: "flex", justifyContent: "center", gap: "1rem", flexWrap: "wrap", marginTop: "2rem" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "1rem",
+              flexWrap: "wrap",
+              marginTop: "2.5rem",
+            }}
+          >
             {!isAuthenticated ? (
               <>
                 <button
@@ -54,7 +93,7 @@ const Home = () => {
                   style={{
                     background: "#F59E0B",
                     color: "#1F2937",
-                    padding: "0.8rem 2rem",
+                    padding: "1rem 2.5rem",
                     borderRadius: "0.5rem",
                     fontWeight: 600,
                     border: "none",
@@ -71,7 +110,7 @@ const Home = () => {
                   style={{
                     border: "2px solid #FFFFFF",
                     color: "#FFFFFF",
-                    padding: "0.8rem 2rem",
+                    padding: "1rem 2.5rem",
                     borderRadius: "0.5rem",
                     background: "transparent",
                     fontWeight: 500,
@@ -91,7 +130,7 @@ const Home = () => {
                   style={{
                     background: "#F59E0B",
                     color: "#1F2937",
-                    padding: "0.8rem 2rem",
+                    padding: "1rem 2.5rem",
                     borderRadius: "0.5rem",
                     fontWeight: 600,
                     border: "none",
@@ -108,7 +147,7 @@ const Home = () => {
                   style={{
                     border: "2px solid #FFFFFF",
                     color: "#FFFFFF",
-                    padding: "0.8rem 2rem",
+                    padding: "1rem 2.5rem",
                     borderRadius: "0.5rem",
                     background: "transparent",
                     fontWeight: 500,
@@ -128,6 +167,8 @@ const Home = () => {
         {/* Features - Formal Layout */}
         <div
           style={{
+            position: "relative",
+            zIndex: 2,
             maxWidth: "1200px",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
@@ -136,9 +177,18 @@ const Home = () => {
           }}
         >
           {[
-            { title: "Efficient Booking", desc: "Smooth and structured booking process with minimal effort and maximum clarity." },
-            { title: "Safety & Reliability", desc: "Adherence to the highest aviation standards ensuring passenger safety and operational reliability." },
-            { title: "Professional Service", desc: "Expert staff providing courteous, attentive, and consistent service throughout your journey." },
+            {
+              title: "Efficient Booking",
+              desc: "Smooth and structured booking process with minimal effort and maximum clarity.",
+            },
+            {
+              title: "Safety & Reliability",
+              desc: "Adherence to the highest aviation standards ensuring passenger safety and operational reliability.",
+            },
+            {
+              title: "Professional Service",
+              desc: "Expert staff providing courteous, attentive, and consistent service throughout your journey.",
+            },
           ].map((feature, index) => (
             <div
               key={index}
@@ -154,8 +204,10 @@ const Home = () => {
               onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-5px)")}
               onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
             >
-              <h3 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "0.75rem" }}>{feature.title}</h3>
-              <p style={{ fontSize: "1rem", lineHeight: 1.7 }}>{feature.desc}</p>
+              <h3 style={{ fontSize: "1.6rem", fontWeight: 700, marginBottom: "0.75rem" }}>
+                {feature.title}
+              </h3>
+              <p style={{ fontSize: "1.1rem", lineHeight: 1.7 }}>{feature.desc}</p>
             </div>
           ))}
         </div>
@@ -174,7 +226,7 @@ const Home = () => {
         <h2
           style={{
             textAlign: "center",
-            fontSize: "2rem",
+            fontSize: "2.5rem",
             fontWeight: 700,
             marginBottom: "2rem",
             color: "#FFFFFF",
@@ -245,8 +297,10 @@ const Home = () => {
         }}
       >
         <div style={{ maxWidth: "700px", margin: "0 auto" }}>
-          <h2 style={{ fontSize: "2.5rem", fontWeight: 700, marginBottom: "1rem" }}>Ready to Take Off?</h2>
-          <p style={{ fontSize: "1.125rem", marginBottom: "2rem", lineHeight: 1.6 }}>
+          <h2 style={{ fontSize: "2.5rem", fontWeight: 700, marginBottom: "1rem" }}>
+            Ready to Take Off?
+          </h2>
+          <p style={{ fontSize: "1.25rem", marginBottom: "2rem", lineHeight: 1.6 }}>
             Join thousands of satisfied travelers and experience the difference with Ohana Airlines.
           </p>
           <button
@@ -254,7 +308,7 @@ const Home = () => {
             style={{
               background: "#F59E0B",
               color: "#1F2937",
-              padding: "1rem 2rem",
+              padding: "1rem 2.5rem",
               borderRadius: "0.5rem",
               fontWeight: 600,
               border: "none",

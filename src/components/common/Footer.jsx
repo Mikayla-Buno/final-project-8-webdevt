@@ -5,8 +5,8 @@ const Footer = () => {
 
   return (
     <footer style={{ 
-      background: 'white', 
-      borderTop: '1px solid #E2E8F0',
+      background: '#3A3A3A', // Dark charcoal for sleek professional look
+      borderTop: '1px solid #B8874B', // Gold accent
       marginTop: 'auto',
       padding: '2rem 0'
     }}>
@@ -19,18 +19,18 @@ const Footer = () => {
           gap: '1rem'
         }}>
           <div>
-            <p style={{ color: '#64748B', fontSize: '0.875rem' }}>
+            <p style={{ color: '#F4D06F', fontSize: '0.875rem' }}>
               © {currentYear} Ohana Airlines. All rights reserved.
             </p>
           </div>
           <div style={{ display: 'flex', gap: '1.5rem' }}>
-            <a href="#" style={{ color: '#64748B', fontSize: '0.875rem', textDecoration: 'none' }}>
+            <a href="#" style={{ color: '#F4D06F', fontSize: '0.875rem', textDecoration: 'none' }}>
               Privacy Policy
             </a>
-            <a href="#" style={{ color: '#64748B', fontSize: '0.875rem', textDecoration: 'none' }}>
+            <a href="#" style={{ color: '#F4D06F', fontSize: '0.875rem', textDecoration: 'none' }}>
               Terms of Service
             </a>
-            <a href="#" style={{ color: '#64748B', fontSize: '0.875rem', textDecoration: 'none' }}>
+            <a href="#" style={{ color: '#F4D06F', fontSize: '0.875rem', textDecoration: 'none' }}>
               Contact Us
             </a>
           </div>

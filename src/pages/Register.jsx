@@ -8,7 +8,7 @@ const Register = () => {
         minHeight: '100vh',
         display: 'flex',
         fontFamily: 'Poppins, sans-serif',
-        backgroundImage: 'url("/images/airplane.png")', // full-page background
+        backgroundImage: 'url("/images/loginregister.jpg")', // full-page background
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

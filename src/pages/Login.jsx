@@ -8,7 +8,7 @@ const Login = () => {
         minHeight: '100vh',
         display: 'flex',
         fontFamily: 'Poppins, sans-serif',
-        backgroundImage: 'url("/images/airplane.png")',
+        backgroundImage: 'url("/images/loginregister.jpg")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

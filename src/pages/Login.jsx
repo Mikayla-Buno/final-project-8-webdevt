@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import LoginForm from '../components/auth/LoginForm';
 
 const Login = () => {
+  const [animate, setAnimate] = useState(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setAnimate(true), 100); // slight delay for fade-in
+    return () => clearTimeout(timeout);
+  }, []);
+
   return (
     <div
       style={{
@@ -13,6 +20,7 @@ const Login = () => {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         position: 'relative',
+        overflow: 'hidden',
       }}
     >
       {/* Overlay for readability */}
@@ -34,17 +42,20 @@ const Login = () => {
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'flex-start', // align to top
-          alignItems: 'flex-start', // align to left
-          padding: '60px 0 0 80px', // upper-left padding
-          color: '#FFFFFF', // white text
+          justifyContent: 'flex-start',
+          alignItems: 'flex-start',
+          padding: '60px 0 0 80px',
+          color: '#FFFFFF',
           position: 'relative',
           zIndex: 1,
+          opacity: animate ? 1 : 0,
+          transform: animate ? 'translateX(0)' : 'translateX(-30px)',
+          transition: 'all 0.8s ease-out',
         }}
       >
         <h1
           style={{
-            fontSize: '4rem', // large header
+            fontSize: '4rem',
             fontWeight: 900,
             marginBottom: '20px',
             lineHeight: '1.2',
@@ -77,10 +88,11 @@ const Login = () => {
           minHeight: '100vh',
           position: 'relative',
           zIndex: 1,
-          color: '#FFFFFF', // Optional: white text if needed
+          opacity: animate ? 1 : 0,
+          transform: animate ? 'translateX(0)' : 'translateX(30px)',
+          transition: 'all 0.8s ease-out',
         }}
       >
-        {/* Login Form directly on background */}
         <LoginForm />
       </div>
     </div>

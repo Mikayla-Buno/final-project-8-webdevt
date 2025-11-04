@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import RegisterForm from '../components/auth/RegisterForm';
 
 const Register = () => {
+  const [animate, setAnimate] = useState(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setAnimate(true), 100); // slight delay for fade-in
+    return () => clearTimeout(timeout);
+  }, []);
+
   return (
     <div
       style={{
         minHeight: '100vh',
         display: 'flex',
         fontFamily: 'Poppins, sans-serif',
-        backgroundImage: 'url("/images/loginregister.jpg")', // full-page background
+        backgroundImage: 'url("/images/loginregister.jpg")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         position: 'relative',
+        overflow: 'hidden',
       }}
     >
       {/* Overlay for readability */}
@@ -40,6 +48,9 @@ const Register = () => {
           color: '#FFFFFF',
           position: 'relative',
           zIndex: 1,
+          opacity: animate ? 1 : 0,
+          transform: animate ? 'translateX(0)' : 'translateX(-30px)',
+          transition: 'all 0.8s ease-out',
         }}
       >
         <h1
@@ -76,6 +87,9 @@ const Register = () => {
           minHeight: '100vh',
           position: 'relative',
           zIndex: 1,
+          opacity: animate ? 1 : 0,
+          transform: animate ? 'translateX(0)' : 'translateX(30px)',
+          transition: 'all 0.8s ease-out',
         }}
       >
         <div style={{ width: '100%', maxWidth: '400px' }}>

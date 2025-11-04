@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
+import '../../Animation.css'; // Import your animation CSS
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -12,15 +13,12 @@ const RegisterForm = () => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
     setError('');
   };
 
@@ -53,7 +51,7 @@ const RegisterForm = () => {
 
     const { confirmPassword, ...userData } = formData;
     const result = await register(userData);
-    
+
     if (result.success) {
       navigate('/');
     } else {
@@ -63,122 +61,120 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="card" style={{ maxWidth: '28rem', margin: '0 auto', padding: '2rem' }}>
+    <div
+      className="login-form-animated" // Add animation class
+      style={{
+        width: '100%',
+        maxWidth: '400px',
+        background: 'rgba(255, 255, 255, 0.08)',
+        backdropFilter: 'blur(12px)',
+        borderRadius: '16px',
+        padding: '3rem 2rem',
+        display: 'flex',
+        flexDirection: 'column',
+        zIndex: 2,
+        boxShadow: '0 16px 40px rgba(0,0,0,0.1)'
+      }}
+    >
+      {/* Logo */}
       <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-        <div style={{ 
-          width: '4rem', 
-          height: '4rem', 
-          background: 'linear-gradient(135deg, #2A9D8F 0%, #264653 100%)',
-          borderRadius: '1rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          margin: '0 auto 1rem',
-          fontSize: '2rem'
-        }}>
-          ✈️
-        </div>
-        <h2 style={{ fontSize: '1.875rem', fontWeight: '700', color: '#264653', marginBottom: '0.5rem' }}>
+        <img
+          src="/images/logoa.png"
+          alt="Ohana Airlines Logo"
+          style={{
+            width: '200px',
+            height: '160px',
+            borderRadius: '16px',
+            objectFit: 'cover',
+          }}
+        />
+        <h1 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#F9FAFB', marginBottom: '0.25rem' }}>
           Create Account
-        </h2>
-        <p style={{ color: '#64748B' }}>Join Ohana Airlines today</p>
+        </h1>
+        <p style={{ fontSize: '0.95rem', color: '#E5E7EB' }}>
+          Join Ohana Airlines today
+        </p>
       </div>
-      
+
+      {/* Error */}
       {error && (
-        <div className="alert alert-error">
+        <div style={{
+          background: '#FEE2E2',
+          color: '#B91C1C',
+          padding: '0.75rem 1rem',
+          borderRadius: '8px',
+          marginBottom: '1rem',
+          fontSize: '0.875rem',
+          textAlign: 'center'
+        }}>
           {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="name" className="form-label">Full Name</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="form-input"
-            placeholder="Enter your full name"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="email" className="form-label">Email Address</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="form-input"
-            placeholder="Enter your email"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="phone" className="form-label">Phone Number</label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            className="form-input"
-            placeholder="Enter your phone number"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="password" className="form-label">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className="form-input"
-            placeholder="Create a password (min. 6 characters)"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            className="form-input"
-            placeholder="Confirm your password"
-            required
-          />
-        </div>
+      {/* Form */}
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        {['name', 'email', 'phone', 'password', 'confirmPassword'].map((field) => (
+          <div key={field} style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+            <label htmlFor={field} style={{ fontSize: '0.875rem', fontWeight: 600, color: '#F9FAFB' }}>
+              {field === 'name' ? 'Full Name' :
+               field === 'email' ? 'Email Address' :
+               field === 'phone' ? 'Phone Number' :
+               field === 'password' ? 'Password' : 'Confirm Password'}
+            </label>
+            <input
+              type={field.includes('password') ? 'password' : field === 'phone' ? 'tel' : 'text'}
+              id={field}
+              name={field}
+              value={formData[field]}
+              onChange={handleChange}
+              placeholder={
+                field === 'name' ? 'Enter your full name' :
+                field === 'email' ? 'Enter your email' :
+                field === 'phone' ? 'Enter your phone number' :
+                field === 'password' ? 'Create a password (min. 6 characters)' :
+                'Confirm your password'
+              }
+              required
+              style={{
+                padding: '0.75rem 1rem',
+                borderRadius: '12px',
+                border: '1px solid rgba(255,255,255,0.3)',
+                fontSize: '0.9375rem',
+                outline: 'none',
+                background: 'rgba(255,255,255,0.05)',
+                color: '#F9FAFB',
+                transition: 'all 0.2s ease'
+              }}
+            />
+          </div>
+        ))}
 
         <button
           type="submit"
           disabled={loading}
-          className="btn btn-primary"
-          style={{ width: '100%', marginBottom: '1rem' }}
+          style={{
+            padding: '0.75rem',
+            borderRadius: '12px',
+            border: 'none',
+            fontWeight: 700,
+            fontSize: '0.9375rem',
+            color: '#FFFFFF',
+            background: 'linear-gradient(135deg, #2A9D8F 0%, #446775 50%, #CDA55B 100%)',
+            cursor: 'pointer',
+            boxShadow: '0 6px 18px rgba(42,157,143,0.3)',
+            transition: 'all 0.2s ease',
+          }}
         >
           {loading ? 'Creating Account...' : 'Create Account'}
         </button>
       </form>
 
-      <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
-        <p style={{ color: '#64748B', fontSize: '0.875rem' }}>
-          Already have an account?{' '}
-          <Link to="/login" style={{ color: '#2A9D8F', fontWeight: '600', textDecoration: 'none' }}>
-            Sign in here
-          </Link>
-        </p>
-      </div>
+      <p style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.875rem', color: '#E5E7EB' }}>
+        Already have an account?{' '}
+        <Link to="/login" style={{ color: '#2A9D8F', fontWeight: 600, textDecoration: 'none' }}>
+          Sign in here
+        </Link>
+      </p>
     </div>
   );
 };

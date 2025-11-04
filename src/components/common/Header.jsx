@@ -6,7 +6,6 @@ const Header = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -14,6 +13,13 @@ const Header = () => {
   };
 
   const isActive = (path) => location.pathname === path;
+
+  // Gradient styles
+  const gradients = {
+    ohana: 'linear-gradient(135deg, #2A9D8F 0%, #446775 50%, #CDA55B 100%)',
+    light: 'linear-gradient(135deg, rgba(42, 157, 143, 0.6) 0%, rgba(68, 103, 117, 0.6) 50%, rgba(205, 165, 91, 0.6) 100%)'
+
+  };
 
   return (
     <header style={{
@@ -49,7 +55,7 @@ const Header = () => {
           <div style={{
             width: '48px',
             height: '48px',
-            background: 'linear-gradient(135deg, #2A9D8F 0%, #446775 50%, #CDA55B 100%)',
+            background: gradients.ohana,
             borderRadius: '12px',
             display: 'flex',
             alignItems: 'center',
@@ -64,7 +70,7 @@ const Header = () => {
           <span style={{
             fontSize: '1.5rem',
             fontWeight: 800,
-            background: 'linear-gradient(135deg, #2A9D8F 0%, #446775 50%, #CDA55B 100%)',
+            background: gradients.ohana,
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
@@ -130,7 +136,7 @@ const Header = () => {
                 boxShadow: '0 2px 8px rgba(42, 157, 143, 0.1)'
               }}>
                 <span style={{
-                  background: 'linear-gradient(135deg, #2A9D8F 0%, #CDA55B 100%)',
+                  background: gradients.ohana,
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text'
@@ -151,16 +157,19 @@ const Header = () => {
                   </span>
                 )}
               </div>
-              <GradientButton onClick={handleLogout}>
+              <GradientButton gradient={gradients.ohana} onClick={handleLogout}>
                 Logout
               </GradientButton>
             </div>
           ) : (
             <>
-              <OutlineButton to="/login">
+              {/* Login = Light Ohana gradient */}
+              <GradientButton gradient={gradients.light} to="/login">
                 Login
-              </OutlineButton>
-              <GradientButton to="/register">
+              </GradientButton>
+
+              {/* Sign Up = Regular Ohana gradient */}
+              <GradientButton gradient={gradients.ohana} to="/register">
                 Sign Up
               </GradientButton>
             </>
@@ -193,7 +202,6 @@ const NavLink = ({ to, isActive, children }) => {
         padding: '0.625rem 1rem',
         borderRadius: '10px',
         transition: 'all 0.3s ease',
-        position: 'relative',
         background: isActive 
           ? 'linear-gradient(135deg, rgba(42, 157, 143, 0.15) 0%, rgba(205, 165, 91, 0.15) 100%)'
           : isHovered 
@@ -217,8 +225,8 @@ const NavLink = ({ to, isActive, children }) => {
   );
 };
 
-// Gradient Button Component
-const GradientButton = ({ onClick, to, children }) => {
+// Reusable Gradient Button Component
+const GradientButton = ({ onClick, to, children, gradient }) => {
   const [isHovered, setIsHovered] = useState(false);
   const Component = to ? Link : 'button';
 
@@ -238,7 +246,7 @@ const GradientButton = ({ onClick, to, children }) => {
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(135deg, #2A9D8F 0%, #446775 50%, #CDA55B 100%)',
+        background: gradient,
         color: 'white',
         boxShadow: isHovered 
           ? '0 8px 24px rgba(42, 157, 143, 0.5)' 
@@ -254,46 +262,11 @@ const GradientButton = ({ onClick, to, children }) => {
       <div style={{
         position: 'absolute',
         inset: 0,
-        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%)',
+        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.) 0%, transparent 100%)',
         opacity: isHovered ? 1 : 0,
         transition: 'opacity 0.3s ease'
       }} />
     </Component>
-  );
-};
-
-// Outline Button Component
-const OutlineButton = ({ to, children }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
-  return (
-    <Link
-      to={to}
-      style={{
-        padding: '0.75rem 1.5rem',
-        borderRadius: '12px',
-        fontWeight: 700,
-        fontSize: '0.9375rem',
-        transition: 'all 0.3s ease',
-        textDecoration: 'none',
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: isHovered 
-          ? 'linear-gradient(135deg, rgba(42, 157, 143, 0.1) 0%, rgba(205, 165, 91, 0.1) 100%)'
-          : 'transparent',
-        border: '2px solid transparent',
-        borderImage: 'linear-gradient(135deg, #2A9D8F 0%, #CDA55B 100%)',
-        borderImageSlice: 1,
-        color: '#2A9D8F',
-        transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
-        boxShadow: isHovered ? '0 4px 12px rgba(42, 157, 143, 0.2)' : 'none'
-      }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {children}
-    </Link>
   );
 };
 

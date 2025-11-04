@@ -15,74 +15,32 @@ const Header = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <header style={{ 
-      background: '#3A3A3A', // Dark charcoal
-      borderBottom: '1px solid #B8874B', // Gold accent
-      position: 'sticky',
-      top: 0,
-      zIndex: 100,
-      boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-      padding: '1rem 2rem'
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-        {/* Logo */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none' }}>
-          <div style={{
-            width: '40px',
-            height: '40px',
-            background: 'linear-gradient(135deg, #F4D06F 0%, #B8874B 100%)',
-            borderRadius: '10px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#3A3A3A',
-            fontSize: '1.25rem',
-            boxShadow: '0 4px 12px rgba(184, 135, 75, 0.3)'
-          }}>
-            ✈️
-          </div>
-          <span style={{
-            fontSize: '1.5rem',
-            fontWeight: 700,
-            background: 'linear-gradient(135deg, #F4D06F 0%, #B8874B 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text'
-          }}>
-            Ohana Airlines
-          </span>
+    <header className="site-header">
+      <div className="header-container">
+        {/* Logo Section */}
+        <Link to="/" className="logo-section">
+          <div className="logo-icon">✈️</div>
+          <span className="logo-text">Ohana Airlines</span>
         </Link>
 
         {/* Navigation */}
         {isAuthenticated && (
-          <nav style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
+          <nav className="nav-links">
             <Link
               to="/dashboard"
-              style={{
-                color: isActive('/dashboard') ? '#F4D06F' : '#E2E8F0',
-                textDecoration: 'none',
-                fontWeight: 500
-              }}
+              className={`nav-link ${isActive('/dashboard') ? 'active' : ''}`}
             >
               Dashboard
             </Link>
             <Link
               to="/flights"
-              style={{
-                color: isActive('/flights') ? '#F4D06F' : '#E2E8F0',
-                textDecoration: 'none',
-                fontWeight: 500
-              }}
+              className={`nav-link ${isActive('/flights') ? 'active' : ''}`}
             >
               Flights
             </Link>
             <Link
               to="/bookings"
-              style={{
-                color: isActive('/bookings') ? '#F4D06F' : '#E2E8F0',
-                textDecoration: 'none',
-                fontWeight: 500
-              }}
+              className={`nav-link ${isActive('/bookings') ? 'active' : ''}`}
             >
               My Bookings
             </Link>
@@ -91,31 +49,19 @@ const Header = () => {
               <>
                 <Link
                   to="/admin/flights"
-                  style={{
-                    color: isActive('/admin/flights') ? '#F4D06F' : '#E2E8F0',
-                    textDecoration: 'none',
-                    fontWeight: 500
-                  }}
+                  className={`nav-link ${isActive('/admin/flights') ? 'active' : ''}`}
                 >
                   Manage Flights
                 </Link>
                 <Link
                   to="/admin/bookings"
-                  style={{
-                    color: isActive('/admin/bookings') ? '#F4D06F' : '#E2E8F0',
-                    textDecoration: 'none',
-                    fontWeight: 500
-                  }}
+                  className={`nav-link ${isActive('/admin/bookings') ? 'active' : ''}`}
                 >
                   All Bookings
                 </Link>
                 <Link
                   to="/admin/reports"
-                  style={{
-                    color: isActive('/admin/reports') ? '#F4D06F' : '#E2E8F0',
-                    textDecoration: 'none',
-                    fontWeight: 500
-                  }}
+                  className={`nav-link ${isActive('/admin/reports') ? 'active' : ''}`}
                 >
                   Reports
                 </Link>
@@ -125,64 +71,22 @@ const Header = () => {
         )}
 
         {/* Auth Section */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div className="auth-buttons">
           {isAuthenticated ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <span style={{
-                fontSize: '0.875rem',
-                color: '#F4D06F',
-                fontWeight: 600,
-                padding: '0.5rem 1rem',
-                borderRadius: '0.5rem',
-                background: 'rgba(184, 135, 75, 0.1)'
-              }}>
+            <div className="user-info">
+              <span className="user-name">
                 {user?.name} {user?.role === 'admin' && '(Admin)'}
               </span>
-              <button
-                onClick={handleLogout}
-                style={{
-                  padding: '0.625rem 1.25rem',
-                  borderRadius: '0.5rem',
-                  fontWeight: 600,
-                  fontSize: '0.875rem',
-                  border: 'none',
-                  cursor: 'pointer',
-                  background: 'linear-gradient(135deg, #F4D06F 0%, #B8874B 100%)',
-                  color: '#3A3A3A'
-                }}
-              >
+              <button onClick={handleLogout} className="btn btn-primary">
                 Logout
               </button>
             </div>
           ) : (
             <>
-              <Link
-                to="/login"
-                style={{
-                  padding: '0.625rem 1.25rem',
-                  borderRadius: '0.5rem',
-                  fontWeight: 600,
-                  fontSize: '0.875rem',
-                  border: '1.5px solid #F4D06F',
-                  color: '#F4D06F',
-                  textDecoration: 'none'
-                }}
-              >
+              <Link to="/login" className="btn btn-outline">
                 Login
               </Link>
-              <Link
-                to="/register"
-                style={{
-                  padding: '0.625rem 1.25rem',
-                  borderRadius: '0.5rem',
-                  fontWeight: 600,
-                  fontSize: '0.875rem',
-                  border: 'none',
-                  background: 'linear-gradient(135deg, #F4D06F 0%, #B8874B 100%)',
-                  color: '#3A3A3A',
-                  textDecoration: 'none'
-                }}
-              >
+              <Link to="/register" className="btn btn-primary">
                 Sign Up
               </Link>
             </>

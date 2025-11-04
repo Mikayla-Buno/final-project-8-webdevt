@@ -310,7 +310,7 @@ const Home = () => {
      <section
   style={{
     padding: "6rem 2rem",
-    backgroundImage: 'url("/loginregister.png")', // background image from public folder
+    backgroundImage: 'url("/images/loginregister.jpg")', // background image from public folder
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",

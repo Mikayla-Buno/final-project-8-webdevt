@@ -55,7 +55,7 @@ const RegisterForm = () => {
     const result = await register(userData);
     
     if (result.success) {
-      navigate('/dashboard');
+      navigate('/');
     } else {
       setError(result.error || 'Registration failed. Please try again.');
     }

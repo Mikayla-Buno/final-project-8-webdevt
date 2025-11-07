@@ -14,7 +14,7 @@ export const mockFlights = [
     availableSeats: 145,
     aircraft: 'Airbus A320',
     status: 'On Time',
-    image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+    image: '/images/flight1.jpg',
     description: 'Direct flight from Manila to Cebu. Experience comfort and convenience on this popular domestic route.',
     amenities: ['In-flight entertainment', 'Complimentary snacks', 'Extra legroom available', 'Priority boarding']
   },
@@ -33,7 +33,7 @@ export const mockFlights = [
     availableSeats: 98,
     aircraft: 'Boeing 737',
     status: 'On Time',
-    image: 'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=800&q=80',
+    image: '/images/flight2.jfif',
     description: 'Comfortable flight to Davao City. Perfect for business and leisure travelers.',
     amenities: ['Wi-Fi available', 'Meal service', 'Power outlets', 'Extra baggage allowance']
   },
@@ -52,7 +52,7 @@ export const mockFlights = [
     availableSeats: 162,
     aircraft: 'Airbus A320',
     status: 'On Time',
-    image: 'https://images.unsplash.com/photo-1475066392170-d8b3c2a0d41f?w=800&q=80',
+    image: '/images/flight3.jpg',
     description: 'Return flight from Cebu to Manila. Enjoy seamless travel with our professional crew.',
     amenities: ['Complimentary drinks', 'In-flight magazine', 'Reclining seats', 'Climate control']
   },
@@ -71,7 +71,7 @@ export const mockFlights = [
     availableSeats: 45,
     aircraft: 'Airbus A319',
     status: 'Delayed',
-    image: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&q=80',
+    image: '/images/flight4.jpg',
     description: 'Early morning flight to the beautiful island of Palawan. Start your adventure right.',
     amenities: ['Premium seating', 'Priority check-in', 'Lounge access', 'Free seat selection']
   },
@@ -90,7 +90,7 @@ export const mockFlights = [
     availableSeats: 0,
     aircraft: 'Boeing 737',
     status: 'Fully Booked',
-    image: 'https://images.unsplash.com/photo-1583441620007-d3f25c11b7e2?w=800&q=80',
+    image: '/images/flight5.jfif',
     description: 'Popular route connecting Mindanao to Visayas. Book early for best availability.',
     amenities: ['Standard seating', 'Snack service', 'Overhead storage', 'USB charging ports']
   },
@@ -109,7 +109,7 @@ export const mockFlights = [
     availableSeats: 128,
     aircraft: 'Airbus A320',
     status: 'On Time',
-    image: 'https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=800&q=80',
+    image: '/images/flight6.jpeg',
     description: 'Direct connection from Iloilo to the capital. Reliable service with ontime performance.',
     amenities: ['Complimentary beverages', 'Blankets provided', 'Reading lights', 'Spacious cabin']
   },
@@ -128,7 +128,7 @@ export const mockFlights = [
     availableSeats: 67,
     aircraft: 'ATR 72',
     status: 'On Time',
-    image: 'https://images.unsplash.com/photo-1504150558240-0b4fd8946624?w=800&q=80',
+    image: '/images/flight7.jfif',
     description: 'Quick flight to paradise! Gateway to the famous white beaches of Boracay.',
     amenities: ['Scenic views', 'Light refreshments', 'Carry-on baggage', 'Friendly crew']
   },
@@ -147,7 +147,7 @@ export const mockFlights = [
     availableSeats: 103,
     aircraft: 'Boeing 737',
     status: 'On Time',
-    image: 'https://images.unsplash.com/photo-1569629743817-70d8db6c323b?w=800&q=80',
+    image: '/images/flight8.jpeg',
     description: 'Evening flight perfect for business travelers. Connect Visayas and Mindanao efficiently.',
     amenities: ['Evening meal', 'Dimmed lighting', 'Comfortable seats', 'Quiet cabin']
   },
@@ -166,7 +166,7 @@ export const mockFlights = [
     availableSeats: 88,
     aircraft: 'Airbus A319',
     status: 'On Time',
-    image: 'https://images.unsplash.com/photo-1606402179428-a57976d71fa4?w=800&q=80',
+    image: '/images/flight9.jpg',
     description: 'Late evening departure from Palawan. Perfect for extending your island stay.',
     amenities: ['Night service', 'Sleep kits', 'Minimal disturbance', 'Late check-in']
   },
@@ -185,16 +185,14 @@ export const mockFlights = [
     availableSeats: 52,
     aircraft: 'ATR 42',
     status: 'On Time',
-    image: 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=800&q=80',
+    image: '/images/flight10.jfif',
     description: 'Short hop to the Summer Capital. Escape the heat in style and comfort.',
     amenities: ['Mountain views', 'Quick boarding', 'Small aircraft comfort', 'Direct route']
   }
 ];
 
-// Mock bookings data
 export const mockBookings = [];
 
-// Mock promotions
 export const mockPromotions = [
   {
     id: 1,

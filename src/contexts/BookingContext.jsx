@@ -13,16 +13,11 @@ export function BookingProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Initialize flights from mock data
-    const savedFlights = JSON.parse(localStorage.getItem('ohana_flights') || 'null');
-    if (savedFlights && savedFlights.length > 0) {
-      setFlights(savedFlights);
-    } else {
-      setFlights(mockFlights);
-      localStorage.setItem('ohana_flights', JSON.stringify(mockFlights));
-    }
+    // Always refresh flights with the latest mock data
+    setFlights(mockFlights);
+    localStorage.setItem('ohana_flights', JSON.stringify(mockFlights));
 
-    // Initialize bookings
+    // Load or initialize bookings
     const savedBookings = JSON.parse(localStorage.getItem('ohana_bookings') || 'null');
     if (savedBookings && savedBookings.length > 0) {
       setBookings(savedBookings);
@@ -36,46 +31,26 @@ export function BookingProvider({ children }) {
 
   const bookFlight = (bookingData) => {
     try {
-      // Find the flight details
       const flight = flights.find(f => f.id === bookingData.flightId);
-      if (!flight) {
-        return { success: false, error: 'Flight not found' };
-      }
+      if (!flight) return { success: false, error: 'Flight not found' };
 
-      // Check seat availability
       if (flight.availableSeats < bookingData.passengers) {
         return { success: false, error: 'Not enough seats available' };
       }
 
-      // Create new booking
       const newBooking = {
         id: Date.now(),
         ...bookingData,
-        flight: {
-          id: flight.id,
-          flightNumber: flight.flightNumber,
-          airline: flight.airline,
-          origin: flight.origin,
-          destination: flight.destination,
-          departureTime: flight.departureTime,
-          arrivalTime: flight.arrivalTime,
-          date: flight.date,
-          duration: flight.duration,
-          aircraft: flight.aircraft,
-          status: flight.status,
-          image: flight.image
-        },
+        flight: { ...flight },
         status: 'confirmed',
         bookingDate: new Date().toISOString().split('T')[0],
         bookingReference: `OH${Math.random().toString(36).substr(2, 9).toUpperCase()}`
       };
 
-      // Update bookings
       const updatedBookings = [...bookings, newBooking];
       setBookings(updatedBookings);
       localStorage.setItem('ohana_bookings', JSON.stringify(updatedBookings));
 
-      // Update available seats
       const updatedFlights = flights.map(f =>
         f.id === bookingData.flightId
           ? { ...f, availableSeats: f.availableSeats - bookingData.passengers }
@@ -94,26 +69,20 @@ export function BookingProvider({ children }) {
   const cancelBooking = (bookingId, userId) => {
     try {
       const booking = bookings.find(b => b.id === bookingId);
-      
-      if (!booking) {
-        return { success: false, error: 'Booking not found' };
-      }
+      if (!booking) return { success: false, error: 'Booking not found' };
 
-      // Verify user owns this booking (unless they're an admin)
       if (booking.userId !== userId) {
         return { success: false, error: 'Unauthorized: You can only cancel your own bookings' };
       }
 
-      // Restore seats
-      const updatedFlights = flights.map(flight =>
-        flight.id === booking.flightId
-          ? { ...flight, availableSeats: flight.availableSeats + booking.passengers }
-          : flight
+      const updatedFlights = flights.map(f =>
+        f.id === booking.flightId
+          ? { ...f, availableSeats: f.availableSeats + booking.passengers }
+          : f
       );
       setFlights(updatedFlights);
       localStorage.setItem('ohana_flights', JSON.stringify(updatedFlights));
 
-      // Cancel booking
       const updatedBookings = bookings.map(b =>
         b.id === bookingId ? { ...b, status: 'cancelled' } : b
       );
@@ -130,12 +99,8 @@ export function BookingProvider({ children }) {
   const updateBooking = (bookingId, updates, userId, isAdmin = false) => {
     try {
       const booking = bookings.find(b => b.id === bookingId);
-      
-      if (!booking) {
-        return { success: false, error: 'Booking not found' };
-      }
+      if (!booking) return { success: false, error: 'Booking not found' };
 
-      // Check authorization
       if (!isAdmin && booking.userId !== userId) {
         return { success: false, error: 'Unauthorized: You can only update your own bookings' };
       }
@@ -145,7 +110,7 @@ export function BookingProvider({ children }) {
       );
       setBookings(updatedBookings);
       localStorage.setItem('ohana_bookings', JSON.stringify(updatedBookings));
-      
+
       return { success: true };
     } catch (error) {
       console.error('Update booking error:', error);
@@ -153,7 +118,7 @@ export function BookingProvider({ children }) {
     }
   };
 
-  // Admin-only flight management functions
+  // Admin Flights
   const addFlight = (flightData, userRole) => {
     if (userRole !== 'admin') {
       return { success: false, error: 'Unauthorized: Admin access required' };
@@ -171,74 +136,54 @@ export function BookingProvider({ children }) {
       const updatedFlights = [...flights, newFlight];
       setFlights(updatedFlights);
       localStorage.setItem('ohana_flights', JSON.stringify(updatedFlights));
-      
+
       return { success: true, flight: newFlight };
     } catch (error) {
-      console.error('Add flight error:', error);
       return { success: false, error: 'Failed to add flight' };
     }
   };
 
   const updateFlight = (flightId, updates, userRole) => {
-    if (userRole !== 'admin') {
-      return { success: false, error: 'Unauthorized: Admin access required' };
-    }
+    if (userRole !== 'admin') return { success: false, error: 'Unauthorized: Admin access required' };
 
     try {
-      const updatedFlights = flights.map(flight =>
-        flight.id === flightId ? { ...flight, ...updates } : flight
+      const updatedFlights = flights.map(f =>
+        f.id === flightId ? { ...f, ...updates } : f
       );
       setFlights(updatedFlights);
       localStorage.setItem('ohana_flights', JSON.stringify(updatedFlights));
-      
       return { success: true };
-    } catch (error) {
-      console.error('Update flight error:', error);
+    } catch {
       return { success: false, error: 'Failed to update flight' };
     }
   };
 
   const deleteFlight = (flightId, userRole) => {
-    if (userRole !== 'admin') {
-      return { success: false, error: 'Unauthorized: Admin access required' };
-    }
+    if (userRole !== 'admin') return { success: false, error: 'Unauthorized: Admin access required' };
 
     try {
-      // Check if there are active bookings for this flight
       const activeBookings = bookings.filter(
         b => b.flightId === flightId && b.status === 'confirmed'
       );
-      
+
       if (activeBookings.length > 0) {
-        return { 
-          success: false, 
-          error: `Cannot delete flight with ${activeBookings.length} active booking(s)` 
+        return {
+          success: false,
+          error: `Cannot delete flight with ${activeBookings.length} active booking(s)`
         };
       }
 
-      const updatedFlights = flights.filter(flight => flight.id !== flightId);
+      const updatedFlights = flights.filter(f => f.id !== flightId);
       setFlights(updatedFlights);
       localStorage.setItem('ohana_flights', JSON.stringify(updatedFlights));
-      
       return { success: true };
-    } catch (error) {
-      console.error('Delete flight error:', error);
+    } catch {
       return { success: false, error: 'Failed to delete flight' };
     }
   };
 
-  // Get user-specific bookings (not visible to other users)
-  const getUserBookings = (userId) => {
-    return bookings.filter(booking => booking.userId === userId);
-  };
-
-  // Get all bookings (admin only)
-  const getAllBookings = (userRole) => {
-    if (userRole !== 'admin') {
-      return [];
-    }
-    return bookings;
-  };
+  const getUserBookings = (userId) => bookings.filter(b => b.userId === userId);
+  const getAllBookings = (userRole) => userRole === 'admin' ? bookings : [];
 
   const value = {
     bookings,

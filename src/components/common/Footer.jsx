@@ -4,14 +4,19 @@ import { Link } from 'react-router-dom';
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
+  // Gradients
+  const gradients = {
+    sunset: 'linear-gradient(135deg, #FF6B35 0%, #FF9E4F 50%, #FFD580 100%)',
+    dark: 'linear-gradient(135deg, rgba(255, 107, 53, 0.6) 0%, rgba(255, 158, 79, 0.6) 50%, rgba(255, 213, 128, 0.6) 100%)'
+  };
+
   return (
-    <footer style={{ 
-      background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(169, 214, 229, 0.08) 100%)',
-      borderTop: '2px solid transparent',
-      borderImage: 'linear-gradient(90deg, rgba(42, 157, 143, 0.3) 0%, rgba(205, 165, 91, 0.3) 100%)',
-      borderImageSlice: 1,
+    <footer style={{
+      background: '#1C1C1C',
+      color: '#FF9E4F',
+      fontFamily: '"Roboto", sans-serif',
       marginTop: 'auto',
-      padding: '4rem 0 2rem',
+      padding: '4rem 2rem',
       position: 'relative',
       overflow: 'hidden'
     }}>
@@ -20,7 +25,7 @@ const Footer = () => {
         position: 'absolute',
         width: '400px',
         height: '400px',
-        background: 'radial-gradient(circle, rgba(42, 157, 143, 0.15) 0%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(255, 107, 53, 0.15) 0%, transparent 70%)',
         borderRadius: '50%',
         top: '-200px',
         left: '-100px',
@@ -30,7 +35,7 @@ const Footer = () => {
         position: 'absolute',
         width: '300px',
         height: '300px',
-        background: 'radial-gradient(circle, rgba(205, 165, 91, 0.12) 0%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(255, 158, 79, 0.12) 0%, transparent 70%)',
         borderRadius: '50%',
         bottom: '-150px',
         right: '-50px',
@@ -38,7 +43,6 @@ const Footer = () => {
       }} />
 
       <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-        {/* Main Footer Content */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
@@ -47,31 +51,26 @@ const Footer = () => {
         }}>
           {/* Brand Section */}
           <div>
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '0.75rem', 
-              marginBottom: '1.25rem' 
-            }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
               <div style={{
                 width: '48px',
                 height: '48px',
-                background: 'linear-gradient(135deg, #2A9D8F 0%, #446775 50%, #CDA55B 100%)',
                 borderRadius: '12px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'white',
-                fontSize: '1.5rem',
-                boxShadow: '0 6px 20px rgba(42, 157, 143, 0.4)',
-                animation: 'pulse 2s ease-in-out infinite'
+                animation: 'float 3s ease-in-out infinite',
               }}>
-                ✈️
+                <img
+                  src="/images/logo.png"
+                  alt="Ohana Airlines Logo"
+                  style={{ width: '200%', height: '200%', objectFit: 'contain', borderRadius: '8px' }}
+                />
               </div>
               <span style={{
                 fontSize: '1.5rem',
-                fontWeight: 800,
-                background: 'linear-gradient(135deg, #2A9D8F 0%, #446775 50%, #CDA55B 100%)',
+                fontWeight: 700,
+                background: gradients.sunset,
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -80,9 +79,9 @@ const Footer = () => {
                 Ohana Airlines
               </span>
             </div>
-            <p style={{ 
-              color: '#64748B', 
-              fontSize: '0.9375rem', 
+            <p style={{
+              color: '#FFB347',
+              fontSize: '0.9375rem',
               lineHeight: '1.7',
               marginBottom: '1.5rem',
               fontWeight: 500
@@ -102,7 +101,7 @@ const Footer = () => {
             <h3 style={{
               fontSize: '0.875rem',
               fontWeight: 800,
-              background: 'linear-gradient(135deg, #2A9D8F 0%, #CDA55B 100%)',
+              background: gradients.sunset,
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
@@ -125,7 +124,7 @@ const Footer = () => {
             <h3 style={{
               fontSize: '0.875rem',
               fontWeight: 800,
-              background: 'linear-gradient(135deg, #2A9D8F 0%, #CDA55B 100%)',
+              background: gradients.sunset,
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
@@ -140,14 +139,14 @@ const Footer = () => {
               <FooterLink to="/terms">📜 Terms of Service</FooterLink>
               <FooterLink to="/cookies">🍪 Cookie Policy</FooterLink>
             </div>
-            <div style={{ 
-              display: 'flex', 
-              flexDirection: 'column', 
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
               gap: '0.75rem',
               padding: '1.25rem',
-              background: 'linear-gradient(135deg, rgba(169, 214, 229, 0.15) 0%, rgba(232, 196, 196, 0.15) 100%)',
+              background: 'rgba(255, 107, 53, 0.1)',
               borderRadius: '12px',
-              border: '1px solid rgba(42, 157, 143, 0.2)'
+              border: '1px solid rgba(255, 158, 79, 0.3)'
             }}>
               <ContactInfo icon="📧" href="mailto:support@ohana-air.com" text="support@ohana-air.com" />
               <ContactInfo icon="📞" href="tel:+18001234567" text="1-800-123-4567" />
@@ -158,53 +157,51 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div style={{
           paddingTop: '2rem',
-          borderTop: '2px solid transparent',
-          borderImage: 'linear-gradient(90deg, rgba(42, 157, 143, 0.2) 0%, rgba(205, 165, 91, 0.2) 100%)',
-          borderImageSlice: 1,
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           flexWrap: 'wrap',
-          gap: '1.5rem'
+          gap: '1.5rem',
+          borderTop: '1px solid rgba(255, 158, 79, 0.2)'
         }}>
-          <p style={{ 
-            color: '#64748B', 
+          <p style={{
+            color: '#FFB347',
             fontSize: '0.875rem',
             fontWeight: 600
           }}>
             © {currentYear} Ohana Airlines. All rights reserved.
           </p>
           <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
-            <span style={{ 
-              color: '#94A3B8', 
+            <span style={{
+              color: '#FFD580',
               fontSize: '0.8125rem',
               fontWeight: 600,
               padding: '0.5rem 1rem',
-              background: 'linear-gradient(135deg, rgba(169, 214, 229, 0.2) 0%, rgba(232, 196, 196, 0.2) 100%)',
+              background: 'rgba(255, 107, 53, 0.1)',
               borderRadius: '8px',
-              border: '1px solid rgba(42, 157, 143, 0.15)'
+              border: '1px solid rgba(255, 158, 79, 0.2)'
             }}>
               Made with ❤️ by Group 8
             </span>
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
               gap: '0.625rem',
               padding: '0.5rem 1rem',
-              background: 'linear-gradient(135deg, rgba(42, 157, 143, 0.1) 0%, rgba(205, 165, 91, 0.1) 100%)',
+              background: 'rgba(255, 107, 53, 0.1)',
               borderRadius: '8px',
-              border: '1px solid rgba(42, 157, 143, 0.2)'
+              border: '1px solid rgba(255, 158, 79, 0.2)'
             }}>
               <div style={{
                 width: '10px',
                 height: '10px',
-                background: 'linear-gradient(135deg, #2A9D8F 0%, #CDA55B 100%)',
+                background: 'linear-gradient(135deg, #FF6B35 0%, #FFD580 100%)',
                 borderRadius: '50%',
                 animation: 'pulse 2s infinite',
-                boxShadow: '0 0 10px rgba(42, 157, 143, 0.6)'
+                boxShadow: '0 0 10px rgba(255, 107, 53, 0.6)'
               }}></div>
-              <span style={{ 
-                color: '#2A9D8F', 
+              <span style={{
+                color: '#FF9E4F',
                 fontSize: '0.8125rem',
                 fontWeight: 700
               }}>
@@ -217,14 +214,12 @@ const Footer = () => {
 
       <style>{`
         @keyframes pulse {
-          0%, 100% { 
-            opacity: 1; 
-            transform: scale(1);
-          }
-          50% { 
-            opacity: 0.7; 
-            transform: scale(1.1);
-          }
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.7; transform: scale(1.1); }
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-5px); }
         }
       `}</style>
     </footer>
@@ -245,21 +240,15 @@ const SocialLink = ({ href, label, icon }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: isHovered 
-          ? 'linear-gradient(135deg, rgba(42, 157, 143, 0.2) 0%, rgba(205, 165, 91, 0.2) 100%)'
-          : 'rgba(169, 214, 229, 0.15)',
-        border: isHovered 
-          ? '2px solid rgba(42, 157, 143, 0.5)'
-          : '2px solid rgba(169, 214, 229, 0.3)',
+        background: isHovered ? 'rgba(255, 107, 53, 0.2)' : 'rgba(255, 158, 79, 0.1)',
+        border: isHovered ? '2px solid rgba(255, 107, 53, 0.5)' : '2px solid rgba(255, 158, 79, 0.2)',
         borderRadius: '12px',
-        color: isHovered ? '#2A9D8F' : '#446775',
+        color: isHovered ? '#FF9E4F' : '#FFD580',
         textDecoration: 'none',
         transition: 'all 0.3s ease',
         fontSize: '1rem',
         transform: isHovered ? 'translateY(-4px) rotate(5deg)' : 'translateY(0) rotate(0deg)',
-        boxShadow: isHovered 
-          ? '0 8px 20px rgba(42, 157, 143, 0.3)'
-          : '0 2px 8px rgba(42, 157, 143, 0.1)'
+        boxShadow: isHovered ? '0 8px 20px rgba(255, 107, 53, 0.3)' : '0 2px 8px rgba(255, 158, 79, 0.1)'
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -277,7 +266,7 @@ const FooterLink = ({ to, children }) => {
     <Link
       to={to}
       style={{
-        color: isHovered ? '#2A9D8F' : '#64748B',
+        color: isHovered ? '#FFB347' : '#FFD580',
         textDecoration: 'none',
         fontSize: '0.9375rem',
         transition: 'all 0.3s ease',
@@ -292,16 +281,6 @@ const FooterLink = ({ to, children }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {isHovered && (
-        <span style={{
-          position: 'absolute',
-          left: '-12px',
-          background: 'linear-gradient(135deg, #2A9D8F 0%, #CDA55B 100%)',
-          width: '4px',
-          height: '100%',
-          borderRadius: '2px'
-        }} />
-      )}
       {children}
     </Link>
   );
@@ -318,7 +297,7 @@ const ContactInfo = ({ icon, href, text }) => {
         display: 'flex',
         alignItems: 'center',
         gap: '0.75rem',
-        color: isHovered ? '#2A9D8F' : '#446775',
+        color: isHovered ? '#FF9E4F' : '#FFD580',
         textDecoration: 'none',
         fontSize: '0.875rem',
         fontWeight: 600,
@@ -331,7 +310,7 @@ const ContactInfo = ({ icon, href, text }) => {
     >
       <span style={{
         fontSize: '1.125rem',
-        filter: isHovered ? 'drop-shadow(0 2px 4px rgba(42, 157, 143, 0.4))' : 'none',
+        filter: isHovered ? 'drop-shadow(0 2px 4px rgba(255, 107, 53, 0.4))' : 'none',
         transition: 'all 0.3s ease'
       }}>
         {icon}

@@ -14,34 +14,38 @@ const Header = () => {
 
   const isActive = (path) => location.pathname === path;
 
-  // Gradient styles
+  // Gradient styles for buttons
   const gradients = {
-    ohana: 'linear-gradient(135deg, #2A9D8F 0%, #446775 50%, #CDA55B 100%)',
-    light: 'linear-gradient(135deg, rgba(42, 157, 143, 0.6) 0%, rgba(68, 103, 117, 0.6) 50%, rgba(205, 165, 91, 0.6) 100%)'
-
+    sunset: 'linear-gradient(135deg, #FF6B35 0%, #FF9E4F 50%, #FFD580 100%)',
+    dark: 'linear-gradient(135deg, rgba(255, 107, 53, 0.6) 0%, rgba(255, 158, 79, 0.6) 50%, rgba(255, 213, 128, 0.6) 100%)'
   };
 
   return (
-    <header style={{
-      background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(169, 214, 229, 0.05) 100%)',
-      backdropFilter: 'blur(10px)',
-      borderBottom: '1px solid rgba(42, 157, 143, 0.15)',
-      position: 'sticky',
-      top: 0,
-      zIndex: 100,
-      boxShadow: '0 4px 20px rgba(42, 157, 143, 0.1)'
-    }}>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '1rem 2rem',
-        maxWidth: '1400px',
-        margin: '0 auto'
-      }}>
+    <header
+      style={{
+        background: '#1C1C1C',
+        color: '#FF9E4F',
+        fontFamily: '"Roboto", sans-serif',
+        borderBottom: '1px solid rgba(255, 158, 79, 0.2)',
+        position: 'sticky',
+        top: 0,
+        zIndex: 100,
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.7)'
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '1rem 2rem',
+          maxWidth: '1400px',
+          margin: '0 auto'
+        }}
+      >
         {/* Logo Section */}
-        <Link 
-          to="/" 
+        <Link
+          to="/"
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -49,44 +53,55 @@ const Header = () => {
             textDecoration: 'none',
             transition: 'transform 0.3s ease'
           }}
-          onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-          onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+          onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+          onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
         >
-          <div style={{
-            width: '48px',
-            height: '48px',
-            background: gradients.ohana,
-            borderRadius: '12px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'white',
-            fontSize: '1.5rem',
-            boxShadow: '0 6px 20px rgba(42, 157, 143, 0.4)',
-            animation: 'float 3s ease-in-out infinite'
-          }}>
-            ✈️
+          <div
+            style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              animation: 'float 3s ease-in-out infinite'
+            }}
+          >
+            <img
+              src="/images/logo.png"
+              alt="Ohana Airlines Logo"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                borderRadius: '12px'
+              }}
+            />
           </div>
-          <span style={{
-            fontSize: '1.5rem',
-            fontWeight: 800,
-            background: gradients.ohana,
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            letterSpacing: '-0.02em'
-          }}>
+          <span
+            style={{
+              fontSize: '1.5rem',
+              fontWeight: 700,
+              background: gradients.sunset,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              letterSpacing: '-0.02em'
+            }}
+          >
             Ohana Airlines
           </span>
         </Link>
 
         {/* Navigation */}
         {isAuthenticated && (
-          <nav style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem'
-          }}>
+          <nav
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}
+          >
             <NavLink to="/dashboard" isActive={isActive('/dashboard')}>
               Dashboard
             </NavLink>
@@ -114,62 +129,60 @@ const Header = () => {
         )}
 
         {/* Auth Section */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '1rem'
-        }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1rem'
+          }}
+        >
           {isAuthenticated ? (
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1rem'
-            }}>
-              <div style={{
-                fontSize: '0.875rem',
-                color: '#446775',
-                fontWeight: 600,
-                background: 'linear-gradient(135deg, rgba(169, 214, 229, 0.3) 0%, rgba(232, 196, 196, 0.3) 100%)',
-                padding: '0.625rem 1.25rem',
-                borderRadius: '12px',
-                border: '1px solid rgba(42, 157, 143, 0.2)',
-                boxShadow: '0 2px 8px rgba(42, 157, 143, 0.1)'
-              }}>
-                <span style={{
-                  background: gradients.ohana,
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text'
-                }}>
-                  {user?.name}
-                </span>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1rem'
+              }}
+            >
+              <div
+                style={{
+                  fontSize: '0.875rem',
+                  fontWeight: 600,
+                  background: 'rgba(255, 158, 79, 0.1)',
+                  padding: '0.625rem 1.25rem',
+                  borderRadius: '12px',
+                  border: '1px solid rgba(255, 158, 79, 0.3)',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.5)',
+                  color: '#FFB347'
+                }}
+              >
+                {user?.name}
                 {user?.role === 'admin' && (
-                  <span style={{
-                    marginLeft: '0.5rem',
-                    fontSize: '0.75rem',
-                    padding: '0.25rem 0.5rem',
-                    background: 'linear-gradient(135deg, #CDA55B 0%, #2A9D8F 100%)',
-                    color: 'white',
-                    borderRadius: '6px',
-                    fontWeight: 700
-                  }}>
+                  <span
+                    style={{
+                      marginLeft: '0.5rem',
+                      fontSize: '0.75rem',
+                      padding: '0.25rem 0.5rem',
+                      background: 'linear-gradient(135deg, #FF6B35 0%, #FF9E4F 100%)',
+                      color: 'white',
+                      borderRadius: '6px',
+                      fontWeight: 700
+                    }}
+                  >
                     ADMIN
                   </span>
                 )}
               </div>
-              <GradientButton gradient={gradients.ohana} onClick={handleLogout}>
+              <GradientButton gradient={gradients.sunset} onClick={handleLogout}>
                 Logout
               </GradientButton>
             </div>
           ) : (
             <>
-              {/* Login = Light Ohana gradient */}
-              <GradientButton gradient={gradients.light} to="/login">
+              <GradientButton gradient={gradients.dark} to="/login">
                 Login
               </GradientButton>
-
-              {/* Sign Up = Regular Ohana gradient */}
-              <GradientButton gradient={gradients.ohana} to="/register">
+              <GradientButton gradient={gradients.sunset} to="/register">
                 Sign Up
               </GradientButton>
             </>
@@ -195,27 +208,25 @@ const NavLink = ({ to, isActive, children }) => {
     <Link
       to={to}
       style={{
-        color: isActive ? '#2A9D8F' : '#446775',
+        color: isActive ? '#FFB347' : '#FF9E4F',
         textDecoration: 'none',
         fontWeight: 600,
         fontSize: '0.9375rem',
         padding: '0.625rem 1rem',
         borderRadius: '10px',
         transition: 'all 0.3s ease',
-        background: isActive 
-          ? 'linear-gradient(135deg, rgba(42, 157, 143, 0.15) 0%, rgba(205, 165, 91, 0.15) 100%)'
-          : isHovered 
-            ? 'rgba(169, 214, 229, 0.1)' 
-            : 'transparent',
-        border: isActive 
-          ? '1px solid rgba(42, 157, 143, 0.3)' 
-          : '1px solid transparent',
+        background: isActive
+          ? 'rgba(255, 107, 53, 0.15)'
+          : isHovered
+          ? 'rgba(255, 158, 79, 0.1)'
+          : 'transparent',
+        border: isActive ? '1px solid rgba(255, 158, 79, 0.3)' : '1px solid transparent',
         transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
-        boxShadow: isActive 
-          ? '0 4px 12px rgba(42, 157, 143, 0.2)' 
-          : isHovered 
-            ? '0 2px 8px rgba(42, 157, 143, 0.15)' 
-            : 'none'
+        boxShadow: isActive
+          ? '0 4px 12px rgba(255, 107, 53, 0.2)'
+          : isHovered
+          ? '0 2px 8px rgba(255, 158, 79, 0.15)'
+          : 'none'
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -225,7 +236,7 @@ const NavLink = ({ to, isActive, children }) => {
   );
 };
 
-// Reusable Gradient Button Component
+// Gradient Button Component
 const GradientButton = ({ onClick, to, children, gradient }) => {
   const [isHovered, setIsHovered] = useState(false);
   const Component = to ? Link : 'button';
@@ -247,10 +258,10 @@ const GradientButton = ({ onClick, to, children, gradient }) => {
         alignItems: 'center',
         justifyContent: 'center',
         background: gradient,
-        color: 'white',
-        boxShadow: isHovered 
-          ? '0 8px 24px rgba(42, 157, 143, 0.5)' 
-          : '0 4px 16px rgba(42, 157, 143, 0.3)',
+        color: '#1C1C1C',
+        boxShadow: isHovered
+          ? '0 8px 24px rgba(255, 107, 53, 0.5)'
+          : '0 4px 16px rgba(255, 158, 79, 0.3)',
         transform: isHovered ? 'translateY(-3px) scale(1.02)' : 'translateY(0) scale(1)',
         position: 'relative',
         overflow: 'hidden'
@@ -259,13 +270,15 @@ const GradientButton = ({ onClick, to, children, gradient }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <span style={{ position: 'relative', zIndex: 1 }}>{children}</span>
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.) 0%, transparent 100%)',
-        opacity: isHovered ? 1 : 0,
-        transition: 'opacity 0.3s ease'
-      }} />
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.) 0%, transparent 100%)',
+          opacity: isHovered ? 1 : 0,
+          transition: 'opacity 0.3s ease'
+        }}
+      />
     </Component>
   );
 };

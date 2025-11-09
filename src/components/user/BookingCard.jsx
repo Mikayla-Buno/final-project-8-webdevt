@@ -1,42 +1,57 @@
-import React from "react";
-import { FaPlaneDeparture, FaPlaneArrival, FaUser, FaCalendarAlt, FaClock } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaPlaneDeparture, FaPlaneArrival, FaUser, FaCalendarAlt, FaClock, FaTicketAlt } from "react-icons/fa";
 
 const BookingCard = ({ booking, onCancel, onViewDetails }) => {
+  const [isHovered, setIsHovered] = useState(false);
   const flight = booking.flight;
 
-  // Status styles
+  // Status styles with gradients
   const statusStyles = {
-    confirmed: { background: 'rgba(34,197,94,0.15)', color: '#22C55E' },
-    cancelled: { background: 'rgba(239,68,68,0.15)', color: '#EF4444' },
-    pending: { background: 'rgba(234,179,8,0.15)', color: '#EAB308' },
+    confirmed: { 
+      background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)', 
+      color: '#fff',
+      shadow: 'rgba(16, 185, 129, 0.3)'
+    },
+    cancelled: { 
+      background: 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)', 
+      color: '#fff',
+      shadow: 'rgba(239, 68, 68, 0.3)'
+    },
+    pending: { 
+      background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)', 
+      color: '#fff',
+      shadow: 'rgba(245, 158, 11, 0.3)'
+    },
   };
+
+  const currentStatus = statusStyles[booking.status] || statusStyles.pending;
 
   return (
     <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       style={{
-        borderRadius: '.5rem',
+        borderRadius: '20px',
         overflow: 'hidden',
-        boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
-        background: 'rgba(255,255,255,0.05)',
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
-        transition: 'transform 0.3s, box-shadow 0.3s',
+        background: 'white',
+        border: '1px solid rgba(255,107,53,0.15)',
+        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
         cursor: 'pointer',
-        marginBottom: '1.5rem',
-        maxWidth: '320px',
+        boxShadow: isHovered 
+          ? '0 20px 40px rgba(255,107,53,0.2)' 
+          : '0 4px 12px rgba(0,0,0,0.08)',
+        transform: isHovered ? 'translateY(-8px)' : 'translateY(0)',
+        maxWidth: '380px',
         width: '100%',
       }}
-      onMouseEnter={e => {
-        e.currentTarget.style.transform = 'scale(1.02)';
-        e.currentTarget.style.boxShadow = '0 8px 30px rgba(0,0,0,0.2)';
-      }}
-      onMouseLeave={e => {
-        e.currentTarget.style.transform = 'scale(1)';
-        e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)';
-      }}
     >
-      {/* Flight Image with fixed aspect ratio */}
-      <div style={{ width: '100%', paddingTop: '45%', position: 'relative', overflow: 'hidden' }}>
+      {/* Flight Image with Gradient Overlay */}
+      <div style={{ 
+        position: 'relative', 
+        width: '100%', 
+        paddingTop: '50%', 
+        overflow: 'hidden' 
+      }}>
         <img
           src={flight.image || 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80'}
           alt={flight.airline}
@@ -47,89 +62,211 @@ const BookingCard = ({ booking, onCancel, onViewDetails }) => {
             width: '100%',
             height: '100%',
             objectFit: 'cover',
+            transition: 'transform 0.4s',
+            transform: isHovered ? 'scale(1.1)' : 'scale(1)',
           }}
         />
+        {/* Gradient Overlay */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%)',
+          }}
+        />
+        
+        {/* Status Badge on Image */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '15px',
+            right: '15px',
+            padding: '8px 16px',
+            borderRadius: '20px',
+            background: currentStatus.background,
+            color: currentStatus.color,
+            fontWeight: '600',
+            fontSize: '12px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+            boxShadow: `0 4px 12px ${currentStatus.shadow}`,
+          }}
+        >
+          {booking.status}
+        </div>
+
+        {/* Airline Name on Image */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '15px',
+            left: '20px',
+            color: 'white',
+          }}
+        >
+          <h2 style={{ fontSize: '22px', fontWeight: '700', marginBottom: '4px' }}>
+            {flight.airline}
+          </h2>
+          <p style={{ fontSize: '13px', opacity: 0.9 }}>
+            Flight {flight.flightNumber}
+          </p>
+        </div>
       </div>
 
       {/* Card Content */}
-      <div style={{ padding: '1rem' }}>
-        {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-          <div>
-            <h2 style={{ fontSize: '1rem', fontWeight: '700', color: '#1F2937' }}>{flight.airline}</h2>
-            <p style={{ fontSize: '0.75rem', color: '#6B7280' }}>Flight #{flight.flightNumber}</p>
+      <div style={{ padding: '24px' }}>
+        {/* Flight Route - Prominent Display */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '15px',
+          marginBottom: '20px',
+          padding: '16px',
+          background: 'linear-gradient(135deg, rgba(255,107,53,0.08) 0%, rgba(247,147,30,0.08) 100%)',
+          borderRadius: '12px',
+          border: '1px solid rgba(255,107,53,0.1)',
+        }}>
+          <div style={{ flex: 1, textAlign: 'center' }}>
+            <FaPlaneDeparture color="#FF6B35" size={18} style={{ marginBottom: '6px' }} />
+            <p style={{ fontSize: '18px', fontWeight: '700', color: '#1E293B' }}>
+              {flight.origin}
+            </p>
           </div>
-          <span
-            style={{
-              padding: '0.2rem 0.6rem',
-              borderRadius: '9999px',
-              fontWeight: '600',
-              fontSize: '0.7rem',
-              ...statusStyles[booking.status] || statusStyles.pending
-            }}
-          >
-            {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
-          </span>
+          
+          <div style={{ 
+            width: '40px', 
+            height: '2px', 
+            background: 'linear-gradient(90deg, #FF6B35 0%, #F7931E 100%)',
+            position: 'relative',
+          }}>
+            <div style={{
+              position: 'absolute',
+              right: '-4px',
+              top: '-3px',
+              width: '8px',
+              height: '8px',
+              background: '#F7931E',
+              borderRadius: '50%',
+            }} />
+          </div>
+          
+          <div style={{ flex: 1, textAlign: 'center' }}>
+            <FaPlaneArrival color="#F7931E" size={18} style={{ marginBottom: '6px' }} />
+            <p style={{ fontSize: '18px', fontWeight: '700', color: '#1E293B' }}>
+              {flight.destination}
+            </p>
+          </div>
         </div>
 
-        {/* Flight Details */}
-        <div style={{ fontSize: '0.75rem', color: '#374151', lineHeight: 1.5 }}>
-          <p style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <FaPlaneDeparture color="#3B82F6" /> <strong>From:</strong> {flight.origin}
+        {/* Flight Details Grid */}
+        <div style={{ 
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, 1fr)',
+          gap: '12px',
+          marginBottom: '20px',
+        }}>
+          <DetailItem
+            icon={<FaCalendarAlt size={14} />}
+            label="Date"
+            value={new Date(flight.date).toLocaleDateString('en-US', { 
+              month: 'short',
+              day: 'numeric'
+            })}
+          />
+          <DetailItem
+            icon={<FaClock size={14} />}
+            label="Depart"
+            value={flight.departureTime}
+          />
+          <DetailItem
+            icon={<FaUser size={14} />}
+            label="Passengers"
+            value={booking.passengers}
+          />
+          <DetailItem
+            icon={<FaTicketAlt size={14} />}
+            label="Arrive"
+            value={flight.arrivalTime}
+          />
+        </div>
+
+        {/* Price Display */}
+        <div style={{
+          padding: '16px',
+          background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
+          borderRadius: '12px',
+          marginBottom: '16px',
+          textAlign: 'center',
+          color: 'white',
+        }}>
+          <p style={{ fontSize: '12px', opacity: 0.9, marginBottom: '4px' }}>
+            Total Price
           </p>
-          <p style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <FaPlaneArrival color="#EF4444" /> <strong>To:</strong> {flight.destination}
-          </p>
-          <p style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <FaCalendarAlt color="#6B7280" /> <strong>Date:</strong> {new Date(flight.date).toLocaleDateString()}
-          </p>
-          <p style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <FaClock color="#6B7280" /> <strong>Time:</strong> {flight.departureTime} → {flight.arrivalTime}
-          </p>
-          <p style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <FaUser color="#6B7280" /> <strong>Passengers:</strong> {booking.passengers}
+          <p style={{ fontSize: '28px', fontWeight: '700' }}>
+            ${flight.price * booking.passengers}
           </p>
         </div>
 
         {/* Action Buttons */}
-        <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
+        <div style={{ display: 'flex', gap: '10px' }}>
           {booking.status === 'confirmed' && (
             <button
-              onClick={onCancel}
+              onClick={(e) => {
+                e.stopPropagation();
+                onCancel();
+              }}
               style={{
                 flex: 1,
-                padding: '0.5rem',
-                borderRadius: '0.5rem',
-                border: '1px solid #EF4444',
-                background: 'transparent',
+                padding: '12px',
+                borderRadius: '10px',
+                border: '2px solid #EF4444',
+                background: 'white',
                 color: '#EF4444',
-                fontWeight: 600,
-                fontSize: '0.75rem',
+                fontWeight: '600',
+                fontSize: '14px',
                 cursor: 'pointer',
-                transition: 'all 0.3s ease',
+                transition: 'all 0.3s',
               }}
-              onMouseEnter={e => e.currentTarget.style.background = 'rgba(239,68,68,0.1)'}
-              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = '#EF4444';
+                e.currentTarget.style.color = 'white';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = 'white';
+                e.currentTarget.style.color = '#EF4444';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
             >
               Cancel
             </button>
           )}
           <button
-            onClick={onViewDetails}
+            onClick={(e) => {
+              e.stopPropagation();
+              onViewDetails();
+            }}
             style={{
               flex: 1,
-              padding: '0.5rem',
-              borderRadius: '0.5rem',
-              border: '1px solid #3B82F6',
-              background: 'transparent',
-              color: '#3B82F6',
-              fontWeight: 600,
-              fontSize: '0.75rem',
+              padding: '12px',
+              borderRadius: '10px',
+              border: 'none',
+              background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
+              color: 'white',
+              fontWeight: '600',
+              fontSize: '14px',
               cursor: 'pointer',
-              transition: 'all 0.3s ease',
+              transition: 'all 0.3s',
+              boxShadow: '0 4px 12px rgba(255,107,53,0.3)',
             }}
-            onMouseEnter={e => e.currentTarget.style.background = 'rgba(59,130,246,0.1)'}
-            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 6px 16px rgba(255,107,53,0.4)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(255,107,53,0.3)';
+            }}
           >
             View Details
           </button>
@@ -138,5 +275,30 @@ const BookingCard = ({ booking, onCancel, onViewDetails }) => {
     </div>
   );
 };
+
+const DetailItem = ({ icon, label, value }) => (
+  <div style={{
+    padding: '10px',
+    background: 'rgba(255,107,53,0.05)',
+    borderRadius: '8px',
+    border: '1px solid rgba(255,107,53,0.1)',
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '6px',
+      marginBottom: '4px',
+      color: '#FF6B35',
+    }}>
+      {icon}
+      <span style={{ fontSize: '11px', color: '#64748B', fontWeight: '500', textTransform: 'uppercase' }}>
+        {label}
+      </span>
+    </div>
+    <p style={{ fontSize: '14px', fontWeight: '600', color: '#1E293B' }}>
+      {value}
+    </p>
+  </div>
+);
 
 export default BookingCard;

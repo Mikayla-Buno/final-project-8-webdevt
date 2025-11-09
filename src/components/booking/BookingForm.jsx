@@ -5,6 +5,7 @@ import { useAuth } from '../../contexts/AuthContext';
 const BookingForm = ({ flight, onCancel, onSuccess }) => {
   const { bookFlight } = useBooking();
   const { user } = useAuth();
+
   const [passengers, setPassengers] = useState(1);
   const [passengerDetails, setPassengerDetails] = useState([
     { name: user?.name || '', age: '', seat: '' }
@@ -55,37 +56,69 @@ const BookingForm = ({ flight, onCancel, onSuccess }) => {
   const totalPrice = flight.price * passengers;
 
   return (
-    <div className="card p-6" style={{ maxWidth: '800px', margin: '2rem auto' }}>
-      <h3 className="text-2xl font-bold mb-6 font-elegant" style={{ 
-        background: 'linear-gradient(135deg, var(--blue-munsell) 0%, var(--satin-gold) 100%)',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent'
-      }}>
+    <div
+      style={{
+        maxWidth: '800px',
+        margin: '2rem auto',
+        borderRadius: '1.5rem',
+        background: 'rgba(0,0,0,0.45)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
+        padding: '2rem'
+      }}
+    >
+      {/* Heading */}
+      <h3
+        style={{
+          fontSize: '1.5rem',
+          fontWeight: '700',
+          marginBottom: '2rem',
+          color: '#FFF',
+        }}
+      >
         Book Flight {flight.flightNumber}
       </h3>
-     
-      <div className="mb-6 p-4 rounded-lg" style={{ 
-        background: 'linear-gradient(135deg, rgba(169, 214, 229, 0.2), rgba(232, 196, 196, 0.2))',
-        border: '2px solid var(--powder-blue)'
-      }}>
-        <p className="font-base" style={{ marginBottom: '0.5rem' }}>
-          <strong style={{ color: 'var(--charcoal)' }}>Route:</strong> {flight.origin} → {flight.destination}
+
+      {/* Flight Info */}
+      <div
+        style={{
+          padding: '1.5rem',
+          marginBottom: '2rem',
+          borderRadius: '1.5rem',
+          background: 'rgba(255,255,255,0.05)',
+          border: '1px solid rgba(255,255,255,0.2)',
+        }}
+      >
+        <p style={{ marginBottom: '0.5rem', color: '#FFF' }}>
+          <strong>Route:</strong> {flight.origin} → {flight.destination}
         </p>
-        <p className="font-base" style={{ marginBottom: '0.5rem' }}>
-          <strong style={{ color: 'var(--charcoal)' }}>Date:</strong> {flight.date} | <strong>Time:</strong> {flight.departureTime} - {flight.arrivalTime}
+        <p style={{ marginBottom: '0.5rem', color: '#FFF' }}>
+          <strong>Date:</strong> {flight.date} | <strong>Time:</strong> {flight.departureTime} - {flight.arrivalTime}
         </p>
-        <p className="font-base">
-          <strong style={{ color: 'var(--charcoal)' }}>Duration:</strong> {flight.duration} | <strong>Aircraft:</strong> {flight.aircraft}
+        <p style={{ color: '#FFF' }}>
+          <strong>Duration:</strong> {flight.duration} | <strong>Aircraft:</strong> {flight.aircraft}
         </p>
       </div>
 
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label className="form-label">Number of Passengers</label>
+        {/* Number of Passengers */}
+        <div style={{ marginBottom: '1.5rem' }}>
+          <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: '#FFB347' }}>
+            Number of Passengers
+          </label>
           <select
             value={passengers}
             onChange={(e) => handlePassengerCountChange(parseInt(e.target.value))}
-            className="form-select"
+            style={{
+              width: '100%',
+              padding: '0.75rem 1rem',
+              borderRadius: '0.75rem',
+              border: '1px solid rgba(255,255,255,0.4)',
+              background: 'rgba(255,255,255,0.05)',
+              color: '#FFF',
+              outline: 'none'
+            }}
           >
             {[1,2,3,4,5,6].map(num => (
               <option key={num} value={num}>{num} {num === 1 ? 'Passenger' : 'Passengers'}</option>
@@ -93,39 +126,58 @@ const BookingForm = ({ flight, onCancel, onSuccess }) => {
           </select>
         </div>
 
-        <div className="space-y-4 mb-6">
-          <h4 className="font-semibold text-lg font-elegant" style={{ color: 'var(--charcoal)' }}>
-            Passenger Details
-          </h4>
+        {/* Passenger Details */}
+        <div style={{ marginBottom: '2rem' }}>
+          <h4 style={{ marginBottom: '1rem', fontWeight: '700', color: '#FFB347' }}>Passenger Details</h4>
           {passengerDetails.map((passenger, index) => (
-            <div key={index} className="card p-4" style={{ 
-              background: 'rgba(248, 250, 252, 0.8)',
-              border: '1px solid var(--powder-blue)'
-            }}>
-              <h5 className="font-medium mb-3 font-base" style={{ color: 'var(--blue-munsell)' }}>
-                Passenger {index + 1}
-              </h5>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div
+              key={index}
+              style={{
+                padding: '1rem',
+                borderRadius: '1.5rem',
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.2)',
+                marginBottom: '1rem'
+              }}
+            >
+              <h5 style={{ marginBottom: '0.75rem', fontWeight: '600', color: '#FFF' }}>Passenger {index + 1}</h5>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div>
-                  <label className="form-label">Full Name</label>
+                  <label style={{ display: 'block', marginBottom: '0.25rem', fontWeight: '500', color: '#FFB347' }}>Full Name</label>
                   <input
                     type="text"
                     value={passenger.name}
                     onChange={(e) => handlePassengerChange(index, 'name', e.target.value)}
-                    className="form-input"
                     required
+                    style={{
+                      width: '100%',
+                      padding: '0.5rem 0.75rem',
+                      borderRadius: '0.75rem',
+                      border: '1px solid rgba(255,255,255,0.3)',
+                      background: 'rgba(255,255,255,0.05)',
+                      color: '#FFF',
+                      outline: 'none'
+                    }}
                   />
                 </div>
                 <div>
-                  <label className="form-label">Age</label>
+                  <label style={{ display: 'block', marginBottom: '0.25rem', fontWeight: '500', color: '#FFB347' }}>Age</label>
                   <input
                     type="number"
                     value={passenger.age}
                     onChange={(e) => handlePassengerChange(index, 'age', e.target.value)}
-                    className="form-input"
                     min="1"
                     max="120"
                     required
+                    style={{
+                      width: '100%',
+                      padding: '0.5rem 0.75rem',
+                      borderRadius: '0.75rem',
+                      border: '1px solid rgba(255,255,255,0.3)',
+                      background: 'rgba(255,255,255,0.05)',
+                      color: '#FFF',
+                      outline: 'none'
+                    }}
                   />
                 </div>
               </div>
@@ -133,39 +185,68 @@ const BookingForm = ({ flight, onCancel, onSuccess }) => {
           ))}
         </div>
 
-        <div className="p-4 rounded-lg mb-6" style={{ 
-          background: 'linear-gradient(135deg, rgba(42, 157, 143, 0.1), rgba(205, 165, 91, 0.1))',
-          border: '2px solid var(--blue-munsell)'
-        }}>
-          <div className="flex justify-between items-center">
-            <span className="text-lg font-semibold font-base" style={{ color: 'var(--charcoal)' }}>
-              Total Price:
-            </span>
-            <span className="text-3xl font-bold font-elegant" style={{ 
-              background: 'linear-gradient(135deg, var(--blue-munsell) 0%, var(--satin-gold) 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}>
-              ₱{totalPrice.toLocaleString()}
-            </span>
-          </div>
-          <p className="text-sm mt-1 font-base" style={{ color: 'var(--charcoal)', opacity: 0.7 }}>
-            {passengers} passenger(s) × ₱{flight.price.toLocaleString()}
-          </p>
+        {/* Total Price */}
+        <div
+          style={{
+            padding: '1rem 1.5rem',
+            borderRadius: '1.5rem',
+            marginBottom: '2rem',
+            background: 'rgba(255,255,255,0.05)',
+            border: '1px solid rgba(255,255,255,0.2)',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}
+        >
+          <span style={{ fontSize: '1.125rem', fontWeight: '600', color: '#FFF' }}>Total Price:</span>
+          <span style={{
+            fontSize: '1.75rem',
+            fontWeight: '700',
+            background: 'linear-gradient(135deg, #FFB347, #FFD700)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent'
+          }}>
+            ₱{totalPrice.toLocaleString()}
+          </span>
         </div>
 
-        <div className="flex space-x-3">
+        {/* Action Buttons */}
+        <div style={{ display: 'flex', gap: '1rem' }}>
           <button
             type="button"
             onClick={onCancel}
-            className="btn btn-secondary flex-1"
+            style={{
+              flex: 1,
+              padding: '0.75rem',
+              borderRadius: '1rem',
+              border: '1px solid rgba(255,69,58,0.5)',
+              background: 'transparent',
+              color: '#FF453A',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,69,58,0.1)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={loading}
-            className="btn btn-primary flex-1"
+            style={{
+              flex: 1,
+              padding: '0.75rem',
+              borderRadius: '1rem',
+              border: '1px solid rgba(255,255,255,0.4)',
+              background: 'transparent',
+              color: '#FFF',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
           >
             {loading ? 'Booking...' : 'Confirm Booking'}
           </button>

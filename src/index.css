@@ -15,6 +15,12 @@
     --blue-munsell: #2A9D8F;
     --charcoal: #446775;
     --white: #ffffff;
+    --orange-light: #FFB347; /* soft sunset light */
+    --orange-dark: #FF6B35;  /* deep sunset */
+    --orange-shadow: rgba(255, 107, 53, 0.3);
+    --orange-shadow-hover: rgba(255, 107, 53, 0.4);
+    --orange-border: rgba(255, 107, 53, 0.4);
+    --orange-text: #FFF3E0;
 }
 
 
@@ -155,36 +161,39 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--blue-munsell) 0%, var(--charcoal) 100%);
+    background: linear-gradient(135deg, var(--orange-light) 0%, var(--orange-dark) 100%);
     color: white;
-    box-shadow: 0 4px 12px rgba(42, 157, 143, 0.3);
+    box-shadow: 0 4px 12px var(--orange-shadow);
+    transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(42, 157, 143, 0.4);
+    box-shadow: 0 6px 20px var(--orange-shadow-hover);
 }
 
 .btn-secondary {
-    background: rgba(169, 214, 229, 0.2);
-    color: var(--charcoal);
-    border: 1px solid rgba(169, 214, 229, 0.4);
+    background: rgba(255, 107, 53, 0.2);
+    color: var(--orange-dark);
+    border: 1px solid var(--orange-border);
+    transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-    background: rgba(169, 214, 229, 0.3);
-    border-color: var(--powder-blue);
+    background: rgba(255, 107, 53, 0.3);
+    border-color: var(--orange-dark);
 }
 
 .btn-outline {
     background: transparent;
-    border: 1.5px solid var(--powder-blue);
-    color: var(--blue-munsell);
+    border: 1.5px solid var(--orange-dark);
+    color: var(--orange-dark);
+    transition: all 0.3s ease;
 }
 
 .btn-outline:hover {
-    background: rgba(169, 214, 229, 0.1);
-    border-color: var(--blue-munsell);
+    background: rgba(255, 107, 53, 0.1);
+    border-color: var(--orange-dark);
 }
 
 .btn-success {
@@ -545,7 +554,7 @@ body {
 .stat-value {
     font-size: 2rem;
     font-weight: 700;
-    background: linear-gradient(135deg, var(--blue-munsell) 0%, var(--satin-gold) 100%);
+    background: linear-gradient(135deg, var(--orange-light) 0%, var(--orange-dark) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -554,7 +563,7 @@ body {
 
 .stat-label {
     font-size: 0.875rem;
-    color: #64748B;
+    color: #000000;
     font-weight: 500;
 }
 

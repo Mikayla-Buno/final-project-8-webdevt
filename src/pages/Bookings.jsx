@@ -1,4 +1,3 @@
-// src/pages/Bookings.jsx
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useBooking } from '../contexts/BookingContext';
@@ -6,18 +5,34 @@ import BookingCard from '../components/user/BookingCard';
 
 const Bookings = () => {
   const { user } = useAuth();
-  const { getUserBookings } = useBooking();
+  const { getUserBookings, cancelBooking } = useBooking();
   const [filter, setFilter] = useState('all');
+  const [bookings, setBookings] = useState(getUserBookings(user?.id));
 
-  const userBookings = getUserBookings(user?.id);
-  
-  const filteredBookings = userBookings.filter(booking => {
+  const filteredBookings = bookings.filter(booking => {
     if (filter === 'all') return true;
     return booking.status === filter;
   });
 
-  const confirmedBookings = userBookings.filter(b => b.status === 'confirmed');
-  const cancelledBookings = userBookings.filter(b => b.status === 'cancelled');
+  const confirmedBookings = bookings.filter(b => b.status === 'confirmed');
+  const cancelledBookings = bookings.filter(b => b.status === 'cancelled');
+
+  const handleCancel = (bookingId) => {
+    const result = cancelBooking(bookingId, user.id);
+    if (result.success) {
+      const updatedBookings = bookings.map(b =>
+        b.id === bookingId ? { ...b, status: 'cancelled' } : b
+      );
+      setBookings(updatedBookings);
+      alert('Booking cancelled successfully');
+    } else {
+      alert(result.error || 'Failed to cancel booking');
+    }
+  };
+
+  const handleViewDetails = (booking) => {
+    alert(`Flight Details:\nFlight #: ${booking.flightNumber}\nFrom: ${booking.origin}\nTo: ${booking.destination}\nDate: ${booking.date}\nTime: ${booking.time}\nPassengers: ${booking.passengers}`);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-teal-50 to-blue-50 py-10">
@@ -30,7 +45,7 @@ const Bookings = () => {
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           <div className="stat-card bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-xl shadow-lg">
-            <div className="stat-number text-4xl font-bold">{userBookings.length}</div>
+            <div className="stat-number text-4xl font-bold">{bookings.length}</div>
             <div className="text-blue-100 mt-1">Total Bookings</div>
           </div>
 
@@ -49,7 +64,7 @@ const Bookings = () => {
         <div className="bg-white rounded-xl p-5 shadow-md border border-gray-200 mb-8">
           <div className="flex flex-wrap gap-3">
             <button onClick={() => setFilter('all')} className={`btn ${filter === 'all' ? 'btn-primary' : 'btn-secondary'}`}>
-              All ({userBookings.length})
+              All ({bookings.length})
             </button>
             <button onClick={() => setFilter('confirmed')} className={`btn ${filter === 'confirmed' ? 'btn-primary' : 'btn-secondary'}`}>
               Confirmed ({confirmedBookings.length})
@@ -60,11 +75,16 @@ const Bookings = () => {
           </div>
         </div>
 
-        {/* Booking Cards (GRID instead of vertical list) */}
+        {/* Booking Cards (GRID) */}
         {filteredBookings.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredBookings.map((booking) => (
-              <BookingCard key={booking.id} booking={booking} />
+              <BookingCard
+                key={booking.id}
+                booking={booking}
+                onCancel={() => handleCancel(booking.id)}
+                onViewDetails={() => handleViewDetails(booking)}
+              />
             ))}
           </div>
         ) : (

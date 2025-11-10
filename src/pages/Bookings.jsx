@@ -12,7 +12,6 @@ const Bookings = () => {
   const [filter, setFilter] = useState('all');
   const [selectedBooking, setSelectedBooking] = useState(null);
 
-  // Always get fresh bookings from context
   const userBookings = getUserBookings(user?.id);
 
   const filteredBookings = userBookings.filter(booking => {
@@ -37,111 +36,87 @@ const Bookings = () => {
   };
 
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8"
+    <div 
+      className="min-h-screen py-8 px-4 sm:px-6 lg:px-8"
       style={{
-        background: 'linear-gradient(135deg, #FFFFFF 0%, #FFF5F0 25%, #FFE8DC 50%, #FFF5F0 75%, #FFFFFF 100%)',
+        background: 'linear-gradient(135deg, #FFF8F3 0%, #FFE8DC 50%, #FFF8F3 100%)',
       }}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1600px] mx-auto">
 
-        {/* Header */}
-        <div className="mb-12 text-center" style={{ animation: 'fadeSlideDown 0.6s ease-out' }}>
-          <h1 
-            className="text-5xl md:text-6xl font-bold mb-3"
-            style={{
-              background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            My Bookings
-          </h1>
-          <p className="text-lg text-gray-600 font-medium">
-            View and manage your booked flights
-          </p>
-        </div>
-
-        {/* Stats Cards */}
+        {/* Glassy Header Container */}
         <div 
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
-          style={{ animation: 'fadeSlideUp 0.7s ease-out' }}
+          className="rounded-3xl p-8 mb-8"
+          style={{
+            background: 'rgba(255, 255, 255, 0.4)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.6)',
+            boxShadow: '0 8px 32px rgba(255, 107, 53, 0.1)',
+          }}
         >
-          <StatsCard
-            number={userBookings.length}
-            label="Total Bookings"
-            delay="0s"
-          />
-          <StatsCard
-            number={confirmedBookings.length}
-            label="Confirmed"
-            delay="0.1s"
-          />
-          <StatsCard
-            number={cancelledBookings.length}
-            label="Cancelled"
-            delay="0.2s"
-          />
-        </div>
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 
+              className="text-5xl md:text-6xl font-bold mb-2"
+              style={{
+                background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              My Bookings
+            </h1>
+            <p className="text-gray-600">Manage your flight reservations</p>
+          </div>
 
-        {/* Filter Section */}
-        <div 
-          className="mb-10"
-          style={{ animation: 'fadeSlideUp 0.8s ease-out' }}
-        >
-          <div
-            className="rounded-2xl p-6 backdrop-blur-xl border"
-            style={{
-              background: 'rgba(255, 255, 255, 0.8)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 107, 53, 0.15)',
-              boxShadow: '0 8px 32px rgba(255, 107, 53, 0.08)',
-            }}
-          >
-            <div className="flex flex-wrap gap-3">
-              <FilterButton
-                active={filter === 'all'}
-                onClick={() => setFilter('all')}
-                label={`All`}
-                count={userBookings.length}
-              />
-              <FilterButton
-                active={filter === 'confirmed'}
-                onClick={() => setFilter('confirmed')}
-                label={`Confirmed`}
-                count={confirmedBookings.length}
-              />
-              <FilterButton
-                active={filter === 'cancelled'}
-                onClick={() => setFilter('cancelled')}
-                label={`Cancelled`}
-                count={cancelledBookings.length}
-              />
-            </div>
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <StatCard number={userBookings.length} label="Total" />
+            <StatCard number={confirmedBookings.length} label="Confirmed" />
+            <StatCard number={cancelledBookings.length} label="Cancelled" />
+          </div>
+
+          {/* Filters */}
+          <div className="flex flex-wrap justify-center gap-4">
+            <FilterChip
+              active={filter === 'all'}
+              onClick={() => setFilter('all')}
+              label="All Bookings "
+              count={userBookings.length}
+            />
+            <FilterChip
+              active={filter === 'confirmed'}
+              onClick={() => setFilter('confirmed')}
+              label="Confirmed "
+              count={confirmedBookings.length}
+            />
+            <FilterChip
+              active={filter === 'cancelled'}
+              onClick={() => setFilter('cancelled')}
+              label="Cancelled "
+              count={cancelledBookings.length}
+            />
           </div>
         </div>
 
-        {/* Booking Cards Grid */}
+        {/* Booking Cards */}
         {filteredBookings.length > 0 ? (
           <div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            style={{ animation: 'fadeSlideUp 0.9s ease-out' }}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+              gap: '24px',
+            }}
           >
-            {filteredBookings.map((booking, index) => (
-              <div
+            {filteredBookings.map((booking) => (
+              <BookingCard
                 key={booking.id}
-                style={{
-                  animation: `fadeSlideUp 0.5s ease-out ${index * 0.08}s backwards`,
-                }}
-              >
-                <BookingCard
-                  booking={booking}
-                  onCancel={() => handleCancel(booking.id)}
-                  onViewDetails={() => handleViewDetails(booking)}
-                />
-              </div>
+                booking={booking}
+                onCancel={() => handleCancel(booking.id)}
+                onViewDetails={() => handleViewDetails(booking)}
+              />
             ))}
           </div>
         ) : (
@@ -150,76 +125,49 @@ const Bookings = () => {
 
       </div>
 
-      {/* Booking Details Modal */}
       {selectedBooking && (
         <BookingDetailsModal
           booking={selectedBooking}
           onClose={() => setSelectedBooking(null)}
         />
       )}
-
-      {/* Animations */}
-      <style>{`
-        @keyframes fadeSlideDown {
-          from {
-            opacity: 0;
-            transform: translateY(-30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes fadeSlideUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </div>
   );
 };
 
-const StatsCard = ({ number, label, delay }) => {
+const StatCard = ({ number, label }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="rounded-2xl p-8 relative overflow-hidden cursor-default"
+      className="relative rounded-2xl p-6 overflow-hidden cursor-default"
       style={{
-        background: 'white',
-        border: '1px solid rgba(255, 107, 53, 0.15)',
+        background: 'rgba(255, 255, 255, 0.6)',
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
+        border: '1px solid rgba(255, 255, 255, 0.8)',
         boxShadow: isHovered 
-          ? '0 20px 40px rgba(255, 107, 53, 0.15)' 
-          : '0 8px 24px rgba(255, 107, 53, 0.08)',
-        transform: isHovered ? 'translateY(-8px)' : 'translateY(0)',
-        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-        animation: `fadeSlideUp 0.7s ease-out ${delay}`,
+          ? '0 12px 28px rgba(255, 107, 53, 0.15)' 
+          : '0 4px 12px rgba(255, 107, 53, 0.08)',
+        transform: isHovered ? 'translateY(-4px) scale(1.02)' : 'translateY(0) scale(1)',
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
       }}
     >
-      {/* Gradient overlay on hover */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(135deg, rgba(255,107,53,0.03) 0%, rgba(247,147,30,0.03) 100%)',
+          background: 'linear-gradient(135deg, rgba(255,107,53,0.05) 0%, rgba(247,147,30,0.05) 100%)',
           opacity: isHovered ? 1 : 0,
-          transition: 'opacity 0.4s',
+          transition: 'opacity 0.3s',
         }}
       />
-
-      {/* Content */}
-      <div className="relative z-10">
+      
+      <div className="relative z-10 text-center">
         <div 
-          className="text-6xl font-bold mb-3"
+          className="text-5xl font-bold mb-2"
           style={{
             background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
             WebkitBackgroundClip: 'text',
@@ -229,30 +177,28 @@ const StatsCard = ({ number, label, delay }) => {
         >
           {number}
         </div>
-        <div className="text-base font-semibold text-gray-600">
+        <div className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
           {label}
         </div>
       </div>
 
-      {/* Decorative gradient line */}
       <div
         style={{
           position: 'absolute',
           bottom: 0,
           left: 0,
           right: 0,
-          height: '4px',
+          height: '3px',
           background: 'linear-gradient(90deg, #FF6B35 0%, #F7931E 100%)',
-          transform: isHovered ? 'scaleX(1)' : 'scaleX(0)',
-          transition: 'transform 0.4s',
-          transformOrigin: 'left',
+          transform: isHovered ? 'scaleX(1)' : 'scaleX(0.5)',
+          transition: 'transform 0.3s',
         }}
       />
     </div>
   );
 };
 
-const FilterButton = ({ active, onClick, label, count }) => {
+const FilterChip = ({ active, onClick, label, count }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -260,35 +206,65 @@ const FilterButton = ({ active, onClick, label, count }) => {
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="flex items-center gap-3 px-6 py-3 rounded-xl font-semibold text-base transition-all duration-300"
+      className="relative group overflow-hidden"
       style={{
+        padding: '12px 28px',
+        borderRadius: '50px',
         background: active 
           ? 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)' 
-          : isHovered 
-            ? 'rgba(255,107,53,0.08)'
-            : 'white',
+          : 'rgba(255, 255, 255, 0.6)',
+        backdropFilter: !active ? 'blur(10px)' : 'none',
+        WebkitBackdropFilter: !active ? 'blur(10px)' : 'none',
+        border: active ? 'none' : '1px solid rgba(255, 107, 53, 0.3)',
         color: active ? 'white' : '#FF6B35',
-        border: `2px solid ${active ? 'transparent' : 'rgba(255,107,53,0.2)'}`,
+        fontWeight: '600',
+        fontSize: '15px',
+        cursor: 'pointer',
         boxShadow: active 
-          ? '0 8px 20px rgba(255,107,53,0.3)' 
+          ? '0 8px 24px rgba(255, 107, 53, 0.35)' 
           : isHovered 
-            ? '0 4px 15px rgba(255,107,53,0.1)'
+            ? '0 6px 20px rgba(255, 107, 53, 0.2)'
             : '0 2px 8px rgba(0,0,0,0.05)',
         transform: isHovered || active ? 'translateY(-2px)' : 'translateY(0)',
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
       }}
     >
-      <span>{label}</span>
-      <span 
-        className="px-3 py-1 rounded-full text-sm font-bold"
+      <div
         style={{
-          background: active 
-            ? 'rgba(255,255,255,0.25)' 
-            : 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
-          color: 'white',
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(135deg, rgba(255,107,53,0.1) 0%, rgba(247,147,30,0.1) 100%)',
+          opacity: !active && isHovered ? 1 : 0,
+          transition: 'opacity 0.3s',
         }}
-      >
-        {count}
+      />
+      
+      <span className="relative z-10 flex items-center gap-2">
+        {label}
+        <span 
+          className="inline-flex items-center justify-center min-w-[24px] h-6 px-2 rounded-full text-xs font-bold"
+          style={{
+            background: active 
+              ? 'rgba(255, 255, 255, 0.3)' 
+              : 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
+            color: 'white',
+          }}
+        >
+          {count}
+        </span>
       </span>
+
+      {!active && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(135deg, rgba(255,107,53,0.03) 0%, rgba(247,147,30,0.03) 100%)',
+            transform: isHovered ? 'translateX(0)' : 'translateX(-100%)',
+            transition: 'transform 0.4s ease',
+          }}
+        />
+      )}
     </button>
   );
 };
@@ -298,26 +274,49 @@ const EmptyState = ({ filter }) => {
 
   return (
     <div 
-      className="text-center py-20 rounded-3xl relative overflow-hidden"
+      className="rounded-3xl p-16 text-center relative overflow-hidden"
       style={{
-        background: 'white',
-        border: '2px dashed rgba(255,107,53,0.2)',
-        animation: 'fadeSlideUp 0.6s ease-out',
+        background: 'rgba(255, 255, 255, 0.4)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        border: '2px dashed rgba(255, 107, 53, 0.3)',
       }}
     >
-      {/* Content */}
-      <div className="relative z-10 px-6">
+      <div
+        style={{
+          position: 'absolute',
+          top: '-100px',
+          right: '-100px',
+          width: '300px',
+          height: '300px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(255,107,53,0.08) 0%, transparent 70%)',
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '-100px',
+          left: '-100px',
+          width: '300px',
+          height: '300px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(247,147,30,0.08) 0%, transparent 70%)',
+        }}
+      />
+
+      <div className="relative z-10">
         <div 
           className="mx-auto mb-6 flex items-center justify-center"
           style={{
-            width: '140px',
-            height: '140px',
+            width: '120px',
+            height: '120px',
             borderRadius: '50%',
             background: 'linear-gradient(135deg, rgba(255,107,53,0.1) 0%, rgba(247,147,30,0.1) 100%)',
-            border: '3px solid rgba(255,107,53,0.15)',
+            border: '2px solid rgba(255,107,53,0.2)',
           }}
         >
-          <span className="text-6xl">✈️</span>
+          <span className="text-5xl">✈️</span>
         </div>
         
         <h3 
@@ -329,53 +328,54 @@ const EmptyState = ({ filter }) => {
             backgroundClip: 'text',
           }}
         >
-          {filter === 'all' ? "No bookings found" : `No ${filter} bookings`}
+          {filter === 'all' ? "No bookings yet" : `No ${filter} bookings`}
         </h3>
-        <p className="text-gray-600 text-lg mb-8 max-w-md mx-auto">
+        <p className="text-gray-600 text-base mb-8 max-w-md mx-auto">
           {filter === 'all'
-            ? "Ready to explore the world? Book your first flight and start your adventure!"
-            : `You currently have no ${filter} bookings.`}
+            ? "Start your journey by booking your first flight"
+            : `You don't have any ${filter} bookings at the moment`}
         </p>
         
         <a
           href="/flights"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-lg text-white transition-all duration-300"
+          className="relative inline-flex items-center gap-3 px-10 py-4 rounded-full font-bold text-base text-white overflow-hidden"
           style={{
             background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
             boxShadow: isHovered 
-              ? '0 12px 30px rgba(255,107,53,0.4)' 
-              : '0 6px 20px rgba(255,107,53,0.3)',
-            transform: isHovered ? 'translateY(-3px)' : 'translateY(0)',
+              ? '0 12px 32px rgba(255,107,53,0.4)' 
+              : '0 6px 24px rgba(255,107,53,0.3)',
+            transform: isHovered ? 'translateY(-3px) scale(1.03)' : 'translateY(0) scale(1)',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            textDecoration: 'none',
           }}
         >
-          <span>Book Your First Flight</span>
-          <span>→</span>
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 100%)',
+              transform: isHovered ? 'translateX(0)' : 'translateX(-100%)',
+              transition: 'transform 0.4s ease',
+            }}
+          />
+          
+          <span className="relative z-10" style={{ fontSize: '20px' }}>✈️</span>
+          <span className="relative z-10" style={{ whiteSpace: 'nowrap' }}>Browse Available Flights</span>
+          <span 
+            className="relative z-10"
+            style={{
+              fontSize: '20px',
+              transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
+              transition: 'transform 0.3s',
+              display: 'inline-block',
+            }}
+          >
+            →
+          </span>
         </a>
       </div>
-
-      {/* Decorative corner gradients */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '0',
-          left: '0',
-          width: '150px',
-          height: '150px',
-          background: 'radial-gradient(circle at top left, rgba(255,107,53,0.05) 0%, transparent 70%)',
-        }}
-      />
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '0',
-          right: '0',
-          width: '150px',
-          height: '150px',
-          background: 'radial-gradient(circle at bottom right, rgba(247,147,30,0.05) 0%, transparent 70%)',
-        }}
-      />
     </div>
   );
 };

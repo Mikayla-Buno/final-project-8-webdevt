@@ -68,7 +68,7 @@ const Header = () => {
             }}
           >
             <img
-              src="/images/logo.png"
+              src="/images/lobob.png"
               alt="Ohana Airlines Logo"
               style={{
                 width: '100%',

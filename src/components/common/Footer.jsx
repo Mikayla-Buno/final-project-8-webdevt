@@ -62,7 +62,7 @@ const Footer = () => {
                 animation: 'float 3s ease-in-out infinite',
               }}>
                 <img
-                  src="/images/logo.png"
+                  src="/images/lobob.png"
                   alt="Ohana Airlines Logo"
                   style={{ width: '200%', height: '200%', objectFit: 'contain', borderRadius: '8px' }}
                 />

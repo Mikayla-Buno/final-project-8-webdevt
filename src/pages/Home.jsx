@@ -233,78 +233,7 @@ const Home = () => {
       </section>
 
       {/* Available Flights Section */}
-      <section
-        style={{
-          padding: "4rem 2rem",
-          backgroundImage: 'url("/images/Aflights.jpg")',
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <h2
-          style={{
-            textAlign: "center",
-            fontSize: "2.5rem",
-            fontWeight: 700,
-            marginBottom: "2rem",
-            color: "#FFFFFF",
-            textShadow: "0 2px 6px rgba(0,0,0,0.6)",
-          }}
-        >
-          Available Flights
-        </h2>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-            gap: "1.5rem",
-          }}
-        >
-          {mockFlights.map((flight) => (
-            <div
-              key={flight.id}
-              onClick={() => goToFlight(flight.origin, flight.destination)}
-              style={{
-                cursor: "pointer",
-                borderRadius: "1rem",
-                overflow: "hidden",
-                position: "relative",
-                transition: "transform 0.2s, box-shadow 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "scale(1.03)";
-                e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.3)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "scale(1)";
-                e.currentTarget.style.boxShadow = "none";
-              }}
-            >
-              <img
-                src={flight.image}
-                alt={`${flight.origin} to ${flight.destination}`}
-                style={{ width: "100%", height: "200px", objectFit: "cover" }}
-              />
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: 0,
-                  width: "100%",
-                  background: "rgba(0, 0, 0, 0.6)",
-                  color: "#FFF",
-                  padding: "0.5rem",
-                  textAlign: "center",
-                  fontWeight: 600,
-                  fontSize: "0.9rem",
-                }}
-              >
-                {flight.origin} → {flight.destination}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      
 
       {/* CTA Section */}
      <section

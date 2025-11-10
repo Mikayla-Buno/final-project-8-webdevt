@@ -205,7 +205,7 @@ export const mockFlights = [
     availableSeats: 70,
     aircraft: 'ATR 42',
     status: 'On Time',
-    image: '/images/flight11.jfif',
+    image: '/images/flight11.jpg',
     description: 'Return flight from Baguio to Manila. Quick, convenient, and comfortable.',
     amenities: ['Quick boarding', 'Window views', 'Direct route', 'Small aircraft comfort']
   },
@@ -224,7 +224,7 @@ export const mockFlights = [
     availableSeats: 120,
     aircraft: 'Boeing 737',
     status: 'On Time',
-    image: '/images/flight12.jpg',
+    image: '/images/flight12.avif',
     description: 'Fly to Tagbilaran with ease and comfort.',
     amenities: ['Complimentary drinks', 'In-flight magazine', 'Extra baggage allowance', 'Friendly crew']
   },
@@ -243,7 +243,7 @@ export const mockFlights = [
     availableSeats: 140,
     aircraft: 'Airbus A320',
     status: 'On Time',
-    image: '/images/flight13.jpeg',
+    image: '/images/flight13.jfif',
     description: 'Quick domestic flight connecting Cebu to Davao.',
     amenities: ['In-flight entertainment', 'Wi-Fi', 'Comfortable seating', 'Snack service']
   },
@@ -281,7 +281,7 @@ export const mockFlights = [
     availableSeats: 75,
     aircraft: 'Airbus A319',
     status: 'On Time',
-    image: '/images/flight15.jfif',
+    image: '/images/flight15.jpg',
     description: 'Flight from Palawan to Cebu. Smooth and scenic route.',
     amenities: ['Priority boarding', 'Free seat selection', 'Complimentary snack', 'Wi-Fi available']
   },
@@ -319,7 +319,7 @@ export const mockFlights = [
     availableSeats: 60,
     aircraft: 'ATR 72',
     status: 'On Time',
-    image: '/images/flight17.jpeg',
+    image: '/images/flight17.jpg',
     description: 'Return flight from Boracay to Manila.',
     amenities: ['Scenic views', 'Friendly crew', 'Quick boarding', 'Light refreshments']
   },
@@ -357,7 +357,7 @@ export const mockFlights = [
     availableSeats: 85,
     aircraft: 'Airbus A319',
     status: 'On Time',
-    image: '/images/flight19.jfif',
+    image: '/images/flight19.jpg',
     description: 'Afternoon flight from Manila to Palawan. Relax and enjoy the island breeze.',
     amenities: ['Priority boarding', 'Premium seating', 'Snack service', 'Wi-Fi']
   },
@@ -376,7 +376,7 @@ export const mockFlights = [
     availableSeats: 160,
     aircraft: 'Airbus A320',
     status: 'On Time',
-    image: '/images/flight20.jpg',
+    image: '/images/flight20.avif',
     description: 'Evening flight returning to Manila. Smooth journey guaranteed.',
     amenities: ['In-flight entertainment', 'Snacks', 'Extra legroom', 'Friendly crew']
   },
@@ -395,7 +395,7 @@ export const mockFlights = [
     availableSeats: 120,
     aircraft: 'Boeing 737',
     status: 'On Time',
-    image: '/images/flight21.jfif',
+    image: '/images/flight21.jpg',
     description: 'Morning flight from Davao to Manila. Convenient and comfortable.',
     amenities: ['Meal service', 'Wi-Fi', 'Extra baggage', 'Priority boarding']
   },
@@ -414,7 +414,7 @@ export const mockFlights = [
     availableSeats: 95,
     aircraft: 'Airbus A320',
     status: 'On Time',
-    image: '/images/flight22.jpeg',
+    image: '/images/flight22.webp',
     description: 'Midday flight from Manila to Cagayan de Oro. Smooth and safe.',
     amenities: ['In-flight entertainment', 'Complimentary snack', 'Wi-Fi', 'Comfortable seating']
   },
@@ -433,7 +433,7 @@ export const mockFlights = [
     availableSeats: 130,
     aircraft: 'Boeing 737',
     status: 'On Time',
-    image: '/images/flight23.jpg',
+    image: '/images/flight23.webp',
     description: 'Afternoon flight connecting Tagbilaran to Cebu.',
     amenities: ['Snack service', 'Extra legroom', 'Wi-Fi', 'Friendly crew']
   },
@@ -452,7 +452,7 @@ export const mockFlights = [
     availableSeats: 70,
     aircraft: 'ATR 72',
     status: 'On Time',
-    image: '/images/flight24.jpeg',
+    image: '/images/flight24.jpg',
     description: 'Morning flight from Boracay to Cebu.',
     amenities: ['Quick boarding', 'Scenic views', 'Friendly crew', 'Light refreshments']
   },
@@ -471,7 +471,7 @@ export const mockFlights = [
     availableSeats: 65,
     aircraft: 'ATR 72',
     status: 'On Time',
-    image: '/images/flight25.jfif',
+    image: '/images/flight25.jpg',
     description: 'Evening flight connecting Cebu to Boracay.',
     amenities: ['Scenic views', 'Comfortable seats', 'Quick boarding', 'Friendly crew']
   }

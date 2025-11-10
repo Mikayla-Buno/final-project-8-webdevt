@@ -17,7 +17,6 @@ const Header = () => {
   // Gradient styles for buttons
   const gradients = {
     sunset: 'linear-gradient(135deg, #FF6B35 0%, #FF9E4F 50%, #FFD580 100%)',
-    dark: 'linear-gradient(135deg, rgba(255, 107, 53, 0.6) 0%, rgba(255, 158, 79, 0.6) 50%, rgba(255, 213, 128, 0.6) 100%)'
   };
 
   return (
@@ -179,7 +178,7 @@ const Header = () => {
             </div>
           ) : (
             <>
-              <GradientButton gradient={gradients.dark} to="/login">
+              <GradientButton gradient={gradients.sunset} to="/login">
                 Login
               </GradientButton>
               <GradientButton gradient={gradients.sunset} to="/register">
@@ -274,7 +273,7 @@ const GradientButton = ({ onClick, to, children, gradient }) => {
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.) 0%, transparent 100%)',
+          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, transparent 100%)',
           opacity: isHovered ? 1 : 0,
           transition: 'opacity 0.3s ease'
         }}

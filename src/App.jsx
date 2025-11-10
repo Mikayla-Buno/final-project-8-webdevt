@@ -15,6 +15,7 @@ import Bookings from './pages/Bookings'
 import AdminFlights from './pages/AdminFlights'
 import AdminBookings from './pages/AdminBookings'
 import AdminReports from './pages/AdminReports'
+import Profile from './pages/Profile'   
 
 function App() {
   return (
@@ -29,11 +30,19 @@ function App() {
                   <Route path="/" element={<Home />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
+
                   <Route path="/dashboard" element={
                     <ProtectedRoute>
                       <Dashboard />
                     </ProtectedRoute>
                   } />
+
+                  <Route path="/profile" element={   // ✅ PROFILE ROUTE
+                    <ProtectedRoute>
+                      <Profile />
+                    </ProtectedRoute>
+                  } />
+
                   <Route path="/flights" element={
                     <ProtectedRoute>
                       <FlightSearch />

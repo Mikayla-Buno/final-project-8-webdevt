@@ -36,11 +36,14 @@ const Bookings = () => {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      padding: '48px 16px',
-      background: 'linear-gradient(135deg, #FFFFFF 0%, #FFF5F0 25%, #FFE8DC 50%, #FFF5F0 75%, #FFFFFF 100%)',
-    }}>
+    <div className="min-h-screen py-10 px-4"
+        style={{
+          backgroundImage: `url('images/home.jpg')`,
+          backgroundAttachment: 'fixed',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
 
         {/* Header */}
@@ -50,7 +53,7 @@ const Bookings = () => {
               fontSize: 'clamp(2.5rem, 5vw, 3.75rem)',
               fontWeight: 'bold',
               marginBottom: '12px',
-              background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
+              background: 'linear-gradient(135deg, #ffffffff 0%, #ffffffff 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
@@ -84,7 +87,7 @@ const Bookings = () => {
           <div style={{
             borderRadius: '16px',
             padding: '24px',
-            background: 'rgba(255, 255, 255, 0.8)',
+            background: 'rgba(255, 255, 255, 1)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
             border: '1px solid rgba(255, 107, 53, 0.15)',

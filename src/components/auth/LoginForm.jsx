@@ -47,7 +47,7 @@ const LoginForm = () => {
       {/* Logo and Welcome */}
       <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
         <img
-          src="/images/logoa.png"
+          src="/images/lobob.png"
           alt="Ohana Airlines Logo"
           style={{
             width: '200px',

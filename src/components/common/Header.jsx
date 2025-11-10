@@ -150,8 +150,12 @@ const Header = () => {
             </div>
           ) : (
             <>
-              <GradientButton gradient={gradients.sunset} to="/login">Login</GradientButton>
-              <GradientButton gradient={gradients.sunset} to="/register">Sign Up</GradientButton>
+              <GradientButton gradient={gradients.dark} to="/login">
+                Login
+              </GradientButton>
+              <GradientButton gradient={gradients.sunset} to="/register">
+                Sign Up
+              </GradientButton>
             </>
           )}
         </div>
@@ -227,7 +231,16 @@ const GradientButton = ({ onClick, to, children, gradient }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {children}
+      <span style={{ position: 'relative', zIndex: 1 }}>{children}</span>
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.) 0%, transparent 100%)',
+          opacity: isHovered ? 1 : 0,
+          transition: 'opacity 0.3s ease'
+        }}
+      />
     </Component>
   );
 };

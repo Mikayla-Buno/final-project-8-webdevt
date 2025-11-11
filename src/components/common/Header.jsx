@@ -111,6 +111,9 @@ const Header = () => {
             <NavLink to="/bookings" isActive={isActive('/bookings')}>
               My Bookings
             </NavLink>
+            <NavLink to="/profile" isActive={isActive('/profile')}>
+              Profile
+            </NavLink>
 
             {user?.role === 'admin' && (
               <>

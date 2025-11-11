@@ -53,7 +53,7 @@ export const mockFlights = [
     aircraft: 'Airbus A320',
     status: 'On Time',
     image: '/images/flight3.jpg',
-    description: 'Return flight from Cebu to Manila. Enjoy seamless travel with our professional crew.',
+    description: 'Return flight from Cebu to Manila. Enjoy seamless travel with our professional and accomodating crew.',
     amenities: ['Complimentary drinks', 'In-flight magazine', 'Reclining seats', 'Climate control']
   },
   {

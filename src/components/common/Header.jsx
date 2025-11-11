@@ -14,8 +14,10 @@ const Header = () => {
 
   const isActive = (path) => location.pathname === path;
 
+  // Gradient styles for buttons
   const gradients = {
     sunset: 'linear-gradient(135deg, #FF6B35 0%, #FF9E4F 50%, #FFD580 100%)',
+    dark: 'linear-gradient(135deg, rgba(255, 107, 53, 0.6) 0%, rgba(255, 158, 79, 0.6) 50%, rgba(255, 213, 128, 0.6) 100%)'
   };
 
   return (
@@ -41,6 +43,7 @@ const Header = () => {
           margin: '0 auto'
         }}
       >
+        {/* Logo Section */}
         <Link
           to="/"
           style={{
@@ -90,29 +93,58 @@ const Header = () => {
           </span>
         </Link>
 
+        {/* Navigation */}
         {isAuthenticated && (
-          <nav style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <NavLink to="/dashboard" isActive={isActive('/dashboard')}>Dashboard</NavLink>
-            <NavLink to="/flights" isActive={isActive('/flights')}>Flights</NavLink>
-            <NavLink to="/bookings" isActive={isActive('/bookings')}>My Bookings</NavLink>
+          <nav
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}
+          >
+            <NavLink to="/dashboard" isActive={isActive('/dashboard')}>
+              Dashboard
+            </NavLink>
+            <NavLink to="/flights" isActive={isActive('/flights')}>
+              Flights
+            </NavLink>
+            <NavLink to="/bookings" isActive={isActive('/bookings')}>
+              My Bookings
+            </NavLink>
 
             {user?.role === 'admin' && (
               <>
-                <NavLink to="/admin/flights" isActive={isActive('/admin/flights')}>Manage Flights</NavLink>
-                <NavLink to="/admin/bookings" isActive={isActive('/admin/bookings')}>All Bookings</NavLink>
-                <NavLink to="/admin/reports" isActive={isActive('/admin/reports')}>Reports</NavLink>
+                <NavLink to="/admin/flights" isActive={isActive('/admin/flights')}>
+                  Manage Flights
+                </NavLink>
+                <NavLink to="/admin/bookings" isActive={isActive('/admin/bookings')}>
+                  All Bookings
+                </NavLink>
+                <NavLink to="/admin/reports" isActive={isActive('/admin/reports')}>
+                  Reports
+                </NavLink>
               </>
             )}
           </nav>
         )}
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        {/* Auth Section */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1rem'
+          }}
+        >
           {isAuthenticated ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-
-              {/* ✅ USERNAME IS NOW CLICKABLE */}
-              <Link
-                to="/profile"
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1rem'
+              }}
+            >
+              <div
                 style={{
                   fontSize: '0.875rem',
                   fontWeight: 600,
@@ -121,9 +153,7 @@ const Header = () => {
                   borderRadius: '12px',
                   border: '1px solid rgba(255, 158, 79, 0.3)',
                   boxShadow: '0 2px 8px rgba(0,0,0,0.5)',
-                  color: '#FFB347',
-                  textDecoration: 'none',
-                  cursor: 'pointer'
+                  color: '#FFB347'
                 }}
               >
                 {user?.name}
@@ -142,8 +172,7 @@ const Header = () => {
                     ADMIN
                   </span>
                 )}
-              </Link>
-
+              </div>
               <GradientButton gradient={gradients.sunset} onClick={handleLogout}>
                 Logout
               </GradientButton>
@@ -163,7 +192,7 @@ const Header = () => {
 
       <style>{`
         @keyframes float {
-          0%, 100% { transform: translateY(0); }
+          0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-5px); }
         }
       `}</style>
@@ -171,8 +200,10 @@ const Header = () => {
   );
 };
 
+// Navigation Link Component
 const NavLink = ({ to, isActive, children }) => {
   const [isHovered, setIsHovered] = useState(false);
+
   return (
     <Link
       to={to}
@@ -205,9 +236,11 @@ const NavLink = ({ to, isActive, children }) => {
   );
 };
 
+// Gradient Button Component
 const GradientButton = ({ onClick, to, children, gradient }) => {
   const [isHovered, setIsHovered] = useState(false);
   const Component = to ? Link : 'button';
+
   return (
     <Component
       to={to}
@@ -217,16 +250,21 @@ const GradientButton = ({ onClick, to, children, gradient }) => {
         borderRadius: '12px',
         fontWeight: 700,
         fontSize: '0.9375rem',
+        transition: 'all 0.3s ease',
         border: 'none',
         cursor: 'pointer',
         textDecoration: 'none',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         background: gradient,
         color: '#1C1C1C',
-        transition: 'all 0.3s ease',
         boxShadow: isHovered
           ? '0 8px 24px rgba(255, 107, 53, 0.5)'
           : '0 4px 16px rgba(255, 158, 79, 0.3)',
-        transform: isHovered ? 'translateY(-3px) scale(1.02)' : 'translateY(0) scale(1)'
+        transform: isHovered ? 'translateY(-3px) scale(1.02)' : 'translateY(0) scale(1)',
+        position: 'relative',
+        overflow: 'hidden'
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

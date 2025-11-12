@@ -16,6 +16,7 @@ import AdminFlights from './pages/AdminFlights'
 import AdminBookings from './pages/AdminBookings'
 import AdminReports from './pages/AdminReports'
 import Profile from './pages/Profile'   
+import AboutUs from './pages/AboutUs';
 
 function App() {
   return (
@@ -68,6 +69,9 @@ function App() {
                       <AdminReports />
                     </ProtectedRoute>
                   } />
+
+                  <Route path="/about" element={<AboutUs />} />
+
                 </Routes>
               </main>
               <Footer />

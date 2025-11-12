@@ -182,7 +182,7 @@ const Header = () => {
             </div>
           ) : (
             <>
-              <GradientButton gradient={gradients.dark} to="/login">
+              <GradientButton gradient={gradients.sunset} to="/login">
                 Login
               </GradientButton>
               <GradientButton gradient={gradients.sunset} to="/register">

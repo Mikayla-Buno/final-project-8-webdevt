@@ -88,10 +88,11 @@ const Footer = () => {
               Experience the spirit of Aloha with world-class service.
             </p>
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-              <SocialLink href="#" label="Facebook" icon="📘" />
-              <SocialLink href="#" label="Twitter" icon="🦅" />
-              <SocialLink href="#" label="Instagram" icon="📷" />
-              <SocialLink href="#" label="LinkedIn" icon="💼" />
+              <SocialLink href="/bookings" label="Bookings" icon="🧾" />
+              <SocialLink href="/dashboard" label="Dashboard" icon="📊" />
+              <SocialLink href="/flights" label="Flights" icon="🛫" />
+              <SocialLink href="/profile" label="Profile" icon="👤" />
+
             </div>
           </div>
 
@@ -114,7 +115,6 @@ const Footer = () => {
               <FooterLink to="/flights">✈️ Book a Flight</FooterLink>
               <FooterLink to="/bookings">📋 My Bookings</FooterLink>
               <FooterLink to="/about">🏝️ About Us</FooterLink>
-              <FooterLink to="/contact">💬 Contact</FooterLink>
             </div>
           </div>
 
@@ -133,11 +133,7 @@ const Footer = () => {
             }}>
               Legal & Support
             </h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
-              <FooterLink to="/privacy">🔒 Privacy</FooterLink>
-              <FooterLink to="/terms">📜 Terms</FooterLink>
-              <FooterLink to="/cookies">🍪 Cookies</FooterLink>
-            </div>
+            
             <div style={{
               display: 'flex',
               flexDirection: 'column',

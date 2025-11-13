@@ -29,7 +29,6 @@ const FlightSearch = () => {
       return matchesOrigin && matchesDestination && matchesDate;
     });
 
-    // Sort results
     switch (searchParams.sortBy) {
       case 'price':
         filtered.sort((a, b) => a.price - b.price);
@@ -64,231 +63,367 @@ const FlightSearch = () => {
   };
 
   return (
-    <div style={{ fontFamily: "'Poppins', sans-serif", padding: '2rem' }}>
-      {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-        <h1 style={{ fontSize: '3rem', fontWeight: '700', color: '#ffffffff' }}>
-          Find Your Perfect Flight
-        </h1>
-        <p style={{ fontSize: '1.25rem', color: '#ffffffff' }}>
-          Search and book flights to your dream destination with ease
-        </p>
-      </div>
+    <div style={{
+      minHeight: '100vh',
+      padding: '40px 16px',
+      backgroundImage: `url('/images/home.jpg')`,
+      backgroundAttachment: 'fixed',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      margin: '-34px',
+      paddingTop: '48px',
+      paddingBottom: '48px',
+    }}>
+      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+        
+        {/* Header */}
+        <div style={{ marginBottom: '48px', textAlign: 'center', animation: 'fadeSlideDown 0.6s ease-out' }}>
+          <h1 style={{
+            fontSize: 'clamp(2.5rem, 5vw, 3.75rem)',
+            fontWeight: 'bold',
+            marginBottom: '12px',
+            color: '#ffffff',
+            textShadow: '0 2px 15px rgba(0, 0, 0, 0.3)',
+            letterSpacing: '-0.02em'
+          }}>
+            Find Your Perfect Flight
+          </h1>
+          <p style={{ fontSize: '18px', color: '#ffffff', fontWeight: '500', textShadow: '0 1px 8px rgba(0, 0, 0, 0.2)' }}>
+            Search and book flights to your dream destination with ease
+          </p>
+        </div>
 
-      {/* Search Form */}
-      <div
-        style={{
-          maxWidth: '900px',
-          margin: '0 auto 3rem auto',
-          background: 'rgba(255,255,255,0.05)',
-          backdropFilter: 'blur(15px)',
-          WebkitBackdropFilter: 'blur(15px)',
-          borderRadius: '1.5rem',
-          padding: '2rem',
-          boxShadow: '0 12px 30px rgba(0,0,0,0.25)',
-          transition: 'all 0.3s ease',
-        }}
-      >
-        <form onSubmit={handleSearch}>
-          <div
-            style={{
+        {/* Search Form */}
+        <div style={{
+          borderRadius: '24px',
+          padding: '32px',
+          background: 'rgba(255, 255, 255, 0.15)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.25)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+          marginBottom: '48px',
+          animation: 'fadeSlideUp 0.7s ease-out'
+        }}>
+          <form onSubmit={handleSearch}>
+            <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-              gap: '1.5rem',
-              marginBottom: '2rem',
-            }}
-          >
-            {/* From */}
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <label style={{ marginBottom: '0.5rem', fontWeight: '600', color: '#F97316' }}>From</label>
-              <input
-                type="text"
-                name="origin"
-                value={searchParams.origin}
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gap: '20px',
+              marginBottom: '24px'
+            }}>
+              <FormField 
+                label="From" 
+                name="origin" 
+                value={searchParams.origin} 
                 onChange={handleInputChange}
                 placeholder="City or airport"
-                style={{
-                  padding: '0.75rem 1rem',
-                  borderRadius: '0.75rem',
-                  border: '1px solid rgba(249,115,22,0.5)',
-                  background: 'rgba(255,255,255,0.05)',
-                  color: '#1F2937',
-                  outline: 'none',
-                }}
+                icon="🛫"
               />
-            </div>
-
-            {/* To */}
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <label style={{ marginBottom: '0.5rem', fontWeight: '600', color: '#F97316' }}>To</label>
-              <input
-                type="text"
-                name="destination"
-                value={searchParams.destination}
+              <FormField 
+                label="To" 
+                name="destination" 
+                value={searchParams.destination} 
                 onChange={handleInputChange}
                 placeholder="City or airport"
-                style={{
-                  padding: '0.75rem 1rem',
-                  borderRadius: '0.75rem',
-                  border: '1px solid rgba(249,115,22,0.5)',
-                  background: 'rgba(255,255,255,0.05)',
-                  color: '#1F2937',
-                  outline: 'none',
-                }}
+                icon="🛬"
               />
-            </div>
-
-            {/* Departure Date */}
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <label style={{ marginBottom: '0.5rem', fontWeight: '600', color: '#F97316' }}>Departure Date</label>
-              <input
+              <FormField 
+                label="Departure Date" 
+                name="departureDate" 
                 type="date"
-                name="departureDate"
-                value={searchParams.departureDate}
+                value={searchParams.departureDate} 
                 onChange={handleInputChange}
                 min={new Date().toISOString().split('T')[0]}
-                style={{
-                  padding: '0.75rem 1rem',
-                  borderRadius: '0.75rem',
-                  border: '1px solid rgba(249,115,22,0.5)',
-                  background: 'rgba(255,255,255,0.05)',
-                  color: '#1F2937',
-                  outline: 'none',
-                }}
+                icon="📅"
+              />
+              <FormField 
+                label="Passengers" 
+                name="passengers" 
+                value={searchParams.passengers} 
+                onChange={handleInputChange}
+                select
+                options={[1,2,3,4,5,6]}
+                icon="👥"
+              />
+              <FormField 
+                label="Sort By" 
+                name="sortBy" 
+                value={searchParams.sortBy} 
+                onChange={handleInputChange}
+                select
+                options={[
+                  { value: 'price', label: 'Price (Low to High)' },
+                  { value: 'duration', label: 'Duration (Shortest)' },
+                  { value: 'departure', label: 'Departure Time' }
+                ]}
+                icon="🔄"
               />
             </div>
 
-            {/* Passengers */}
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <label style={{ marginBottom: '0.5rem', fontWeight: '600', color: '#F97316' }}>Passengers</label>
-              <select
-                name="passengers"
-                value={searchParams.passengers}
-                onChange={handleInputChange}
-                style={{
-                  padding: '0.75rem 1rem',
-                  borderRadius: '0.75rem',
-                  border: '1px solid rgba(249,115,22,0.5)',
-                  background: 'rgba(255,255,255,0.05)',
-                  color: '#1F2937',
-                  outline: 'none',
-                }}
-              >
-                {[1,2,3,4,5,6].map(num => (
-                  <option key={num} value={num}>
-                    {num} {num === 1 ? 'Passenger' : 'Passengers'}
-                  </option>
-                ))}
-              </select>
+            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+              <ActionButton onClick={clearFilters} type="button" secondary>
+                Clear Filters
+              </ActionButton>
+              <ActionButton type="submit">
+                🔍 Search Flights
+              </ActionButton>
             </div>
-          </div>
-
-          {/* Buttons */}
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', flexWrap: 'wrap' }}>
-            <button
-              type="button"
-              onClick={clearFilters}
-              style={{
-                padding: '0.75rem 1.5rem',
-                borderRadius: '1rem',
-                border: 'none',
-                background: 'rgba(249,115,22,0.25)',
-                color: '#1F2937',
-                fontWeight: '600',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-              }}
-              onMouseEnter={e => e.currentTarget.style.background='rgba(249,115,22,0.5)'}
-              onMouseLeave={e => e.currentTarget.style.background='rgba(249,115,22,0.25)'}
-            >
-              Clear
-            </button>
-
-            <button
-              type="submit"
-              style={{
-                padding: '0.75rem 2rem',
-                borderRadius: '1rem',
-                border: 'none',
-                background: 'linear-gradient(135deg, #F97316, #C2410C)',
-                color: '#FFFFFF',
-                fontWeight: '700',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.transform='scale(1.05)';
-                e.currentTarget.style.boxShadow='0 8px 20px rgba(0,0,0,0.3)';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.transform='scale(1)';
-                e.currentTarget.style.boxShadow='none';
-              }}
-            >
-              Search Flights
-            </button>
-          </div>
-        </form>
-      </div>
-
-      {/* Results Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <h2 style={{ fontSize: '1.75rem', fontWeight: '700', color: '#ffffffff' }}>Available Flights</h2>
-        <span style={{ color: '#6B7280', fontSize: '0.9375rem' }}>
-          {filteredFlights.length} {filteredFlights.length === 1 ? 'flight' : 'flights'} found
-        </span>
-      </div>
-
-      {/* Flights Grid */}
-      {filteredFlights.length > 0 ? (
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-          gap: '1.5rem'
-        }}>
-          {filteredFlights.map(flight => (
-            <FlightCard key={flight.id} flight={flight} searchParams={searchParams} />
-          ))}
+          </form>
         </div>
+
+        {/* Results Header */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '32px',
+          padding: '20px 24px',
+          borderRadius: '16px',
+          background: 'rgba(255, 255, 255, 0.15)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.25)',
+          animation: 'fadeSlideUp 0.8s ease-out'
+        }}>
+          <h2 style={{ 
+            fontSize: '24px', 
+            fontWeight: '700', 
+            color: '#ffffff',
+            textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)'
+          }}>
+            Available Flights
+          </h2>
+          <span style={{
+            padding: '8px 16px',
+            borderRadius: '20px',
+            background: 'rgba(255, 255, 255, 0.2)',
+            color: '#ffffff',
+            fontWeight: '600',
+            fontSize: '14px',
+            textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)'
+          }}>
+            {filteredFlights.length} {filteredFlights.length === 1 ? 'flight' : 'flights'} found
+          </span>
+        </div>
+
+        {/* Flights Grid */}
+        {filteredFlights.length > 0 ? (
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gap: '1.5rem',
+            animation: 'fadeSlideUp 0.9s ease-out'
+          }}>
+            {filteredFlights.map(flight => (
+              <FlightCard key={flight.id} flight={flight} searchParams={searchParams} />
+            ))}
+          </div>
+        ) : (
+          <EmptyState onClear={clearFilters} />
+        )}
+      </div>
+
+      <style>{`
+        @keyframes fadeSlideDown {
+          from { opacity: 0; transform: translateY(-30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeSlideUp {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+const FormField = ({ label, name, value, onChange, type = 'text', placeholder, select, options, icon, min }) => {
+  return (
+    <div>
+      <label style={{
+        display: 'block',
+        marginBottom: '8px',
+        fontWeight: '600',
+        color: '#ffffff',
+        fontSize: '14px',
+        textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px'
+      }}>
+        {icon && <span>{icon}</span>}
+        {label}
+      </label>
+      {select ? (
+        <select
+          name={name}
+          value={value}
+          onChange={onChange}
+          style={{
+            width: '100%',
+            padding: '12px 16px',
+            borderRadius: '12px',
+            border: '2px solid rgba(255, 255, 255, 0.3)',
+            background: 'rgba(255, 255, 255, 0.1)',
+            color: '#ffffff',
+            fontSize: '14px',
+            outline: 'none',
+            fontWeight: '500',
+            cursor: 'pointer',
+            textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)'
+          }}
+        >
+          {Array.isArray(options) && typeof options[0] === 'object' ? (
+            options.map(opt => (
+              <option key={opt.value} value={opt.value} style={{ background: '#1F2937', color: '#ffffff' }}>
+                {opt.label}
+              </option>
+            ))
+          ) : (
+            options.map(opt => (
+              <option key={opt} value={opt} style={{ background: '#1F2937', color: '#ffffff' }}>
+                {typeof opt === 'number' ? `${opt} ${opt === 1 ? 'Passenger' : 'Passengers'}` : opt}
+              </option>
+            ))
+          )}
+        </select>
       ) : (
-        <div style={{
-          padding: '4rem 2rem',
-          textAlign: 'center',
-          background: 'rgba(255,255,255,0.05)',
-          backdropFilter: 'blur(15px)',
-          WebkitBackdropFilter: 'blur(15px)',
-          borderRadius: '1.5rem',
-          boxShadow: '0 10px 25px rgba(0,0,0,0.25)'
-        }}>
-          <h3 style={{ fontSize: '1.5rem', fontWeight: '600', color: '#1F2937', marginBottom: '1rem' }}>No flights found</h3>
-          <p style={{ color: '#6B7280', marginBottom: '1.5rem' }}>Try adjusting your search criteria or browse all available flights.</p>
-          <button
-            onClick={clearFilters}
-            style={{
-              padding: '0.75rem 2rem',
-              borderRadius: '1rem',
-              border: 'none',
-              background: 'linear-gradient(135deg, #F97316, #C2410C)',
-              color: '#FFFFFF',
-              fontWeight: '700',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.transform='scale(1.05)';
-              e.currentTarget.style.boxShadow='0 8px 20px rgba(0,0,0,0.3)';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.transform='scale(1)';
-              e.currentTarget.style.boxShadow='none';
-            }}
-          >
-            Show All Flights
-          </button>
-        </div>
+        <input
+          type={type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          min={min}
+          style={{
+            width: '100%',
+            padding: '12px 16px',
+            borderRadius: '12px',
+            border: '2px solid rgba(255, 255, 255, 0.3)',
+            background: 'rgba(255, 255, 255, 0.1)',
+            color: '#ffffff',
+            fontSize: '14px',
+            outline: 'none',
+            fontWeight: '500',
+            textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)'
+          }}
+        />
       )}
     </div>
   );
 };
 
+const ActionButton = ({ children, onClick, type = 'button', secondary }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <button
+      type={type}
+      onClick={onClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        padding: '12px 28px',
+        borderRadius: '12px',
+        border: secondary ? '2px solid rgba(255, 255, 255, 0.3)' : 'none',
+        background: secondary 
+          ? (isHovered ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)')
+          : 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
+        color: '#ffffff',
+        fontWeight: '700',
+        cursor: 'pointer',
+        transition: 'all 0.3s',
+        fontSize: '15px',
+        textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
+        boxShadow: secondary 
+          ? 'none' 
+          : (isHovered ? '0 6px 20px rgba(255, 107, 53, 0.5)' : '0 4px 12px rgba(255, 107, 53, 0.4)'),
+        transform: isHovered ? 'translateY(-2px)' : 'translateY(0)'
+      }}
+    >
+      {children}
+    </button>
+  );
+};
+
+const EmptyState = ({ onClear }) => {
+  return (
+    <div style={{
+      textAlign: 'center',
+      padding: '80px 24px',
+      borderRadius: '24px',
+      background: 'rgba(255, 255, 255, 0.15)',
+      backdropFilter: 'blur(20px)',
+      WebkitBackdropFilter: 'blur(20px)',
+      border: '2px dashed rgba(255, 255, 255, 0.3)',
+      animation: 'fadeSlideUp 0.6s ease-out',
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
+    }}>
+      <div style={{
+        width: '120px',
+        height: '120px',
+        margin: '0 auto 24px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: '50%',
+        background: 'rgba(255, 255, 255, 0.15)',
+        border: '3px solid rgba(255, 255, 255, 0.3)',
+        fontSize: '48px'
+      }}>
+        ✈️
+      </div>
+      
+      <h3 style={{
+        fontSize: '28px',
+        fontWeight: 'bold',
+        marginBottom: '12px',
+        color: '#ffffff',
+        textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)'
+      }}>
+        No flights found
+      </h3>
+      <p style={{
+        color: '#ffffff',
+        fontSize: '16px',
+        marginBottom: '32px',
+        maxWidth: '400px',
+        margin: '0 auto 32px',
+        textShadow: '0 1px 5px rgba(0, 0, 0, 0.2)'
+      }}>
+        Try adjusting your search criteria or browse all available flights.
+      </p>
+      <button
+        onClick={onClear}
+        style={{
+          padding: '14px 32px',
+          borderRadius: '12px',
+          border: 'none',
+          background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
+          color: 'white',
+          fontWeight: '700',
+          fontSize: '15px',
+          cursor: 'pointer',
+          transition: 'all 0.3s',
+          boxShadow: '0 4px 12px rgba(255, 107, 53, 0.4)',
+          textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)'
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = 'translateY(-2px)';
+          e.currentTarget.style.boxShadow = '0 6px 20px rgba(255, 107, 53, 0.5)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = 'translateY(0)';
+          e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 107, 53, 0.4)';
+        }}
+      >
+        Show All Flights
+      </button>
+    </div>
+  );
+};
+
 export default FlightSearch;
+      

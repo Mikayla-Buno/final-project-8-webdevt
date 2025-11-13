@@ -155,7 +155,7 @@ const FlightCard = ({ flight, searchParams }) => {
           </div>
 
           <button
-            onClick={handleBookClick}
+            onClick={setShowModal}
             disabled={!isBookable}
             className={`btn ${isBookable ? 'btn-primary' : 'btn-secondary'}`}
             style={{ width: '100%', marginTop: '1rem' }}

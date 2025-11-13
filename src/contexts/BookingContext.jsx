@@ -13,9 +13,16 @@ export function BookingProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Always refresh flights with the latest mock data
-    setFlights(mockFlights);
-    localStorage.setItem('ohana_flights', JSON.stringify(mockFlights));
+    // Load flights from localStorage, or use mockFlights if not found
+    const savedFlights = JSON.parse(localStorage.getItem('ohana_flights') || 'null');
+    
+    if (savedFlights && savedFlights.length > 0) {
+      setFlights(savedFlights);
+    } else {
+      // Initialize with mock data on first load
+      setFlights(mockFlights);
+      localStorage.setItem('ohana_flights', JSON.stringify(mockFlights));
+    }
 
     // Load or initialize bookings
     const savedBookings = JSON.parse(localStorage.getItem('ohana_bookings') || 'null');
@@ -130,6 +137,7 @@ export function BookingProvider({ children }) {
         ...flightData,
         airline: 'Ohana Airlines',
         availableSeats: parseInt(flightData.seatCapacity),
+        // Keep the base64 image as is (already in flightData.image)
         image: flightData.image || 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80'
       };
 
@@ -139,6 +147,7 @@ export function BookingProvider({ children }) {
 
       return { success: true, flight: newFlight };
     } catch (error) {
+      console.error('Add flight error:', error);
       return { success: false, error: 'Failed to add flight' };
     }
   };
@@ -153,7 +162,8 @@ export function BookingProvider({ children }) {
       setFlights(updatedFlights);
       localStorage.setItem('ohana_flights', JSON.stringify(updatedFlights));
       return { success: true };
-    } catch {
+    } catch (error) {
+      console.error('Update flight error:', error);
       return { success: false, error: 'Failed to update flight' };
     }
   };
@@ -177,7 +187,8 @@ export function BookingProvider({ children }) {
       setFlights(updatedFlights);
       localStorage.setItem('ohana_flights', JSON.stringify(updatedFlights));
       return { success: true };
-    } catch {
+    } catch (error) {
+      console.error('Delete flight error:', error);
       return { success: false, error: 'Failed to delete flight' };
     }
   };

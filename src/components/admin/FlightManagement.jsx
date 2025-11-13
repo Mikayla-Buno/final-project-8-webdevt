@@ -5,10 +5,11 @@ import { useBooking } from '../../contexts/BookingContext';
 const FlightManagement = () => {
   const { user } = useAuth();
   const { flights, addFlight, updateFlight, deleteFlight } = useBooking();
-  const [showForm, setShowForm] = useState(false);
-  const [editingFlight, setEditingFlight] = useState(null);
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [showForm, setShowForm] = useState(false);
+  const [editingFlight, setEditingFlight] = useState(null);
+  const [imagePreview, setImagePreview] = useState('');
   const [formData, setFormData] = useState({
     flightNumber: '',
     origin: '',
@@ -29,6 +30,19 @@ const FlightManagement = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result;
+        setImagePreview(base64String);
+        setFormData(prev => ({ ...prev, image: base64String }));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -63,6 +77,7 @@ const FlightManagement = () => {
   const resetForm = () => {
     setShowForm(false);
     setEditingFlight(null);
+    setImagePreview('');
     setFormData({
       flightNumber: '', origin: '', destination: '', departureTime: '',
       arrivalTime: '', duration: '', price: '', seatCapacity: '',
@@ -88,6 +103,7 @@ const FlightManagement = () => {
       description: flight.description || '',
       amenities: flight.amenities ? flight.amenities.join(', ') : ''
     });
+    setImagePreview(flight.image || '');
     setShowForm(true);
   };
 
@@ -104,7 +120,8 @@ const FlightManagement = () => {
   };
 
   const filteredFlights = flights.filter(flight => {
-    const matchesFilter = filter === 'all' || flight.status === filter;
+    const matchesFilter = filter === 'all' || 
+                         (filter === 'Fully Booked' ? flight.availableSeats === 0 : flight.status === filter);
     const matchesSearch = searchTerm === '' ||
       flight.flightNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
       flight.origin.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -123,19 +140,19 @@ const FlightManagement = () => {
 
   return (
     <div style={{
-         minHeight: '100vh',
-        padding: '40px 16px',
-        backgroundImage: `url('/images/home.jpg')`,
-        backgroundAttachment: 'fixed',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        margin: '-34px',
-        paddingTop: '48px',
-        paddingBottom: '48px',
+      minHeight: '100vh',
+      padding: '40px 16px',
+      backgroundImage: `url('/images/home.jpg')`,
+      backgroundAttachment: 'fixed',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      margin: '-34px',
+      paddingTop: '48px',
+      paddingBottom: '48px',
     }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-        
+       
         {/* Header */}
         <div style={{ marginBottom: '48px', textAlign: 'center', animation: 'fadeSlideDown 0.6s ease-out' }}>
           <h1 style={{
@@ -163,7 +180,8 @@ const FlightManagement = () => {
           <StatCard number={flights.length} label="Total Flights" gradient="linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)" delay="0s" />
           <StatCard number={flights.filter(f => f.status === 'On Time').length} label="On Time" gradient="linear-gradient(135deg, #10B981 0%, #059669 100%)" delay="0.1s" />
           <StatCard number={flights.filter(f => f.status === 'Delayed').length} label="Delayed" gradient="linear-gradient(135deg, #F59E0B 0%, #D97706 100%)" delay="0.2s" />
-          <StatCard number={flights.filter(f => f.availableSeats === 0).length} label="Fully Booked" gradient="linear-gradient(135deg, #EF4444 0%, #DC2626 100%)" delay="0.3s" />
+          <StatCard number={flights.filter(f => f.status === 'Cancelled').length} label="Cancelled" gradient="linear-gradient(135deg, #EF4444 0%, #DC2626 100%)" delay="0.25s" />
+          <StatCard number={flights.filter(f => f.availableSeats === 0).length} label="Fully Booked" gradient="linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)" delay="0.3s" />
         </div>
 
         {/* Action Bar */}
@@ -179,7 +197,7 @@ const FlightManagement = () => {
           animation: 'fadeSlideUp 0.8s ease-out'
         }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'space-between', alignItems: 'center' }}>
-            
+           
             {/* Filter Buttons */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
               <FilterButton active={filter === 'all'} onClick={() => setFilter('all')} count={flights.length}>
@@ -193,6 +211,9 @@ const FlightManagement = () => {
               </FilterButton>
               <FilterButton active={filter === 'Cancelled'} onClick={() => setFilter('Cancelled')} count={flights.filter(f => f.status === 'Cancelled').length}>
                 Cancelled
+              </FilterButton>
+              <FilterButton active={filter === 'Fully Booked'} onClick={() => setFilter('Fully Booked')} count={flights.filter(f => f.availableSeats === 0).length}>
+                Fully Booked
               </FilterButton>
             </div>
 
@@ -248,20 +269,18 @@ const FlightManagement = () => {
           </div>
         </div>
 
-        {/* Add/Edit Form */}
+        {/* Add/Edit Form - WHITE BACKGROUND */}
         {showForm && (
           <div style={{
             borderRadius: '24px',
             padding: '32px',
-            background: 'rgba(255, 255, 255, 0.15)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255, 255, 255, 0.25)',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+            background: '#FFFFFF',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
             marginBottom: '32px',
-            animation: 'fadeSlideUp 0.5s ease-out'
+            animation: 'fadeSlideUp 0.5s ease-out',
+            border: '1px solid rgba(0, 0, 0, 0.1)'
           }}>
-            <h2 style={{ fontSize: '24px', fontWeight: '700', color: '#ffffff', marginBottom: '24px', textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
+            <h2 style={{ fontSize: '24px', fontWeight: '700', color: '#1F2937', marginBottom: '24px' }}>
               {editingFlight ? '✏️ Edit Flight' : '➕ Add New Flight'}
             </h2>
             <form onSubmit={handleSubmit}>
@@ -277,8 +296,71 @@ const FlightManagement = () => {
                 <FormField label="Price (₱)" name="price" type="number" value={formData.price} onChange={handleInputChange} required min="0" step="0.01" placeholder="e.g., 2500" />
                 <FormField label="Seat Capacity" name="seatCapacity" type="number" value={formData.seatCapacity} onChange={handleInputChange} required min="1" placeholder="e.g., 180" />
                 <FormField label="Status" name="status" value={formData.status} onChange={handleInputChange} select options={['On Time', 'Delayed', 'Cancelled']} />
-                <FormField label="Image URL" name="image" type="url" value={formData.image} onChange={handleInputChange} placeholder="https://example.com/image.jpg" />
               </div>
+              
+              {/* Image Upload Section */}
+              <div style={{ marginTop: '20px' }}>
+                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#1F2937', fontSize: '14px' }}>
+                  Flight Image <span style={{ color: '#EF4444' }}>*</span>
+                </label>
+                <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    style={{
+                      padding: '12px',
+                      borderRadius: '10px',
+                      border: '2px solid rgba(0, 0, 0, 0.2)',
+                      background: '#F9FAFB',
+                      fontSize: '14px',
+                      flex: 1,
+                      cursor: 'pointer'
+                    }}
+                  />
+                  {imagePreview && (
+                    <div style={{ position: 'relative' }}>
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        style={{
+                          width: '150px',
+                          height: '100px',
+                          objectFit: 'cover',
+                          borderRadius: '10px',
+                          border: '2px solid #10B981'
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setImagePreview('');
+                          setFormData(prev => ({ ...prev, image: '' }));
+                        }}
+                        style={{
+                          position: 'absolute',
+                          top: '-8px',
+                          right: '-8px',
+                          width: '24px',
+                          height: '24px',
+                          borderRadius: '50%',
+                          background: '#EF4444',
+                          color: 'white',
+                          border: 'none',
+                          cursor: 'pointer',
+                          fontSize: '12px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
               <div style={{ marginTop: '20px' }}>
                 <FormField label="Description" name="description" value={formData.description} onChange={handleInputChange} textarea rows="2" placeholder="Brief description of the flight..." />
               </div>
@@ -315,20 +397,20 @@ const FlightManagement = () => {
                   minWidth: '200px',
                   padding: '14px',
                   borderRadius: '12px',
-                  border: '2px solid rgba(255, 255, 255, 0.4)',
-                  background: 'rgba(239, 68, 68, 0.2)',
-                  color: '#ffffff',
+                  border: '2px solid #EF4444',
+                  background: 'white',
+                  color: '#EF4444',
                   fontWeight: '700',
                   cursor: 'pointer',
                   transition: 'all 0.3s',
                   fontSize: '15px'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(239, 68, 68, 0.3)';
+                  e.currentTarget.style.background = '#FEF2F2';
                   e.currentTarget.style.transform = 'translateY(-2px)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)';
+                  e.currentTarget.style.background = 'white';
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}>
                   Cancel
@@ -462,32 +544,32 @@ const FilterButton = ({ active, onClick, count, children }) => {
 // Form Field Component
 const FormField = ({ label, name, value, onChange, type = 'text', required, placeholder, select, options, textarea, rows, min, step }) => (
   <div>
-    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#ffffff', fontSize: '14px', textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)' }}>
-      {label} {required && <span style={{ color: '#FCA5A5' }}>*</span>}
+    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#1F2937', fontSize: '14px' }}>
+      {label} {required && <span style={{ color: '#EF4444' }}>*</span>}
     </label>
     {select ? (
       <select name={name} value={value} onChange={onChange} required={required} style={{
         width: '100%',
         padding: '12px',
         borderRadius: '10px',
-        border: '2px solid rgba(255, 255, 255, 0.3)',
-        background: 'rgba(255, 255, 255, 0.1)',
-        color: '#ffffff',
+        border: '2px solid rgba(0, 0, 0, 0.2)',
+        background: '#F9FAFB',
+        color: '#1F2937',
         fontSize: '14px',
         outline: 'none',
         fontWeight: '500',
         cursor: 'pointer'
       }}>
-        {options.map(opt => <option key={opt} value={opt} style={{ background: '#1F2937', color: '#ffffff' }}>{opt}</option>)}
+        {options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
       </select>
     ) : textarea ? (
       <textarea name={name} value={value} onChange={onChange} rows={rows} placeholder={placeholder} style={{
         width: '100%',
         padding: '12px',
         borderRadius: '10px',
-        border: '2px solid rgba(255, 255, 255, 0.3)',
-        background: 'rgba(255, 255, 255, 0.1)',
-        color: '#ffffff',
+        border: '2px solid rgba(0, 0, 0, 0.2)',
+        background: '#F9FAFB',
+        color: '#1F2937',
         fontSize: '14px',
         outline: 'none',
         resize: 'vertical',
@@ -499,9 +581,9 @@ const FormField = ({ label, name, value, onChange, type = 'text', required, plac
         width: '100%',
         padding: '12px',
         borderRadius: '10px',
-        border: '2px solid rgba(255, 255, 255, 0.3)',
-        background: 'rgba(255, 255, 255, 0.1)',
-        color: '#ffffff',
+        border: '2px solid rgba(0, 0, 0, 0.2)',
+        background: '#F9FAFB',
+        color: '#1F2937',
         fontSize: '14px',
         outline: 'none',
         fontWeight: '500'
@@ -533,7 +615,7 @@ const DetailItem = ({ label, value }) => (
 const FlightCard = ({ flight, index, onEdit, onDelete, getStatusClass }) => {
   const [isHovered, setIsHovered] = useState(false);
   const statusStyle = getStatusClass(flight.status);
-  
+ 
   return (
     <div
       onMouseEnter={() => setIsHovered(true)}
@@ -578,7 +660,7 @@ const FlightCard = ({ flight, index, onEdit, onDelete, getStatusClass }) => {
           inset: 0,
           background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%)'
         }} />
-        
+       
         {/* Status Badge */}
         <div style={{
           position: 'absolute',
@@ -596,6 +678,26 @@ const FlightCard = ({ flight, index, onEdit, onDelete, getStatusClass }) => {
         }}>
           {flight.status}
         </div>
+
+        {/* Fully Booked Badge */}
+        {flight.availableSeats === 0 && (
+          <div style={{
+            position: 'absolute',
+            top: '15px',
+            left: '15px',
+            padding: '8px 16px',
+            borderRadius: '20px',
+            background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
+            color: 'white',
+            fontWeight: '600',
+            fontSize: '12px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+            boxShadow: '0 4px 12px rgba(139, 92, 246, 0.4)'
+          }}>
+            FULLY BOOKED
+          </div>
+        )}
 
         {/* Flight Number */}
         <div style={{
@@ -615,7 +717,7 @@ const FlightCard = ({ flight, index, onEdit, onDelete, getStatusClass }) => {
 
       {/* Card Content */}
       <div style={{ padding: '24px', background: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
-        
+       
         {/* Route */}
         <div style={{
           display: 'flex',
@@ -633,7 +735,7 @@ const FlightCard = ({ flight, index, onEdit, onDelete, getStatusClass }) => {
               {flight.origin}
             </p>
           </div>
-          
+         
           <div style={{
             width: '40px',
             height: '2px',
@@ -650,7 +752,7 @@ const FlightCard = ({ flight, index, onEdit, onDelete, getStatusClass }) => {
               borderRadius: '50%'
             }} />
           </div>
-          
+         
           <div style={{ flex: 1, textAlign: 'center' }}>
             <div style={{ fontSize: '18px', marginBottom: '6px' }}>🛬</div>
             <p style={{ fontSize: '18px', fontWeight: '700', color: '#ffffff', margin: 0, textShadow: '0 1px 5px rgba(0, 0, 0, 0.2)' }}>
@@ -686,10 +788,10 @@ const FlightCard = ({ flight, index, onEdit, onDelete, getStatusClass }) => {
               style={{
                 height: '100%',
                 borderRadius: '10px',
-                background: flight.availableSeats === 0 
-                  ? 'linear-gradient(90deg, #EF4444, #DC2626)' 
-                  : flight.availableSeats < flight.seatCapacity * 0.3 
-                    ? 'linear-gradient(90deg, #F59E0B, #D97706)' 
+                background: flight.availableSeats === 0
+                  ? 'linear-gradient(90deg, #EF4444, #DC2626)'
+                  : flight.availableSeats < flight.seatCapacity * 0.3
+                    ? 'linear-gradient(90deg, #F59E0B, #D97706)'
                     : 'linear-gradient(90deg, #10B981, #059669)',
                 width: `${(flight.availableSeats / flight.seatCapacity) * 100}%`,
                 transition: 'width 0.3s ease'
@@ -784,8 +886,6 @@ const FlightCard = ({ flight, index, onEdit, onDelete, getStatusClass }) => {
 
 // Empty State Component
 const EmptyState = ({ filter, searchTerm }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
     <div style={{
       textAlign: 'center',
@@ -812,7 +912,7 @@ const EmptyState = ({ filter, searchTerm }) => {
       }}>
         ✈️
       </div>
-      
+     
       <h3 style={{
         fontSize: '28px',
         fontWeight: 'bold',
@@ -830,7 +930,7 @@ const EmptyState = ({ filter, searchTerm }) => {
         margin: '0 auto 32px',
         textShadow: '0 1px 5px rgba(0, 0, 0, 0.2)'
       }}>
-        {searchTerm 
+        {searchTerm
           ? `No flights match your search "${searchTerm}". Try adjusting your search criteria.`
           : filter === 'all'
             ? "Get started by adding your first flight to the system."

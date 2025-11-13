@@ -84,344 +84,878 @@ const Reports = () => {
     document.body.removeChild(link);
   };
 
-  const getStatusClass = (status) => {
+  const getStatusColor = (status) => {
     switch (status) {
-      case 'On Time': return 'status-on-time';
-      case 'Delayed': return 'status-delayed';
-      case 'Cancelled': return 'status-cancelled';
-      default: return 'status-on-time';
+      case 'On Time': return '#10B981';
+      case 'Delayed': return '#F59E0B';
+      case 'Cancelled': return '#EF4444';
+      default: return '#10B981';
     }
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4">
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-800">Reports & Analytics</h1>
-          <p className="text-gray-600 mt-1">Comprehensive insights into your airline operations</p>
-        </div>
-        <button
-          onClick={generateCSV}
-          className="btn btn-success flex items-center"
+    <div
+      style={{
+        minHeight: '100vh',
+        padding: '40px 16px',
+        backgroundImage: `url('/images/home.jpg')`,
+        backgroundAttachment: 'fixed',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        margin: '-34px',
+        paddingTop: '48px',
+        paddingBottom: '48px',
+      }}
+    >
+      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+        {/* Header Banner */}
+        <div
+          style={{
+            borderRadius: '24px',
+            padding: '48px 32px',
+            background: 'rgba(255, 255, 255, 0.15)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.25)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+            marginBottom: '40px',
+            animation: 'fadeSlideDown 0.6s ease-out',
+          }}
         >
-          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-          Export CSV
-        </button>
-      </div>
-
-      {/* Report Type Selector */}
-      <div className="card p-6 mb-6">
-        <div className="flex flex-wrap gap-3">
-          <button
-            onClick={() => setReportType('revenue')}
-            className={`btn ${reportType === 'revenue' ? 'btn-primary' : 'btn-secondary'}`}
-          >
-            Revenue Report
-          </button>
-          <button
-            onClick={() => setReportType('flights')}
-            className={`btn ${reportType === 'flights' ? 'btn-primary' : 'btn-secondary'}`}
-          >
-            Flight Performance
-          </button>
-          <button
-            onClick={() => setReportType('passengers')}
-            className={`btn ${reportType === 'passengers' ? 'btn-primary' : 'btn-secondary'}`}
-          >
-            Passenger Statistics
-          </button>
-          <button
-            onClick={() => setReportType('routes')}
-            className={`btn ${reportType === 'routes' ? 'btn-primary' : 'btn-secondary'}`}
-          >
-            Route Analysis
-          </button>
-        </div>
-      </div>
-
-      {/* Revenue Report */}
-      {reportType === 'revenue' && (
-        <div className="space-y-6 animate-fade-in">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="stat-card bg-gradient-to-br from-green-500 to-green-600 text-white">
-              <div className="stat-number">₱{totalRevenue.toLocaleString()}</div>
-              <div className="stat-label text-green-100">Total Revenue</div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
+            <div>
+              <h1
+                style={{
+                  fontSize: 'clamp(2rem, 4vw, 2.5rem)',
+                  fontWeight: 'bold',
+                  marginBottom: '12px',
+                  color: '#ffffff',
+                  textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                }}
+              >
+                <span>📊</span>
+                Reports & Analytics
+              </h1>
+              <p
+                style={{
+                  fontSize: '18px',
+                  color: '#ffffff',
+                  fontWeight: '500',
+                  textShadow: '0 1px 5px rgba(0, 0, 0, 0.2)',
+                }}
+              >
+                Comprehensive insights into your airline operations
+              </p>
             </div>
-            <div className="stat-card bg-gradient-to-br from-blue-500 to-blue-600 text-white">
-              <div className="stat-number">{confirmedBookings.length}</div>
-              <div className="stat-label text-blue-100">Confirmed Bookings</div>
-            </div>
-            <div className="stat-card bg-gradient-to-br from-purple-500 to-purple-600 text-white">
-              <div className="stat-number">₱{averageBookingValue.toFixed(0).toLocaleString()}</div>
-              <div className="stat-label text-purple-100">Avg Booking Value</div>
-            </div>
-            <div className="stat-card bg-gradient-to-br from-red-500 to-red-600 text-white">
-              <div className="stat-number">₱{totalCancelled.toLocaleString()}</div>
-              <div className="stat-label text-red-100">Lost Revenue</div>
-            </div>
-          </div>
-
-          <div className="card">
-            <div className="card-header">
-              <h3 className="text-lg font-semibold">Recent Bookings</h3>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="table">
-                <thead>
-                  <tr className="bg-gray-50">
-                    <th className="table-header">Booking Ref</th>
-                    <th className="table-header">Flight</th>
-                    <th className="table-header">Route</th>
-                    <th className="table-header">Passengers</th>
-                    <th className="table-header">Amount</th>
-                    <th className="table-header">Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {confirmedBookings.slice(0, 10).map(booking => (
-                    <tr key={booking.id} className="table-row">
-                      <td className="table-cell font-mono text-sm">{booking.bookingReference}</td>
-                      <td className="table-cell font-semibold">{booking.flight.flightNumber}</td>
-                      <td className="table-cell text-sm">{booking.flight.origin} → {booking.flight.destination}</td>
-                      <td className="table-cell">{booking.passengers}</td>
-                      <td className="table-cell text-green-600 font-semibold">
-                        ₱{booking.totalPrice.toLocaleString()}
-                      </td>
-                      <td className="table-cell text-sm">{booking.bookingDate}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <ExportButton onClick={generateCSV} />
           </div>
         </div>
-      )}
 
-      {/* Flight Performance */}
-      {reportType === 'flights' && (
-        <div className="space-y-6 animate-fade-in">
-          <div className="card">
-            <div className="card-header">
-              <h3 className="text-lg font-semibold">Flight Performance Summary</h3>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="table">
-                <thead>
-                  <tr className="bg-gray-50">
-                    <th className="table-header">Flight</th>
-                    <th className="table-header">Route</th>
-                    <th className="table-header">Date</th>
-                    <th className="table-header">Capacity</th>
-                    <th className="table-header">Booked</th>
-                    <th className="table-header">Occupancy</th>
-                    <th className="table-header">Revenue</th>
-                    <th className="table-header">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {flightPerformance.map(flight => (
-                    <tr key={flight.id} className="table-row">
-                      <td className="table-cell font-semibold">{flight.flightNumber}</td>
-                      <td className="table-cell text-sm">
-                        {flight.origin} → {flight.destination}
-                      </td>
-                      <td className="table-cell text-sm">{flight.date}</td>
-                      <td className="table-cell">{flight.seatCapacity}</td>
-                      <td className="table-cell">{flight.bookedSeats}</td>
-                      <td className="table-cell">
-                        <div className="flex items-center space-x-2">
-                          <span className="text-sm font-medium">{flight.occupancyRate.toFixed(1)}%</span>
-                          <div className="w-16 bg-gray-200 rounded-full h-2">
-                            <div
-                              className={`h-2 rounded-full ${
-                                flight.occupancyRate >= 80 ? 'bg-green-500' :
-                                flight.occupancyRate >= 50 ? 'bg-yellow-500' :
-                                'bg-red-500'
-                              }`}
-                              style={{ width: `${flight.occupancyRate}%` }}
-                            ></div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="table-cell text-green-600 font-semibold">
-                        ₱{flight.revenue.toLocaleString()}
-                      </td>
-                      <td className="table-cell">
-                        <span className={getStatusClass(flight.status)}>
-                          {flight.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+        {/* Report Type Selector */}
+        <div
+          style={{
+            borderRadius: '24px',
+            padding: '32px',
+            background: 'rgba(255, 255, 255, 0.15)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.25)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+            marginBottom: '32px',
+            animation: 'fadeSlideUp 0.7s ease-out',
+          }}
+        >
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+            <ReportButton
+              active={reportType === 'revenue'}
+              onClick={() => setReportType('revenue')}
+              label="Revenue Report"
+              icon="💰"
+            />
+            <ReportButton
+              active={reportType === 'flights'}
+              onClick={() => setReportType('flights')}
+              label="Flight Performance"
+              icon="✈️"
+            />
+            <ReportButton
+              active={reportType === 'passengers'}
+              onClick={() => setReportType('passengers')}
+              label="Passenger Statistics"
+              icon="👥"
+            />
+            <ReportButton
+              active={reportType === 'routes'}
+              onClick={() => setReportType('routes')}
+              label="Route Analysis"
+              icon="🗺️"
+            />
           </div>
         </div>
-      )}
 
-      {/* Passenger Statistics */}
-      {reportType === 'passengers' && (
-        <div className="space-y-6 animate-fade-in">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="stat-card bg-gradient-to-br from-blue-500 to-blue-600 text-white">
-              <div className="stat-number">{totalPassengers}</div>
-              <div className="stat-label text-blue-100">Total Passengers</div>
+        {/* Revenue Report */}
+        {reportType === 'revenue' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', animation: 'fadeSlideUp 0.8s ease-out' }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                gap: '24px',
+              }}
+            >
+              <StatCard
+                value={`₱${totalRevenue.toLocaleString()}`}
+                label="Total Revenue"
+                icon="💵"
+                gradient="linear-gradient(135deg, #10B981 0%, #059669 100%)"
+                delay="0s"
+              />
+              <StatCard
+                value={confirmedBookings.length}
+                label="Confirmed Bookings"
+                icon="✅"
+                gradient="linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)"
+                delay="0.1s"
+              />
+              <StatCard
+                value={`₱${averageBookingValue.toFixed(0).toLocaleString()}`}
+                label="Avg Booking Value"
+                icon="📈"
+                gradient="linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)"
+                delay="0.2s"
+              />
+              <StatCard
+                value={`₱${totalCancelled.toLocaleString()}`}
+                label="Lost Revenue"
+                icon="❌"
+                gradient="linear-gradient(135deg, #EF4444 0%, #DC2626 100%)"
+                delay="0.3s"
+              />
             </div>
-            <div className="stat-card bg-gradient-to-br from-purple-500 to-purple-600 text-white">
-              <div className="stat-number">{averagePassengersPerBooking.toFixed(1)}</div>
-              <div className="stat-label text-purple-100">Avg Passengers/Booking</div>
-            </div>
-            <div className="stat-card bg-gradient-to-br from-red-500 to-red-600 text-white">
-              <div className="stat-number">{cancelledBookings.length}</div>
-              <div className="stat-label text-red-100">Cancelled Bookings</div>
-            </div>
+
+            <GlassCard title="Recent Bookings" icon="📋">
+              <div style={{ overflowX: 'auto' }}>
+                {confirmedBookings.slice(0, 10).map((booking, index) => (
+                  <BookingRow key={booking.id} booking={booking} index={index} />
+                ))}
+              </div>
+            </GlassCard>
           </div>
+        )}
 
-          <div className="card">
-            <div className="card-header">
-              <h3 className="text-lg font-semibold">Booking Distribution by Passenger Count</h3>
+        {/* Flight Performance */}
+        {reportType === 'flights' && (
+          <div style={{ animation: 'fadeSlideUp 0.8s ease-out' }}>
+            <GlassCard title="Flight Performance Summary" icon="✈️">
+              <div style={{ overflowX: 'auto' }}>
+                {flightPerformance.map((flight, index) => (
+                  <FlightRow key={flight.id} flight={flight} index={index} getStatusColor={getStatusColor} />
+                ))}
+              </div>
+            </GlassCard>
+          </div>
+        )}
+
+        {/* Passenger Statistics */}
+        {reportType === 'passengers' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', animation: 'fadeSlideUp 0.8s ease-out' }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                gap: '24px',
+              }}
+            >
+              <StatCard
+                value={totalPassengers}
+                label="Total Passengers"
+                icon="👥"
+                gradient="linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)"
+                delay="0s"
+              />
+              <StatCard
+                value={averagePassengersPerBooking.toFixed(1)}
+                label="Avg Passengers/Booking"
+                icon="📊"
+                gradient="linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)"
+                delay="0.1s"
+              />
+              <StatCard
+                value={cancelledBookings.length}
+                label="Cancelled Bookings"
+                icon="🚫"
+                gradient="linear-gradient(135deg, #EF4444 0%, #DC2626 100%)"
+                delay="0.2s"
+              />
             </div>
-            <div className="p-6">
-              <div className="space-y-4">
+
+            <GlassCard title="Booking Distribution by Passenger Count" icon="📊">
+              <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 {[1, 2, 3, 4, 5, 6].map(passengerCount => {
                   const count = confirmedBookings.filter(b => b.passengers === passengerCount).length;
                   const percentage = confirmedBookings.length > 0 ? (count / confirmedBookings.length) * 100 : 0;
                   
                   return (
-                    <div key={passengerCount} className="flex items-center">
-                      <span className="w-32 text-sm font-medium">
-                        {passengerCount} {passengerCount === 1 ? 'Passenger' : 'Passengers'}
-                      </span>
-                      <div className="flex-1 mx-4">
-                        <div className="w-full bg-gray-200 rounded-full h-6 overflow-hidden">
-                          <div
-                            className="bg-gradient-to-r from-blue-500 to-purple-600 h-6 rounded-full flex items-center justify-end pr-2"
-                            style={{ width: `${percentage}%` }}
-                          >
-                            {percentage > 10 && (
-                              <span className="text-xs text-white font-semibold">
-                                {percentage.toFixed(1)}%
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                      <span className="w-24 text-right text-sm font-semibold">{count} bookings</span>
-                    </div>
+                    <PassengerDistribution
+                      key={passengerCount}
+                      passengerCount={passengerCount}
+                      count={count}
+                      percentage={percentage}
+                    />
                   );
                 })}
               </div>
-            </div>
+            </GlassCard>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Route Analysis */}
-      {reportType === 'routes' && (
-        <div className="space-y-6 animate-fade-in">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="stat-card bg-gradient-to-br from-indigo-500 to-indigo-600 text-white">
-              <div className="stat-number">{Object.keys(routeStats).length}</div>
-              <div className="stat-label text-indigo-100">Active Routes</div>
+        {/* Route Analysis */}
+        {reportType === 'routes' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', animation: 'fadeSlideUp 0.8s ease-out' }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                gap: '24px',
+              }}
+            >
+              <StatCard
+                value={Object.keys(routeStats).length}
+                label="Active Routes"
+                icon="🗺️"
+                gradient="linear-gradient(135deg, #6366F1 0%, #4F46E5 100%)"
+                delay="0s"
+              />
+              <StatCard
+                value={topRoutes.length > 0 ? topRoutes[0].count : 0}
+                label="Most Popular Route"
+                icon="🏆"
+                gradient="linear-gradient(135deg, #10B981 0%, #059669 100%)"
+                delay="0.1s"
+              />
+              <StatCard
+                value={`₱${topRoutes.length > 0 ? topRoutes[0].revenue.toLocaleString() : 0}`}
+                label="Top Route Revenue"
+                icon="💎"
+                gradient="linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)"
+                delay="0.2s"
+              />
             </div>
-            <div className="stat-card bg-gradient-to-br from-green-500 to-green-600 text-white">
-              <div className="stat-number">
-                {topRoutes.length > 0 ? topRoutes[0].count : 0}
-              </div>
-              <div className="stat-label text-green-100">Most Popular Route</div>
-            </div>
-            <div className="stat-card bg-gradient-to-br from-purple-500 to-purple-600 text-white">
-              <div className="stat-number">
-                ₱{topRoutes.length > 0 ? topRoutes[0].revenue.toLocaleString() : 0}
-              </div>
-              <div className="stat-label text-purple-100">Top Route Revenue</div>
-            </div>
-          </div>
 
-          <div className="card">
-            <div className="card-header">
-              <h3 className="text-lg font-semibold">Top 5 Routes by Revenue</h3>
-            </div>
-            <div className="p-6">
-              <div className="space-y-4">
+            <GlassCard title="Top 5 Routes by Revenue" icon="🏆">
+              <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
                 {topRoutes.map((route, index) => (
-                  <div key={index} className="border-b border-gray-200 pb-4 last:border-0">
-                    <div className="flex justify-between items-start mb-2">
-                      <div className="flex items-center space-x-3">
-                        <div className="bg-blue-100 text-blue-600 font-bold rounded-full w-8 h-8 flex items-center justify-center">
-                          {index + 1}
-                        </div>
-                        <div>
-                          <p className="font-semibold text-gray-800">{route.route}</p>
-                          <p className="text-sm text-gray-500">
-                            {route.count} bookings • {route.passengers} passengers
-                          </p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-xl font-bold text-green-600">
-                          ₱{route.revenue.toLocaleString()}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          ₱{Math.round(route.revenue / route.passengers).toLocaleString()} per passenger
-                        </p>
-                      </div>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="bg-gradient-to-r from-green-400 to-green-600 h-2 rounded-full"
-                        style={{
-                          width: `${(route.revenue / topRoutes[0].revenue) * 100}%`
-                        }}
-                      ></div>
-                    </div>
-                  </div>
+                  <TopRoute key={index} route={route} index={index} topRevenue={topRoutes[0].revenue} />
                 ))}
               </div>
-            </div>
-          </div>
+            </GlassCard>
 
-          <div className="card">
-            <div className="card-header">
-              <h3 className="text-lg font-semibold">All Routes Performance</h3>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="table">
-                <thead>
-                  <tr className="bg-gray-50">
-                    <th className="table-header">Route</th>
-                    <th className="table-header">Bookings</th>
-                    <th className="table-header">Passengers</th>
-                    <th className="table-header">Revenue</th>
-                    <th className="table-header">Avg per Passenger</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {Object.entries(routeStats)
-                    .map(([route, stats]) => ({ route, ...stats }))
-                    .sort((a, b) => b.revenue - a.revenue)
-                    .map((route, index) => (
-                      <tr key={index} className="table-row">
-                        <td className="table-cell font-semibold">{route.route}</td>
-                        <td className="table-cell">{route.count}</td>
-                        <td className="table-cell">{route.passengers}</td>
-                        <td className="table-cell text-green-600 font-semibold">
-                          ₱{route.revenue.toLocaleString()}
-                        </td>
-                        <td className="table-cell">
-                          ₱{Math.round(route.revenue / route.passengers).toLocaleString()}
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </div>
+            <GlassCard title="All Routes Performance" icon="📊">
+              <div style={{ overflowX: 'auto' }}>
+                {Object.entries(routeStats)
+                  .map(([route, stats]) => ({ route, ...stats }))
+                  .sort((a, b) => b.revenue - a.revenue)
+                  .map((route, index) => (
+                    <RouteRow key={index} route={route} index={index} />
+                  ))}
+              </div>
+            </GlassCard>
+          </div>
+        )}
+      </div>
+
+      {/* Animations */}
+      <style>{`
+        @keyframes fadeSlideDown {
+          from {
+            opacity: 0;
+            transform: translateY(-30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes fadeSlideUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+const StatCard = ({ value, label, icon, gradient, delay }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        borderRadius: '20px',
+        padding: '32px',
+        background: 'rgba(255, 255, 255, 0.15)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        border: '1px solid rgba(255, 255, 255, 0.25)',
+        boxShadow: isHovered
+          ? '0 20px 40px rgba(0, 0, 0, 0.15)'
+          : '0 8px 24px rgba(0, 0, 0, 0.1)',
+        transform: isHovered ? 'translateY(-8px)' : 'translateY(0)',
+        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+        animation: `fadeSlideUp 0.7s ease-out ${delay}`,
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      <div
+        style={{
+          position: 'absolute',
+          top: '20px',
+          right: '20px',
+          fontSize: '48px',
+          opacity: 0.2,
+        }}
+      >
+        {icon}
+      </div>
+      <div
+        style={{
+          fontSize: '48px',
+          fontWeight: 'bold',
+          marginBottom: '12px',
+          background: gradient,
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
+        {value}
+      </div>
+      <div
+        style={{
+          fontSize: '16px',
+          fontWeight: '600',
+          color: '#ffffff',
+          position: 'relative',
+          zIndex: 1,
+          textShadow: '0 1px 5px rgba(0, 0, 0, 0.2)',
+        }}
+      >
+        {label}
+      </div>
+    </div>
+  );
+};
+
+const ExportButton = ({ onClick }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        padding: '14px 28px',
+        borderRadius: '12px',
+        border: 'none',
+        background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+        color: 'white',
+        fontSize: '16px',
+        fontWeight: '600',
+        cursor: 'pointer',
+        transition: 'all 0.3s',
+        boxShadow: isHovered
+          ? '0 8px 20px rgba(16, 185, 129, 0.5)'
+          : '0 4px 12px rgba(16, 185, 129, 0.3)',
+        transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
+      }}
+    >
+      <svg style={{ width: '20px', height: '20px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+      Export CSV
+    </button>
+  );
+};
+
+const ReportButton = ({ active, onClick, label, icon }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        padding: '14px 24px',
+        borderRadius: '12px',
+        border: '1px solid rgba(255, 255, 255, 0.3)',
+        background: active
+          ? 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)'
+          : 'rgba(255, 255, 255, 0.2)',
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
+        color: '#ffffff',
+        fontSize: '15px',
+        fontWeight: '600',
+        cursor: 'pointer',
+        transition: 'all 0.3s',
+        boxShadow: active
+          ? '0 4px 12px rgba(255, 107, 53, 0.3)'
+          : isHovered
+          ? '0 4px 12px rgba(0, 0, 0, 0.15)'
+          : 'none',
+        transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
+        textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+      }}
+    >
+      <span>{icon}</span>
+      {label}
+    </button>
+  );
+};
+
+const GlassCard = ({ title, icon, children }) => {
+  return (
+    <div
+      style={{
+        borderRadius: '24px',
+        background: 'rgba(255, 255, 255, 0.15)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        border: '1px solid rgba(255, 255, 255, 0.25)',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+        overflow: 'hidden',
+      }}
+    >
+      <div
+        style={{
+          padding: '24px 32px',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
+          background: 'rgba(255, 255, 255, 0.1)',
+        }}
+      >
+        <h3
+          style={{
+            fontSize: '20px',
+            fontWeight: '700',
+            color: '#ffffff',
+            textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+          }}
+        >
+          <span>{icon}</span>
+          {title}
+        </h3>
+      </div>
+      {children}
+    </div>
+  );
+};
+
+const BookingRow = ({ booking, index }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+        gap: '16px',
+        padding: '20px 32px',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
+        background: isHovered ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+        transition: 'all 0.3s',
+        animation: `fadeSlideUp 0.3s ease-out ${index * 0.05}s backwards`,
+      }}
+    >
+      <div>
+        <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '4px', textTransform: 'uppercase' }}>Ref</p>
+        <p style={{ fontFamily: 'monospace', fontSize: '14px', fontWeight: '600', color: '#ffffff', textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)' }}>
+          {booking.bookingReference}
+        </p>
+      </div>
+      <div>
+        <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '4px', textTransform: 'uppercase' }}>Flight</p>
+        <p style={{ fontSize: '15px', fontWeight: '600', color: '#ffffff', textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)' }}>
+          {booking.flight.flightNumber}
+        </p>
+      </div>
+      <div>
+        <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '4px', textTransform: 'uppercase' }}>Route</p>
+        <p style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.95)', textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)' }}>
+          {booking.flight.origin} → {booking.flight.destination}
+        </p>
+      </div>
+      <div>
+        <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '4px', textTransform: 'uppercase' }}>Passengers</p>
+        <p style={{ fontSize: '15px', fontWeight: '600', color: '#ffffff', textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)' }}>
+          {booking.passengers}
+        </p>
+      </div>
+      <div>
+        <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '4px', textTransform: 'uppercase' }}>Amount</p>
+        <p style={{ fontSize: '16px', fontWeight: '700', color: '#10B981', textShadow: '0 2px 8px rgba(16, 185, 129, 0.5)' }}>
+          ₱{booking.totalPrice.toLocaleString()}
+        </p>
+      </div>
+      <div>
+        <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '4px', textTransform: 'uppercase' }}>Date</p>
+        <p style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.95)', textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)' }}>
+          {booking.bookingDate}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+const FlightRow = ({ flight, index, getStatusColor }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
+        gap: '16px',
+        padding: '20px 32px',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
+        background: isHovered ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+        transition: 'all 0.3s',
+        animation: `fadeSlideUp 0.3s ease-out ${index * 0.05}s backwards`,
+      }}
+    >
+      <div>
+        <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '4px', textTransform: 'uppercase' }}>Flight</p>
+        <p style={{ fontSize: '15px', fontWeight: '600', color: '#ffffff', textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)' }}>
+          {flight.flightNumber}
+        </p>
+      </div>
+      <div>
+        <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '4px', textTransform: 'uppercase' }}>Route</p>
+        <p style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.95)', textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)' }}>
+          {flight.origin} → {flight.destination}
+        </p>
+      </div>
+      <div>
+        <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '4px', textTransform: 'uppercase' }}>Date</p>
+        <p style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.95)', textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)' }}>
+          {flight.date}
+        </p>
+      </div>
+      <div>
+        <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '4px', textTransform: 'uppercase' }}>Capacity</p>
+        <p style={{ fontSize: '15px', fontWeight: '600', color: '#ffffff', textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)' }}>
+          {flight.seatCapacity}
+        </p>
+      </div>
+      <div>
+        <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '4px', textTransform: 'uppercase' }}>Booked</p>
+        <p style={{ fontSize: '15px', fontWeight: '600', color: '#ffffff', textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)' }}>
+          {flight.bookedSeats}
+        </p>
+      </div>
+      <div>
+        <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '4px', textTransform: 'uppercase' }}>Occupancy</p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ fontSize: '14px', fontWeight: '600', color: '#ffffff', textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)' }}>
+            {flight.occupancyRate.toFixed(1)}%
+          </span>
+          <div style={{ flex: 1, background: 'rgba(255, 255, 255, 0.2)', borderRadius: '10px', height: '8px', overflow: 'hidden' }}>
+            <div
+              style={{
+                height: '100%',
+                borderRadius: '10px',
+                width: `${flight.occupancyRate}%`,
+                background: flight.occupancyRate >= 80 
+                  ? 'linear-gradient(90deg, #10B981, #059669)' 
+                  : flight.occupancyRate >= 50 
+                  ? 'linear-gradient(90deg, #F59E0B, #D97706)' 
+                  : 'linear-gradient(90deg, #EF4444, #DC2626)',
+                transition: 'width 0.5s ease-out',
+              }}
+            ></div>
           </div>
         </div>
-      )}
+      </div>
+      <div>
+        <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '4px', textTransform: 'uppercase' }}>Revenue</p>
+        <p style={{ fontSize: '16px', fontWeight: '700', color: '#10B981', textShadow: '0 2px 8px rgba(16, 185, 129, 0.5)' }}>
+          ₱{flight.revenue.toLocaleString()}
+        </p>
+      </div>
+      <div>
+        <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '4px', textTransform: 'uppercase' }}>Status</p>
+        <span
+          style={{
+            display: 'inline-block',
+            padding: '4px 12px',
+            borderRadius: '8px',
+            fontSize: '12px',
+            fontWeight: '600',
+            background: `${getStatusColor(flight.status)}33`,
+            color: getStatusColor(flight.status),
+            border: `1px solid ${getStatusColor(flight.status)}66`,
+          }}
+        >
+          {flight.status}
+        </span>
+      </div>
+    </div>
+  );
+};
+
+const PassengerDistribution = ({ passengerCount, count, percentage }) => {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+      <span
+        style={{
+          width: '140px',
+          fontSize: '14px',
+          fontWeight: '600',
+          color: '#ffffff',
+          textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
+        }}
+      >
+        {passengerCount} {passengerCount === 1 ? 'Passenger' : 'Passengers'}
+      </span>
+      <div style={{ flex: 1 }}>
+        <div
+          style={{
+            width: '100%',
+            background: 'rgba(255, 255, 255, 0.2)',
+            borderRadius: '12px',
+            height: '32px',
+            overflow: 'hidden',
+            position: 'relative',
+          }}
+        >
+          <div
+            style={{
+              height: '100%',
+              borderRadius: '12px',
+              background: 'linear-gradient(90deg, #3B82F6, #8B5CF6)',
+              width: `${percentage}%`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              paddingRight: '12px',
+              transition: 'width 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+              boxShadow: '0 2px 8px rgba(59, 130, 246, 0.4)',
+            }}
+          >
+            {percentage > 10 && (
+              <span
+                style={{
+                  fontSize: '12px',
+                  color: 'white',
+                  fontWeight: '700',
+                  textShadow: '0 1px 3px rgba(0, 0, 0, 0.3)',
+                }}
+              >
+                {percentage.toFixed(1)}%
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+      <span
+        style={{
+          width: '100px',
+          textAlign: 'right',
+          fontSize: '14px',
+          fontWeight: '700',
+          color: '#ffffff',
+          textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
+        }}
+      >
+        {count} bookings
+      </span>
+    </div>
+  );
+};
+
+const TopRoute = ({ route, index, topRevenue }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        padding: '20px',
+        borderRadius: '16px',
+        background: isHovered ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.1)',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
+        transition: 'all 0.3s',
+        animation: `fadeSlideUp 0.4s ease-out ${index * 0.1}s backwards`,
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div
+            style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #3B82F6, #2563EB)',
+              color: 'white',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '20px',
+              fontWeight: 'bold',
+              boxShadow: '0 4px 12px rgba(59, 130, 246, 0.4)',
+            }}
+          >
+            {index + 1}
+          </div>
+          <div>
+            <p
+              style={{
+                fontSize: '18px',
+                fontWeight: '700',
+                color: '#ffffff',
+                marginBottom: '4px',
+                textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+              }}
+            >
+              {route.route}
+            </p>
+            <p
+              style={{
+                fontSize: '13px',
+                color: 'rgba(255, 255, 255, 0.8)',
+                textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
+              }}
+            >
+              {route.count} bookings • {route.passengers} passengers
+            </p>
+          </div>
+        </div>
+        <div style={{ textAlign: 'right' }}>
+          <p
+            style={{
+              fontSize: '24px',
+              fontWeight: '700',
+              color: '#10B981',
+              textShadow: '0 2px 10px rgba(16, 185, 129, 0.5)',
+              marginBottom: '4px',
+            }}
+          >
+            ₱{route.revenue.toLocaleString()}
+          </p>
+          <p
+            style={{
+              fontSize: '12px',
+              color: 'rgba(255, 255, 255, 0.7)',
+              textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
+            }}
+          >
+            ₱{Math.round(route.revenue / route.passengers).toLocaleString()} per passenger
+          </p>
+        </div>
+      </div>
+      <div
+        style={{
+          width: '100%',
+          background: 'rgba(255, 255, 255, 0.2)',
+          borderRadius: '10px',
+          height: '8px',
+          overflow: 'hidden',
+        }}
+      >
+        <div
+          style={{
+            height: '100%',
+            borderRadius: '10px',
+            background: 'linear-gradient(90deg, #10B981, #059669)',
+            width: `${(route.revenue / topRevenue) * 100}%`,
+            transition: 'width 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+            boxShadow: '0 2px 8px rgba(16, 185, 129, 0.5)',
+          }}
+        ></div>
+      </div>
+    </div>
+  );
+};
+
+const RouteRow = ({ route, index }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+        gap: '16px',
+        padding: '20px 32px',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
+        background: isHovered ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+        transition: 'all 0.3s',
+        animation: `fadeSlideUp 0.3s ease-out ${index * 0.05}s backwards`,
+      }}
+    >
+      <div>
+        <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '4px', textTransform: 'uppercase' }}>Route</p>
+        <p style={{ fontSize: '15px', fontWeight: '600', color: '#ffffff', textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)' }}>
+          {route.route}
+        </p>
+      </div>
+      <div>
+        <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '4px', textTransform: 'uppercase' }}>Bookings</p>
+        <p style={{ fontSize: '15px', fontWeight: '600', color: '#ffffff', textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)' }}>
+          {route.count}
+        </p>
+      </div>
+      <div>
+        <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '4px', textTransform: 'uppercase' }}>Passengers</p>
+        <p style={{ fontSize: '15px', fontWeight: '600', color: '#ffffff', textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)' }}>
+          {route.passengers}
+        </p>
+      </div>
+      <div>
+        <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '4px', textTransform: 'uppercase' }}>Revenue</p>
+        <p style={{ fontSize: '16px', fontWeight: '700', color: '#10B981', textShadow: '0 2px 8px rgba(16, 185, 129, 0.5)' }}>
+          ₱{route.revenue.toLocaleString()}
+        </p>
+      </div>
+      <div>
+        <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '4px', textTransform: 'uppercase' }}>Avg/Passenger</p>
+        <p style={{ fontSize: '15px', fontWeight: '600', color: 'rgba(255, 255, 255, 0.95)', textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)' }}>
+          ₱{Math.round(route.revenue / route.passengers).toLocaleString()}
+        </p>
+      </div>
     </div>
   );
 };

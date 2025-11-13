@@ -53,6 +53,9 @@ const BookingManagement = () => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
+        margin: '-34px',
+        paddingTop: '48px',
+        paddingBottom: '48px',
       }}
     >
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>

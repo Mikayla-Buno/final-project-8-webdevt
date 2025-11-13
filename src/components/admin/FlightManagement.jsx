@@ -123,13 +123,16 @@ const FlightManagement = () => {
 
   return (
     <div style={{
-      minHeight: '100vh',
-      padding: '2.5rem 1rem',
-      backgroundImage: 'url(/images/home.jpg)',
-      backgroundAttachment: 'fixed',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat'
+         minHeight: '100vh',
+        padding: '40px 16px',
+        backgroundImage: `url('/images/home.jpg')`,
+        backgroundAttachment: 'fixed',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        margin: '-34px',
+        paddingTop: '48px',
+        paddingBottom: '48px',
     }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
         

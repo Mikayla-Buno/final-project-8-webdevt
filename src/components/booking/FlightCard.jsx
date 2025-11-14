@@ -17,6 +17,7 @@ const FlightCard = ({ flight, searchParams }) => {
     { name: user?.name || '', age: '', seat: '' }
   ]);
   const [loading, setLoading] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleCardClick = () => {
     setShowModal(true);
@@ -24,7 +25,7 @@ const FlightCard = ({ flight, searchParams }) => {
   };
 
   const handleBookClick = (e) => {
-    e.stopPropagation();
+    if (e) e.stopPropagation();
     
     if (!user) {
       alert('Please login to book a flight');
@@ -82,86 +83,183 @@ const FlightCard = ({ flight, searchParams }) => {
     }
   };
 
-  const getStatusClass = (status) => {
-    switch (status) {
-      case 'On Time': return 'status-on-time';
-      case 'Delayed': return 'status-delayed';
-      case 'Cancelled': return 'status-cancelled';
-      default: return 'status-on-time';
-    }
-  };
-
   const isBookable = flight.status !== 'Cancelled' && flight.availableSeats > 0;
   const totalPrice = flight.price * passengers;
 
   return (
     <>
-      <div className="flight-card" onClick={handleCardClick}>
+      {/* Flight Card */}
+      <div
+        onClick={handleCardClick}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        style={{
+          borderRadius: '20px',
+          overflow: 'hidden',
+          background: 'rgba(255, 255, 255, 0.15)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.25)',
+          transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+          cursor: 'pointer',
+          boxShadow: isHovered
+            ? '0 20px 40px rgba(0, 0, 0, 0.3)'
+            : '0 8px 24px rgba(0, 0, 0, 0.15)',
+          transform: isHovered ? 'translateY(-8px)' : 'translateY(0)',
+        }}
+      >
         {/* Flight Image */}
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative', height: '200px', overflow: 'hidden' }}>
           <img
             src={flight.image}
             alt={`${flight.origin} to ${flight.destination}`}
-            className="flight-image"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              transition: 'transform 0.4s',
+              transform: isHovered ? 'scale(1.1)' : 'scale(1)',
+            }}
             onError={(e) => {
               e.target.src = 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80';
             }}
           />
-          <div style={{ position: 'absolute', top: '1rem', right: '1rem' }}>
-            <span className={getStatusClass(flight.status)}>
-              {flight.status}
-            </span>
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%)',
+          }} />
+          
+          {/* Status Badge */}
+          <div style={{
+            position: 'absolute',
+            top: '15px',
+            right: '15px',
+            padding: '8px 16px',
+            borderRadius: '12px',
+            background: flight.status === 'On Time' 
+              ? 'linear-gradient(135deg, #10B981 0%, #059669 100%)'
+              : flight.status === 'Delayed'
+              ? 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)'
+              : 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)',
+            color: 'white',
+            fontSize: '12px',
+            fontWeight: '600',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+          }}>
+            {flight.status}
+          </div>
+
+          {/* Flight Number */}
+          <div style={{
+            position: 'absolute',
+            bottom: '15px',
+            left: '20px',
+            color: 'white',
+          }}>
+            <div style={{ fontSize: '20px', fontWeight: '700', textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)', marginBottom: '4px' }}>
+              {flight.flightNumber}
+            </div>
+            <div style={{ fontSize: '13px', opacity: 0.95, textShadow: '0 1px 4px rgba(0, 0, 0, 0.5)' }}>
+              {flight.aircraft}
+            </div>
           </div>
         </div>
 
-        {/* Flight Content */}
-        <div className="flight-card-content">
-          <div className="flight-header">
-            <div>
-              <div className="flight-number">{flight.flightNumber}</div>
-              <div style={{ fontSize: '0.875rem', color: '#64748B', marginTop: '0.25rem' }}>
-                {flight.aircraft}
+        {/* Card Content */}
+        <div style={{ padding: '24px' }}>
+          {/* Route */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            marginBottom: '20px',
+            padding: '16px',
+            background: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            borderRadius: '12px',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+          }}>
+            <div style={{ flex: 1, textAlign: 'center' }}>
+              <div style={{ fontSize: '18px', fontWeight: '700', color: '#ffffff', textShadow: '0 1px 3px rgba(0, 0, 0, 0.3)' }}>
+                {flight.origin}
               </div>
             </div>
-            <div style={{ textAlign: 'right' }}>
-              <div className="flight-price">₱{flight.price.toLocaleString()}</div>
-              <div className="flight-price-label">per person</div>
+            <div style={{ fontSize: '20px' }}>✈️</div>
+            <div style={{ flex: 1, textAlign: 'center' }}>
+              <div style={{ fontSize: '18px', fontWeight: '700', color: '#ffffff', textShadow: '0 1px 3px rgba(0, 0, 0, 0.3)' }}>
+                {flight.destination}
+              </div>
             </div>
           </div>
 
-          <div className="flight-route">
-            <span className="flight-route-text">{flight.origin}</span>
-            <span className="flight-arrow">→</span>
-            <span className="flight-route-text">{flight.destination}</span>
+          {/* Details Grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '12px',
+            marginBottom: '20px',
+          }}>
+            <DetailBadge label="Date" value={flight.date} />
+            <DetailBadge label="Duration" value={flight.duration} />
+            <DetailBadge label="Depart" value={flight.departureTime} />
+            <DetailBadge label="Seats" value={`${flight.availableSeats} available`} />
           </div>
 
-          <div className="flight-details">
-            <div className="flight-detail-item">
-              <span className="flight-detail-label">Date</span>
-              <span className="flight-detail-value">{flight.date}</span>
+          {/* Price */}
+          <div style={{
+            padding: '16px',
+            borderRadius: '12px',
+            background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
+            textAlign: 'center',
+            color: 'white',
+            marginBottom: '16px',
+            boxShadow: '0 4px 12px rgba(255, 107, 53, 0.4)',
+          }}>
+            <div style={{ fontSize: '12px', opacity: 0.9, marginBottom: '4px' }}>
+              Price per person
             </div>
-            <div className="flight-detail-item">
-              <span className="flight-detail-label">Duration</span>
-              <span className="flight-detail-value">{flight.duration}</span>
-            </div>
-            <div className="flight-detail-item">
-              <span className="flight-detail-label">Departure</span>
-              <span className="flight-detail-value">{flight.departureTime}</span>
-            </div>
-            <div className="flight-detail-item">
-              <span className="flight-detail-label">Available</span>
-              <span className="flight-detail-value">{flight.availableSeats} seats</span>
+            <div style={{ fontSize: '28px', fontWeight: '800' }}>
+              ₱{flight.price.toLocaleString()}
             </div>
           </div>
 
+          {/* Action Button */}
           <button
-            onClick={setShowModal}
+            onClick={handleCardClick}
             disabled={!isBookable}
-            className={`btn ${isBookable ? 'btn-primary' : 'btn-secondary'}`}
-            style={{ width: '100%', marginTop: '1rem' }}
+            style={{
+              width: '100%',
+              padding: '14px',
+              borderRadius: '12px',
+              border: 'none',
+              background: !isBookable 
+                ? 'rgba(148, 163, 184, 0.5)'
+                : 'rgba(255, 255, 255, 0.2)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              color: '#ffffff',
+              fontSize: '15px',
+              fontWeight: '700',
+              cursor: isBookable ? 'pointer' : 'not-allowed',
+              transition: 'all 0.3s',
+              textShadow: '0 1px 3px rgba(0, 0, 0, 0.3)',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+            }}
+            onMouseEnter={(e) => {
+              if (isBookable) {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
           >
-            {flight.status === 'Cancelled' ? 'Flight Cancelled' :
-             flight.availableSeats === 0 ? 'Fully Booked' : 'View Details & Book'}
+            {flight.status === 'Cancelled' ? '❌ Flight Cancelled' :
+             flight.availableSeats === 0 ? '🔒 Fully Booked' : '✈️ View Details & Book'}
           </button>
         </div>
       </div>
@@ -169,22 +267,32 @@ const FlightCard = ({ flight, searchParams }) => {
       {/* Enhanced Modal */}
       {showModal && (
         <div 
-          className="modal-overlay" 
           onClick={() => setShowModal(false)}
           style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0, 0, 0, 0.7)',
             backdropFilter: 'blur(8px)',
             WebkitBackdropFilter: 'blur(8px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: '20px',
+            animation: 'fadeIn 0.3s ease',
           }}
         >
           <div 
-            className="modal-content" 
             onClick={(e) => e.stopPropagation()}
             style={{ 
+              width: '100%',
               maxWidth: '1000px', 
               maxHeight: '90vh', 
               overflowY: 'auto',
+              background: 'white',
               borderRadius: '24px',
-              padding: 0,
+              boxShadow: '0 25px 50px rgba(0,0,0,0.3)',
+              animation: 'slideUp 0.4s ease',
             }}
           >
             {/* Modal Header with Image */}
@@ -422,7 +530,7 @@ const FlightCard = ({ flight, searchParams }) => {
                           borderRadius: '12px',
                           fontSize: '15px',
                           fontWeight: '600',
-                          color: 'D97706',
+                          color: '#3B82F6',
                           display: 'flex',
                           alignItems: 'center',
                           gap: '8px',
@@ -641,10 +749,10 @@ const FlightCard = ({ flight, searchParams }) => {
                   <div style={{
                     padding: '30px',
                     borderRadius: '16px',
-                    background: 'linear-gradient(135deg,  #FF6B35 0%, #F7931E 100%)',
+                    background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
                     color: 'white',
                     marginBottom: '30px',
-                    boxShadow: '0 8px 24px rgba(59, 130, 246, 0.3)',
+                    boxShadow: '0 8px 24px rgba(255, 107, 53, 0.3)',
                   }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <div>
@@ -719,15 +827,15 @@ const FlightCard = ({ flight, searchParams }) => {
                     fontWeight: '700',
                     cursor: 'pointer',
                     transition: 'all 0.3s',
-                    boxShadow: '0 8px 20px rgba(59, 130, 246, 0.3)',
+                    boxShadow: '0 8px 20px rgba(255, 107, 53, 0.3)',
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'translateY(-2px)';
-                    e.currentTarget.style.boxShadow = '0 12px 28px rgba(59, 130, 246, 0.4)';
+                    e.currentTarget.style.boxShadow = '0 12px 28px rgba(255, 107, 53, 0.4)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = '0 8px 20px rgba(59, 130, 246, 0.3)';
+                    e.currentTarget.style.boxShadow = '0 8px 20px rgba(255, 107, 53, 0.3)';
                   }}
                 >
                   ✈️ Book This Flight
@@ -775,6 +883,22 @@ const FlightCard = ({ flight, searchParams }) => {
 
       {/* Custom Styles */}
       <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
         input::placeholder {
           color: #94A3B8;
         }
@@ -790,5 +914,37 @@ const FlightCard = ({ flight, searchParams }) => {
     </>
   );
 };
+
+// Detail Badge Component
+const DetailBadge = ({ label, value }) => (
+  <div style={{
+    padding: '12px',
+    background: 'rgba(255, 255, 255, 0.1)',
+    backdropFilter: 'blur(10px)',
+    WebkitBackdropFilter: 'blur(10px)',
+    borderRadius: '10px',
+    border: '1px solid rgba(255, 255, 255, 0.2)',
+  }}>
+    <div style={{
+      fontSize: '11px',
+      color: 'rgba(255, 255, 255, 0.8)',
+      marginBottom: '4px',
+      textTransform: 'uppercase',
+      fontWeight: '600',
+      letterSpacing: '0.5px',
+      textShadow: '0 1px 2px rgba(0, 0, 0, 0.2)',
+    }}>
+      {label}
+    </div>
+    <div style={{
+      fontSize: '14px',
+      fontWeight: '700',
+      color: '#ffffff',
+      textShadow: '0 1px 3px rgba(0, 0, 0, 0.3)',
+    }}>
+      {value}
+    </div>
+  </div>
+);
 
 export default FlightCard;

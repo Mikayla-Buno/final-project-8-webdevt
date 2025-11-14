@@ -26,10 +26,10 @@ const Dashboard = () => {
     .filter(trip => trip.date && new Date(trip.date) >= new Date())
     .sort((a, b) => new Date(a.date) - new Date(b.date));
 
-  // Show next 5 available flights
+  // Show ALL available flights (removed .slice(0, 5))
   const upcomingFlights = flights
     .filter(flight => new Date(flight.date) >= new Date())
-    .slice(0, 5);
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
 
   return (
     <div
@@ -43,7 +43,7 @@ const Dashboard = () => {
       }}
     >
       {/* Welcome Banner - TRUE Glass Design */}
-      <div 
+      <div
         className="mb-10 shadow-lg"
         style={{
           borderRadius: '24px',
@@ -58,7 +58,7 @@ const Dashboard = () => {
           animation: 'fadeSlideDown 0.6s ease-out',
         }}
       >
-        <h1 
+        <h1
           style={{
             fontSize: 'clamp(2rem, 4vw, 2.5rem)',
             fontWeight: 'bold',
@@ -69,8 +69,8 @@ const Dashboard = () => {
         >
           Welcome aboard, {user?.name || 'Traveler'}! ✈️
         </h1>
-        <p 
-          style={{ 
+        <p
+          style={{
             fontSize: '18px',
             color: '#ffffff',
             fontWeight: '500',
@@ -85,7 +85,7 @@ const Dashboard = () => {
 
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
         {/* Statistics Overview - TRUE Glass Cards */}
-        <div 
+        <div
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
@@ -93,21 +93,21 @@ const Dashboard = () => {
             marginBottom: '48px',
           }}
         >
-          <StatCard 
+          <StatCard
             value={upcomingTrips.length}
             label="Upcoming Trips"
             icon="✈️"
             delay="0s"
             gradient="linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)"
           />
-          <StatCard 
+          <StatCard
             value={upcomingFlights.length}
             label="Available Flights"
             icon="🕐"
             delay="0.1s"
             gradient="linear-gradient(135deg, #2A9D8F 0%, #A9D6E5 100%)"
           />
-          <StatCard 
+          <StatCard
             value={upcomingTrips.reduce((total, booking) => total + booking.passengers, 0)}
             label="Total Passengers"
             icon="👥"
@@ -117,7 +117,7 @@ const Dashboard = () => {
         </div>
 
         {/* Two Column Layout */}
-        <div 
+        <div
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
@@ -137,7 +137,7 @@ const Dashboard = () => {
               animation: 'fadeSlideUp 0.8s ease-out',
             }}
           >
-            <h2 
+            <h2
               style={{
                 fontSize: '24px',
                 fontWeight: '700',
@@ -164,7 +164,7 @@ const Dashboard = () => {
             )}
           </div>
 
-          {/* Available Flights Card - TRUE Glass */}
+          {/* Available Flights Card - TRUE Glass - SHOWS ALL FLIGHTS */}
           <div
             style={{
               borderRadius: '24px',
@@ -177,7 +177,7 @@ const Dashboard = () => {
               animation: 'fadeSlideUp 0.9s ease-out',
             }}
           >
-            <h2 
+            <h2
               style={{
                 fontSize: '24px',
                 fontWeight: '700',
@@ -190,7 +190,7 @@ const Dashboard = () => {
               }}
             >
               <span>🌍</span>
-              Available Flights
+              Available Flights ({upcomingFlights.length})
             </h2>
 
             {upcomingFlights.length > 0 ? (
@@ -248,8 +248,8 @@ const StatCard = ({ value, label, icon, delay, gradient }) => {
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         border: '1px solid rgba(255, 255, 255, 0.25)',
-        boxShadow: isHovered 
-          ? '0 20px 40px rgba(0, 0, 0, 0.15)' 
+        boxShadow: isHovered
+          ? '0 20px 40px rgba(0, 0, 0, 0.15)'
           : '0 8px 24px rgba(0, 0, 0, 0.1)',
         transform: isHovered ? 'translateY(-8px)' : 'translateY(0)',
         transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -280,9 +280,9 @@ const StatCard = ({ value, label, icon, delay, gradient }) => {
       }}>
         {value}
       </div>
-      <div style={{ 
-        fontSize: '16px', 
-        fontWeight: '600', 
+      <div style={{
+        fontSize: '16px',
+        fontWeight: '600',
         color: '#ffffff',
         position: 'relative',
         zIndex: 1,
@@ -309,8 +309,8 @@ const TripCard = ({ booking, index }) => {
         WebkitBackdropFilter: 'blur(10px)',
         border: '1px solid rgba(255, 255, 255, 0.3)',
         transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-        boxShadow: isHovered 
-          ? '0 8px 20px rgba(0, 0, 0, 0.15)' 
+        boxShadow: isHovered
+          ? '0 8px 20px rgba(0, 0, 0, 0.15)'
           : '0 4px 12px rgba(0, 0, 0, 0.08)',
         transform: isHovered ? 'translateX(8px)' : 'translateX(0)',
         animation: `fadeSlideUp 0.5s ease-out ${index * 0.1}s backwards`,
@@ -318,8 +318,8 @@ const TripCard = ({ booking, index }) => {
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div style={{ flex: 1 }}>
-          <h3 style={{ 
-            fontWeight: '700', 
+          <h3 style={{
+            fontWeight: '700',
             fontSize: '18px',
             color: '#ffffff',
             marginBottom: '8px',
@@ -327,8 +327,8 @@ const TripCard = ({ booking, index }) => {
           }}>
             Flight #{booking.flightNumber}
           </h3>
-          <p style={{ 
-            fontSize: '15px', 
+          <p style={{
+            fontSize: '15px',
             color: '#ffffff',
             fontWeight: '500',
             marginBottom: '8px',
@@ -336,8 +336,8 @@ const TripCard = ({ booking, index }) => {
           }}>
             {booking.origin} → {booking.destination}
           </p>
-          <p style={{ 
-            fontSize: '13px', 
+          <p style={{
+            fontSize: '13px',
             color: 'rgba(255, 255, 255, 0.9)',
             display: 'flex',
             alignItems: 'center',
@@ -383,8 +383,8 @@ const FlightCard = ({ flight, index }) => {
         WebkitBackdropFilter: 'blur(10px)',
         border: '1px solid rgba(255, 255, 255, 0.3)',
         transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-        boxShadow: isHovered 
-          ? '0 8px 20px rgba(0, 0, 0, 0.15)' 
+        boxShadow: isHovered
+          ? '0 8px 20px rgba(0, 0, 0, 0.15)'
           : '0 4px 12px rgba(0, 0, 0, 0.08)',
         transform: isHovered ? 'translateX(8px)' : 'translateX(0)',
         animation: `fadeSlideUp 0.5s ease-out ${index * 0.1}s backwards`,
@@ -392,8 +392,8 @@ const FlightCard = ({ flight, index }) => {
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ flex: 1 }}>
-          <h3 style={{ 
-            fontWeight: '700', 
+          <h3 style={{
+            fontWeight: '700',
             fontSize: '18px',
             color: '#ffffff',
             marginBottom: '8px',
@@ -401,8 +401,8 @@ const FlightCard = ({ flight, index }) => {
           }}>
             {flight.origin} → {flight.destination}
           </h3>
-          <p style={{ 
-            fontSize: '13px', 
+          <p style={{
+            fontSize: '13px',
             color: 'rgba(255, 255, 255, 0.9)',
             display: 'flex',
             alignItems: 'center',
@@ -414,7 +414,7 @@ const FlightCard = ({ flight, index }) => {
           </p>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <p style={{ 
+          <p style={{
             fontWeight: '700',
             fontSize: '24px',
             color: '#ffffff',
@@ -423,8 +423,8 @@ const FlightCard = ({ flight, index }) => {
           }}>
             ₱{flight.price.toLocaleString()}
           </p>
-          <p style={{ 
-            fontSize: '12px', 
+          <p style={{
+            fontSize: '12px',
             color: 'rgba(255, 255, 255, 0.8)',
             textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
           }}>
@@ -454,15 +454,15 @@ const EmptyTripState = () => {
       }}>
         ✈️
       </div>
-      <p style={{ 
-        color: '#ffffff', 
+      <p style={{
+        color: '#ffffff',
         marginBottom: '24px',
         fontSize: '15px',
         textShadow: '0 1px 5px rgba(0, 0, 0, 0.2)',
       }}>
         You don't have any upcoming trips yet.
       </p>
-      <Link 
+      <Link
         to="/flights"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -477,8 +477,8 @@ const EmptyTripState = () => {
           color: 'white',
           textDecoration: 'none',
           background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
-          boxShadow: isHovered 
-            ? '0 8px 20px rgba(255, 107, 53, 0.4)' 
+          boxShadow: isHovered
+            ? '0 8px 20px rgba(255, 107, 53, 0.4)'
             : '0 4px 12px rgba(255, 107, 53, 0.3)',
           transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
           transition: 'all 0.3s',
@@ -506,7 +506,7 @@ const EmptyFlightState = () => {
       }}>
         🌍
       </div>
-      <p style={{ 
+      <p style={{
         color: '#ffffff',
         fontSize: '15px',
         textShadow: '0 1px 5px rgba(0, 0, 0, 0.2)',

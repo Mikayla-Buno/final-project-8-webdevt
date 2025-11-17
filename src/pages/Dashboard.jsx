@@ -26,9 +26,9 @@ const Dashboard = () => {
     .filter(trip => trip.date && new Date(trip.date) >= new Date())
     .sort((a, b) => new Date(a.date) - new Date(b.date));
 
-  // Show ALL available flights (removed .slice(0, 5))
+  // Show ALL available flights
   const upcomingFlights = flights
-    .filter(flight => new Date(flight.date) >= new Date())
+    .filter(flight => new Date(flight.date) >= new Date() && flight.availableSeats > 0)
     .sort((a, b) => new Date(a.date) - new Date(b.date));
 
   return (

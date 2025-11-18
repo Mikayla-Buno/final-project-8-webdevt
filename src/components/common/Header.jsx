@@ -98,17 +98,7 @@ const Header = () => {
               gap: '0.5rem',
             }}
           >
-            <NavLink to="/dashboard" isActive={isActive('/dashboard')}>
-              Dashboard
-            </NavLink>
-            <NavLink to="/flights" isActive={isActive('/flights')}>
-              Flights
-            </NavLink>
-            <NavLink to="/bookings" isActive={isActive('/bookings')}>
-              My Bookings
-            </NavLink>
-
-            {user?.role === 'admin' && (
+            {user?.role === 'admin' ? (
               <>
                 <NavLink to="/admin/flights" isActive={isActive('/admin/flights')}>
                   Manage Flights
@@ -118,6 +108,18 @@ const Header = () => {
                 </NavLink>
                 <NavLink to="/admin/reports" isActive={isActive('/admin/reports')}>
                   Reports
+                </NavLink>
+              </>
+            ) : (
+              <>
+                <NavLink to="/dashboard" isActive={isActive('/dashboard')}>
+                  Dashboard
+                </NavLink>
+                <NavLink to="/flights" isActive={isActive('/flights')}>
+                  Flights
+                </NavLink>
+                <NavLink to="/bookings" isActive={isActive('/bookings')}>
+                  My Bookings
                 </NavLink>
               </>
             )}

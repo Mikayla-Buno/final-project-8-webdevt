@@ -27,9 +27,43 @@ const FlightManagement = () => {
     amenities: ''
   });
 
+  const calculateDuration = (departure, arrival) => {
+    if (!departure || !arrival) return '';
+    
+    const [depHour, depMin] = departure.split(':').map(Number);
+    const [arrHour, arrMin] = arrival.split(':').map(Number);
+    
+    let totalMinutes = (arrHour * 60 + arrMin) - (depHour * 60 + depMin);
+    
+    // Handle overnight flights
+    if (totalMinutes < 0) {
+      totalMinutes += 24 * 60;
+    }
+    
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    
+    if (hours === 0) {
+      return `${minutes}m`;
+    } else if (minutes === 0) {
+      return `${hours}h`;
+    } else {
+      return `${hours}h ${minutes}m`;
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const updatedData = { ...formData, [name]: value };
+
+    // Auto-calculate duration when departure or arrival time changes
+    if (name === 'departureTime' || name === 'arrivalTime') {
+      const departure = name === 'departureTime' ? value : formData.departureTime;
+      const arrival = name === 'arrivalTime' ? value : formData.arrivalTime;
+      updatedData.duration = calculateDuration(departure, arrival);
+    }
+    
+    setFormData(updatedData);
   };
 
   const handleImageUpload = (e) => {
@@ -291,7 +325,7 @@ const FlightManagement = () => {
                 <FormField label="Destination" name="destination" value={formData.destination} onChange={handleInputChange} required placeholder="e.g., Cebu (CEB)" />
                 <FormField label="Departure Time" name="departureTime" type="time" value={formData.departureTime} onChange={handleInputChange} required />
                 <FormField label="Arrival Time" name="arrivalTime" type="time" value={formData.arrivalTime} onChange={handleInputChange} required />
-                <FormField label="Duration" name="duration" value={formData.duration} onChange={handleInputChange} required placeholder="e.g., 1h 30m" />
+                <FormField label="Duration" name="duration" value={formData.duration} onChange={handleInputChange} placeholder="Auto-calculated" disabled />
                 <FormField label="Date" name="date" type="date" value={formData.date} onChange={handleInputChange} required />
                 <FormField label="Price (₱)" name="price" type="number" value={formData.price} onChange={handleInputChange} required min="0" step="0.01" placeholder="e.g., 2500" />
                 <FormField label="Seat Capacity" name="seatCapacity" type="number" value={formData.seatCapacity} onChange={handleInputChange} required min="1" placeholder="e.g., 180" />
@@ -542,51 +576,56 @@ const FilterButton = ({ active, onClick, count, children }) => {
 };
 
 // Form Field Component
-const FormField = ({ label, name, value, onChange, type = 'text', required, placeholder, select, options, textarea, rows, min, step }) => (
+const FormField = ({ label, name, value, onChange, type = 'text', required, placeholder, select, options, textarea, rows, min, step, disabled }) => (
   <div>
     <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#1F2937', fontSize: '14px' }}>
       {label} {required && <span style={{ color: '#EF4444' }}>*</span>}
     </label>
     {select ? (
-      <select name={name} value={value} onChange={onChange} required={required} style={{
+      <select name={name} value={value} onChange={onChange} required={required} disabled={disabled} style={{
         width: '100%',
         padding: '12px',
         borderRadius: '10px',
         border: '2px solid rgba(0, 0, 0, 0.2)',
-        background: '#F9FAFB',
+        background: disabled ? '#F3F4F6' : '#F9FAFB',
         color: '#1F2937',
         fontSize: '14px',
         outline: 'none',
         fontWeight: '500',
-        cursor: 'pointer'
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: disabled ? 0.6 : 1
       }}>
         {options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
       </select>
     ) : textarea ? (
-      <textarea name={name} value={value} onChange={onChange} rows={rows} placeholder={placeholder} style={{
+      <textarea name={name} value={value} onChange={onChange} rows={rows} placeholder={placeholder} disabled={disabled} style={{
         width: '100%',
         padding: '12px',
         borderRadius: '10px',
         border: '2px solid rgba(0, 0, 0, 0.2)',
-        background: '#F9FAFB',
+        background: disabled ? '#F3F4F6' : '#F9FAFB',
         color: '#1F2937',
         fontSize: '14px',
         outline: 'none',
         resize: 'vertical',
         fontWeight: '500',
-        fontFamily: 'inherit'
+        fontFamily: 'inherit',
+        cursor: disabled ? 'not-allowed' : 'text',
+        opacity: disabled ? 0.6 : 1  
       }} />
     ) : (
-      <input type={type} name={name} value={value} onChange={onChange} required={required} placeholder={placeholder} min={min} step={step} style={{
+      <input type={type} name={name} value={value} onChange={onChange} required={required} placeholder={placeholder} min={min} step={step} disabled={disabled} style={{
         width: '100%',
         padding: '12px',
         borderRadius: '10px',
         border: '2px solid rgba(0, 0, 0, 0.2)',
-        background: '#F9FAFB',
+        background: disabled ? '#F3F4F6' : '#F9FAFB',
         color: '#1F2937',
         fontSize: '14px',
         outline: 'none',
-        fontWeight: '500'
+        fontWeight: '500',
+        cursor: disabled ? 'not-allowed' : 'text',
+        opacity: disabled ? 0.6 : 1
       }} />
     )}
   </div>
